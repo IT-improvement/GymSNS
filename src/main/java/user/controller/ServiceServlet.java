@@ -16,17 +16,27 @@ public class ServiceServlet extends HttpServlet {
 		
 		String command = request.getParameter("command");
 		
-		ActionFactory af = ActionFactory.getInstance();
-		Action action = af.getAction(command);
-		
-		if(action!=null) {
-			action.execute(request, response);
+		if(command != null) {
+			ActionFactory af = ActionFactory.getInstance();
+			Action action = af.getAction(command);
+			
+			if(action!=null) {
+				action.execute(request, response);
+			} else {
+				response.sendError(404);
+			}
+		} else {
+			response.sendError(404);
 		}
-	
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
+		doGet(request, response);
+	}
+	
+	@Override
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
 

@@ -33,6 +33,7 @@ public class UserCreateAction implements Action {
 		String id =  object.getString("id");
 		String password = object.getString("password");
 		String name = object.getString("name");
+		
 		String email = "";
 		if (object.has("email") && !object.isNull("email")) {
 		    email = object.getString("email");

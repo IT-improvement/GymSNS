@@ -12,6 +12,15 @@
 		<welcome-file>default.jsp</welcome-file>
 		<welcome-file>default.htm</welcome-file>
 	</welcome-file-list>
+	
+	<servlet>
+		<servlet-name>joinFormAction</servlet-name>
+		<servlet-class>rentalcarServer.user.controller.JoinFormAction</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>joinFormAction</servlet-name>
+		<url-pattern>/joinFormAction</url-pattern>
+	</servlet-mapping>
 
 	<servlet>
 		<servlet-name>UserServiceServlet</servlet-name>
@@ -19,7 +28,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>UserServiceServlet</servlet-name>
-		<url-pattern>/user/service</url-pattern>
+		<url-pattern>/user</url-pattern>
 	</servlet-mapping>
 
 	<servlet>
