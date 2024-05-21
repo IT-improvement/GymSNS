@@ -1,6 +1,7 @@
 package user.controller;
 
 import user.controller.action.LoginAction;
+import user.controller.action.TestAction;
 
 public class ActionFactory {
 
@@ -18,7 +19,8 @@ public class ActionFactory {
 		
 		if(command.equals("login")) 
 			action = new LoginAction();
-		
+		else if(command.equals("test"))
+			action= new TestAction();
 		return action;
 	}
 }
