@@ -9,6 +9,9 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import util.DBManager;
+import util.PasswordCrypto;
+
 public class UserDao {
 	
 	private Connection conn;
@@ -40,7 +43,7 @@ public class UserDao {
 			conn = DBManager.getConnection();
 			
 			// 쿼리할 준비 
-			String sql = "SELECT userId, email, name, birth, gender, country, license, telecom, phone, agree FROM users";
+			String sql = "SELECT id, email, name, birth, gender, telecom, phone FROM users";
 			pstmt = conn.prepareStatement(sql);
 			
 			// 쿼리 실행 
@@ -48,19 +51,15 @@ public class UserDao {
 			
 			// 튜플 읽기 
 			while(rs.next()) {
-				// database의 column index는 1부터 시작! 
 				String id = rs.getString(1);
 				String email = rs.getString(2);
 				String name = rs.getString(3);
 				String birth = rs.getString(4);
 				String gender = rs.getString(5);
-				String country = rs.getString(6);
-				String license = rs.getString(7);
-				String telecom = rs.getString(8);
-				String phone = rs.getString(9);
-				boolean agree = rs.getBoolean(10);
+				String telecom = rs.getString(6);
+				String phone = rs.getString(7);
 				
-				UserResponseDto user = new UserResponseDto(id, email, name, birth, gender, country, license, telecom, phone, agree);
+				UserResponseDto user = new UserResponseDto(id, email, name, birth, gender, telecom, phone);
 				list.add(user);
 			}
 		} catch (SQLException e) {
@@ -83,12 +82,11 @@ public class UserDao {
 		try {
 			conn = DBManager.getConnection();
 			
-			String sql = "SELECT userId, email, name, birth, gender, country, license, telecom, phone, agree, password FROM users WHERE userId=?";
+			String sql = "SELECT id, email, name, birth, gender, telecom, phone, password FROM users WHERE id=?";
 			
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setString(1, id);
-			//pstmt.setString(2, password);
 			
 			rs = pstmt.executeQuery();
 			
@@ -97,15 +95,12 @@ public class UserDao {
 				String name = rs.getString(3);
 				String birth = rs.getString(4);
 				String gender = rs.getString(5);
-				String country = rs.getString(6);
-				String license = rs.getString(7);
-				String telecom = rs.getString(8);
-				String phone = rs.getString(9);
-				boolean agree = rs.getBoolean(10);
-				String encryptedPassword = rs.getString(11);
+				String telecom = rs.getString(6);
+				String phone = rs.getString(7);
+				String encryptedPassword = rs.getString(8);
 				
 				if(PasswordCrypto.decrypt(password, encryptedPassword))
-					user = new UserResponseDto(id, email, name, birth, gender, country, license, telecom, phone, agree);
+					user = new UserResponseDto(id, email, name, birth, gender, telecom, phone);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -132,14 +127,13 @@ public class UserDao {
 		try {
 			conn = DBManager.getConnection();
 			
-			String sql = "INSERT INTO users(userId, password, email, name, birth, gender, country, license, telecom, phone, agree) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO users(id, password, email, name, birth, gender, telecom, phone) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
 			
 			System.out.println("conn : " + conn);
 			pstmt = conn.prepareStatement(sql);
 			
 			// sql 구문에 맵핑할 값 설정 
 			pstmt.setString(1, userDto.getId());
-			//pstmt.setString(2, userDto.getPassword());
 			pstmt.setString(2, PasswordCrypto.encrypt(userDto.getPassword()));
 			
 			String email = userDto.getEmail().equals("") ? null : userDto.getEmail();
@@ -148,11 +142,8 @@ public class UserDao {
 			pstmt.setString(4, userDto.getName());
 			pstmt.setString(5, userDto.getBirth());
 			pstmt.setString(6, userDto.getGender());
-			pstmt.setString(7, userDto.getCountry());
-			pstmt.setString(8, userDto.getLicense());
-			pstmt.setString(9, userDto.getTelecom());
-			pstmt.setString(10, userDto.getPhone());
-			pstmt.setBoolean(11, userDto.isAgree());
+			pstmt.setString(7, userDto.getTelecom());
+			pstmt.setString(8, userDto.getPhone());
 			
 			pstmt.execute();
 			
@@ -180,12 +171,11 @@ public class UserDao {
 		try {
 			conn = DBManager.getConnection();
 			
-			String sql = "UPDATE users SET password=? WHERE userId=?";
+			String sql = "UPDATE users SET password=? WHERE id=?";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, PasswordCrypto.encrypt(newPassword));
 			pstmt.setString(2, userDto.getId());
-			//pstmt.setString(3, userDto.getPassword());
 			
 			pstmt.execute();
 			
@@ -209,11 +199,10 @@ public class UserDao {
 		try {
 			conn = DBManager.getConnection();
 			
-			String sql = "UPDATE users SET email=? WHERE userId=?";
+			String sql = "UPDATE users SET email=? WHERE id=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, userDto.getEmail());
 			pstmt.setString(2, userDto.getId());
-			//pstmt.setString(3, userDto.getPassword());
 			
 			pstmt.execute();
 			
@@ -235,10 +224,9 @@ public class UserDao {
 		
 		try {
 			conn = DBManager.getConnection();
-			String sql = "UPDATE users SET license=? WHERE userId=?";
+			String sql = "UPDATE users SET license=? WHERE id=?";
 			
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, userDto.getLicense());
 			pstmt.setString(2, userDto.getId());
 			
 			pstmt.execute();
@@ -269,7 +257,6 @@ public class UserDao {
 			pstmt.setString(1, userDto.getTelecom());
 			pstmt.setString(2, userDto.getPhone());
 			pstmt.setString(3, userDto.getId());
-			//pstmt.setString(4, userDto.getPassword());
 			
 			pstmt.execute();
 			
@@ -283,27 +270,6 @@ public class UserDao {
 	}
 	
 	public boolean deleteUser(UserRequestDto userDto) {
-//		if (!userExists(userDto)) {
-//			return false;
-//		}
-//
-//		try {
-//			String sql = "DELETE FROM users WHERE userId=? AND password=?";
-//			pstmt = conn.prepareStatement(sql);
-//			
-//			pstmt.setString(1, userDto.getId());
-//			pstmt.setString(2, userDto.getPassword());
-//			
-//			pstmt.execute();
-//			
-//			return true;
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		} finally {
-//			DBManager.close(conn, pstmt);
-//		}
-//		
-//		return false;
 		if (!userExists(userDto)) {
 			return false;
 		}
@@ -311,7 +277,7 @@ public class UserDao {
 		try {
 			conn = DBManager.getConnection();
 			
-			String sql = "DELETE FROM users WHERE userId=?";
+			String sql = "DELETE FROM users WHERE id=?";
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setString(1, userDto.getId());
@@ -334,7 +300,7 @@ public class UserDao {
 		try {
 			conn = DBManager.getConnection();
 			
-			String sql = "SELECT userId, email, name, birth, gender, country, license, telecom, phone, agree, reg_date, mod_date FROM users WHERE userId=?";
+			String sql = "SELECT id, email, name, birth, gender, telecom, phone, reg_date, mod_date FROM users WHERE id=?";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);
@@ -346,15 +312,12 @@ public class UserDao {
 				String name = rs.getString(3);
 				String birth = rs.getString(4);
 				String gender = rs.getString(5);
-				String country = rs.getString(6);
-				String license = rs.getString(7);
-				String telecom = rs.getString(8);
-				String phone = rs.getString(9);
-				boolean agree = rs.getBoolean(10);
-				Timestamp regDate = rs.getTimestamp(11);
-				Timestamp modDate = rs.getTimestamp(12);
+				String telecom = rs.getString(6);
+				String phone = rs.getString(7);
+				Timestamp regDate = rs.getTimestamp(9);
+				Timestamp modDate = rs.getTimestamp(10);
 				
-				user = new User(id, email, name, birth, gender, country, license, telecom, phone, agree, regDate, modDate);
+				user = new User(id, email, name, birth, gender, telecom, phone, regDate, modDate);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
