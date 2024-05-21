@@ -21,6 +21,15 @@
 		<servlet-name>UserServiceServlet</servlet-name>
 		<url-pattern>/user/service</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>DiaryFormAction</servlet-name>
+		<servlet-class>diary.controller.DiaryFormAction</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DiaryFormAction</servlet-name>
+		<url-pattern>/diary</url-pattern>
+	</servlet-mapping>
 
 	<servlet>
 		<servlet-name>error</servlet-name>
