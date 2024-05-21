@@ -14,7 +14,7 @@ public class DBManager {
 		Connection conn = null;
 		try {
 			Context init = new InitialContext();
-			DataSource source = (DataSource) init.lookup("java:comp/env/jdbc/GYMUnityDB");
+			DataSource source = (DataSource) init.lookup("java:comp/env/jdbc/GYMUnity");
 
 			conn = source.getConnection();
 
