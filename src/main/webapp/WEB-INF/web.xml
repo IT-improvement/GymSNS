@@ -34,4 +34,50 @@
 	<error-page>
 		<location>/error</location>
 	</error-page>
+
+	<servlet>
+		<servlet-name>diet</servlet-name>
+		<jsp-file>/views/diet/diet.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>diet</servlet-name>
+		<url-pattern>/diet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>FoodList</servlet-name>
+		<servlet-class>foods.controller.FoodList</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>FoodList</servlet-name>
+		<url-pattern>/diet/foods</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>CreateFood</servlet-name>
+		<servlet-class>foods.controller.CreateFood</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CreateFood</servlet-name>
+		<url-pattern>/diet/foods/create</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>UpdateFood</servlet-name>
+		<servlet-class>foods.controller.UpdateFood</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UpdateFood</servlet-name>
+		<url-pattern>/diet/foods/update</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>DeleteFood</servlet-name>
+		<servlet-class>foods.controller.DeleteFood</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DeleteFood</servlet-name>
+		<url-pattern>/diet/foods/delete</url-pattern>
+	</servlet-mapping>
+
 </web-app>
