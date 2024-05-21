@@ -15,6 +15,20 @@ public class User {
 	private Timestamp regDate;
 	private Timestamp modDate;
 	
+	public User(String id, String email, String name, String birth, String gender, String telecom, String phone,
+			Timestamp regDate, Timestamp modDate) {
+		super();
+		this.id = id;
+		this.email = email;
+		this.name = name;
+		this.birth = birth;
+		this.gender = gender;
+		this.telecom = telecom;
+		this.phone = phone;
+		this.regDate = regDate;
+		this.modDate = modDate;
+	}
+
 	public User(String id, String password, String email, String name, String birth, String gender, String telecom,
 			String phone) {
 		super();
