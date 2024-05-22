@@ -21,7 +21,7 @@
 		<servlet-name>UserServiceServlet</servlet-name>
 		<url-pattern>/user/service</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>DiaryFormAction</servlet-name>
 		<servlet-class>diary.controller.DiaryFormAction</servlet-class>
@@ -39,7 +39,7 @@
 		<servlet-name>error</servlet-name>
 		<url-pattern>/error</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>FeedCreateAction</servlet-name>
 		<servlet-class>feed.controller.FeedCreateAction</servlet-class>
@@ -48,7 +48,7 @@
 		<servlet-name>FeedCreateAction</servlet-name>
 		<url-pattern>/feed</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>FeedDetailAction</servlet-name>
 		<servlet-class>feed.controller.FeedDetailAction</servlet-class>
@@ -57,7 +57,7 @@
 		<servlet-name>FeedDetailAction</servlet-name>
 		<url-pattern>/feed/*</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>FeedCommentAction</servlet-name>
 		<servlet-class>feed.controller.FeedCommentAction</servlet-class>
@@ -66,7 +66,7 @@
 		<servlet-name>FeedCommentAction</servlet-name>
 		<url-pattern>/feed/*/comments</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>FeedReadAction</servlet-name>
 		<servlet-class>feed.controller.FeedReadAction</servlet-class>
@@ -75,7 +75,7 @@
 		<servlet-name>FeedReadAction</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>FeedUpdateAction</servlet-name>
 		<servlet-class>feed.controller.FeedUpdateAction</servlet-class>
@@ -84,7 +84,7 @@
 		<servlet-name>FeedUpdateAction</servlet-name>
 		<url-pattern>/feed/*/update</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>FeedDeleteAction</servlet-name>
 		<servlet-class>feed.controller.FeedDeleteAction</servlet-class>
@@ -93,7 +93,7 @@
 		<servlet-name>FeedDeleteAction</servlet-name>
 		<url-pattern>/feed/*/delete</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>FeedCommentCreateAction</servlet-name>
 		<servlet-class>feed.controller.FeedCommentCreateAction</servlet-class>
@@ -102,7 +102,7 @@
 		<servlet-name>FeedCommentCreateAction</servlet-name>
 		<url-pattern>/feed/*/comments/create</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>FeedCommentUpdateAction</servlet-name>
 		<servlet-class>feed.controller.FeedCommentUpdateAction</servlet-class>
@@ -111,7 +111,7 @@
 		<servlet-name>FeedCommentUpdateAction</servlet-name>
 		<url-pattern>/feed/*/comments/update</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>FeedCommentDeleteAction</servlet-name>
 		<servlet-class>feed.controller.FeedCommentDeleteAction</servlet-class>
@@ -120,8 +120,8 @@
 		<servlet-name>FeedCommentDeleteAction</servlet-name>
 		<url-pattern>/feed/*/comments/delete</url-pattern>
 	</servlet-mapping>
-	
-	
+
+
 	<error-page>
 		<location>/error</location>
 	</error-page>
@@ -134,7 +134,25 @@
 		<servlet-name>diet</servlet-name>
 		<url-pattern>/diet</url-pattern>
 	</servlet-mapping>
-	
+
+	<servlet>
+		<servlet-name>createFoodForm</servlet-name>
+		<jsp-file>/views/diet/createFoodForm.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>createFoodForm</servlet-name>
+		<url-pattern>/createFoodForm</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>createFoodCategoryForm</servlet-name>
+		<jsp-file>/views/diet/createFoodCategoryForm.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>createFoodCategoryForm</servlet-name>
+		<url-pattern>/createFoodCategoryForm</url-pattern>
+	</servlet-mapping>
+
 	<servlet>
 		<servlet-name>FoodList</servlet-name>
 		<servlet-class>foods.controller.FoodList</servlet-class>
@@ -169,6 +187,15 @@
 	<servlet-mapping>
 		<servlet-name>DeleteFood</servlet-name>
 		<url-pattern>/diet/foods/delete</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>CreateFoodCategory</servlet-name>
+		<servlet-class>foodCategory.controller.CreateFoodCategory</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CreateFoodCategory</servlet-name>
+		<url-pattern>/diet/foods/CreateFoodCategory</url-pattern>
 	</servlet-mapping>
 
 </web-app>

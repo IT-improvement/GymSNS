@@ -20,6 +20,10 @@ public class FoodCategory {
 		this.createDate = createDate;
 	}
 	
+	public FoodCategory() {
+		
+	}
+	
 	public int getFoodCategoryIndex() {
 		return foodCategoryIndex;
 	}
