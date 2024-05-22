@@ -2,6 +2,7 @@ package user.controller;
 
 import user.controller.action.LoginAction;
 import user.controller.action.TestAction;
+import user.controller.action.UserCreateAction;
 
 public class ActionFactory {
 
@@ -17,7 +18,9 @@ public class ActionFactory {
 	public Action getAction(String command) {
 		Action action = null;
 		
-		if(command.equals("login")) 
+		if(command.equals("create")) 
+			action = new UserCreateAction();
+		else if(command.equals("login"))
 			action = new LoginAction();
 		else if(command.equals("test"))
 			action= new TestAction();

@@ -12,7 +12,70 @@
 		<welcome-file>default.jsp</welcome-file>
 		<welcome-file>default.htm</welcome-file>
 	</welcome-file-list>
-
+	
+	<servlet>
+		<servlet-name>joinFormAction</servlet-name>
+		<servlet-class>user.controller.action.JoinFormAction</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>joinFormAction</servlet-name>
+		<url-pattern>/joinFormAction</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>loginAction</servlet-name>
+		<servlet-class>user.controller.action.LoginAction</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>loginAction</servlet-name>
+		<url-pattern>/loginAction</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>logoutAction</servlet-name>
+		<servlet-class>user.controller.action.LogoutAction</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>logoutAction</servlet-name>
+		<url-pattern>/logoutAction</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>testAction</servlet-name>
+		<servlet-class>user.controller.action.TestAction</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>testAction</servlet-name>
+		<url-pattern>/testAction</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>userCreateAction</servlet-name>
+		<servlet-class>user.controller.action.UserCreateAction</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>userCreateAction</servlet-name>
+		<url-pattern>/userCreateAction</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>Action</servlet-name>
+		<servlet-class>user.controller.Action</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Action</servlet-name>
+		<url-pattern>/Action</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>ActionFactory</servlet-name>
+		<servlet-class>user.controller.ActionFactory</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ActionFactory</servlet-name>
+		<url-pattern>/ActionFactory</url-pattern>
+	</servlet-mapping>
+	
 	<servlet>
 		<servlet-name>UserServiceServlet</servlet-name>
 		<servlet-class>user.controller.ServiceServlet</servlet-class>

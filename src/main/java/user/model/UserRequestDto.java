@@ -1,44 +1,31 @@
 package user.model;
 
-public class UserResponseDTO {
+public class UserRequestDto {
+	
 	private String id;
+	private String password;
 	private String email;
 	private String name;
 	private String birth;
 	private String gender;
 	private String telecom;
 	private String phone;
-	private int userCode;
 	
-	public int getUserCode() {
-		return userCode;
+	public UserRequestDto() {
+		
 	}
 
-	public void setUserCode(int userCode) {
-		this.userCode = userCode;
-	}
-
-	public UserResponseDTO(String id, String email, String name, String birth, String gender, String telecom,
-			String phone) {
+	public UserRequestDto(String id, String password, String email, String name, String birth, String gender,
+			String telecom, String phone) {
 		super();
 		this.id = id;
+		this.password = password;
 		this.email = email;
 		this.name = name;
 		this.birth = birth;
 		this.gender = gender;
 		this.telecom = telecom;
 		this.phone = phone;
-	}
-	
-	public UserResponseDTO(User user) {
-		super();
-		this.id = user.getId();
-		this.email = user.getEmail();
-		this.name = user.getName();
-		this.birth = user.getBirth();
-		this.gender = user.getGender();
-		this.telecom = user.getTelecom();
-		this.phone = user.getPhone();
 	}
 
 	public String getId() {
@@ -47,6 +34,14 @@ public class UserResponseDTO {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String getEmail() {
@@ -96,4 +91,5 @@ public class UserResponseDTO {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+	
 }

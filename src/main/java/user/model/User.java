@@ -3,7 +3,7 @@ package user.model;
 import java.sql.Timestamp;
 
 public class User {
-	private int code;
+	private String code;
 	private String id;
 	private String password;
 	private String email;
@@ -15,14 +15,6 @@ public class User {
 	private Timestamp regDate;
 	private Timestamp modDate;
 	
-	public User() {
-		
-	}
-	
-	public void setCode(int code) {
-		this.code = code;
-	}
-
 	public User(String id, String email, String name, String birth, String gender, String telecom, String phone,
 			Timestamp regDate, Timestamp modDate) {
 		super();
@@ -50,7 +42,7 @@ public class User {
 		this.phone = phone;
 	}
 
-	public User(int code, String id, String password, String email, String name, String birth, String gender,
+	public User(String code, String id, String password, String email, String name, String birth, String gender,
 			String telecom, String phone) {
 		super();
 		this.code = code;
@@ -64,7 +56,7 @@ public class User {
 		this.phone = phone;
 	}
 
-	public int getCode() {
+	public String getCode() {
 		return code;
 	}
 
