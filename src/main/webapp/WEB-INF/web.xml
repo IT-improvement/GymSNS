@@ -39,16 +39,16 @@
 		<servlet-name>error</servlet-name>
 		<url-pattern>/error</url-pattern>
 	</servlet-mapping>
-
+	
 	<servlet>
 		<servlet-name>FeedCreateAction</servlet-name>
 		<servlet-class>feed.controller.FeedCreateAction</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>FeedCreateAction</servlet-name>
-		<url-pattern>/feed</url-pattern>
+		<url-pattern>/feed/create</url-pattern>
 	</servlet-mapping>
-
+	
 	<servlet>
 		<servlet-name>FeedDetailAction</servlet-name>
 		<servlet-class>feed.controller.FeedDetailAction</servlet-class>
@@ -57,7 +57,7 @@
 		<servlet-name>FeedDetailAction</servlet-name>
 		<url-pattern>/feed/*</url-pattern>
 	</servlet-mapping>
-
+	
 	<servlet>
 		<servlet-name>FeedCommentAction</servlet-name>
 		<servlet-class>feed.controller.FeedCommentAction</servlet-class>
@@ -92,6 +92,7 @@
 	<servlet-mapping>
 		<servlet-name>FeedDeleteAction</servlet-name>
 		<url-pattern>/feed/*/delete</url-pattern>
+		<url-pattern>/feed</url-pattern>
 	</servlet-mapping>
 
 	<servlet>

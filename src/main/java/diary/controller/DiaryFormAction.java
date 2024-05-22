@@ -23,12 +23,6 @@ public class DiaryFormAction extends HttpServlet {
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
 		System.out.println(temp);
-		try {
-			Date date =  sdf.parse(temp);
-			System.out.println(new Timestamp(date.getTime()));
-		} catch (Exception e) {
-			System.out.println("오류");
-		}
 		
 	}
 
@@ -41,7 +35,7 @@ public class DiaryFormAction extends HttpServlet {
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
 		long dateTemp = System.currentTimeMillis();
-		String date = sdf.format(dateTemp);
+		String date = sdf.format(new Date(dateTemp));
 		Timestamp time= Timestamp.valueOf(date);
 		
 		DiaryRequestDTO dto = new DiaryRequestDTO();
