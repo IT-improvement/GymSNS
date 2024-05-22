@@ -79,13 +79,14 @@ public class FriendDao {
 	}
 	
 	public List<FriendResponseDto> findFriendAll(FriendRequestDto friendDto) {
-		List<FriendResponseDto> friends = findFriendAllFromLeftColumn(friendDto);
+		List<FriendResponseDto> friends = new ArrayList<>();
+		friends.addAll(findFriendAllFromLeftColumn(friendDto));
 		friends.addAll(findFriendAllFromRightColumn(friendDto));
 		
 		return friends;
 	}
 
-	private FriendResponseDto findFriendByUserCode(FriendRequestDto friendDto) {
+	public FriendResponseDto findFriendByUserCode(FriendRequestDto friendDto) {
 		FriendResponseDto friend = null;
 		String sql = "SELECT friend_index, user_code_one, user_code_two, users.id, users.name "
 					+ "FROM friends "
