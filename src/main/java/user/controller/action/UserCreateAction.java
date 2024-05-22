@@ -48,6 +48,9 @@ public class UserCreateAction implements Action {
 		UserDao dao = UserDao.getInstance();
 		UserRequestDto userDto = new UserRequestDto(id, password, email, name, birth, gender, telecom, phone);
 		
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		
 		try {
 			dao.createUser(userDto);
 			System.out.println("유저 생성 완료");
@@ -56,9 +59,14 @@ public class UserCreateAction implements Action {
 			System.out.println("유저 생성 실패");
 		}
 		
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
+		JSONObject jsonResponse = new JSONObject();
 		
+		jsonResponse.put("status", 200);
+		jsonResponse.put("message", "회원가입 완료");
+		
+		
+		
+		response.getWriter().write(jsonResponse.toString());
 		
 	}
 
