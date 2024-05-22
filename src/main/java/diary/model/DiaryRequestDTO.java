@@ -3,15 +3,15 @@ package diary.model;
 import java.sql.Timestamp;
 
 public class DiaryRequestDTO {
-	private int dairyIndex;
+	private int userCode;
 	private String content;
 	private Timestamp diaryDate;
 	
-	public int getDairyIndex() {
-		return dairyIndex;
+	public int getUserCode() {
+		return userCode;
 	}
-	public void setDairyIndex(int dairyIndex) {
-		this.dairyIndex = dairyIndex;
+	public void setUserCode(int userCode) {
+		this.userCode = userCode;
 	}
 	public String getContent() {
 		return content;
