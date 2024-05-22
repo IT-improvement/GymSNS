@@ -116,4 +116,21 @@ public class FeedDAO {
 		
 		return feed;
 	}
+	
+	public void deleteFeed(FeedRequestDTO feedDto) {
+		try {
+			conn = DBManager.getConnection();
+			System.out.println(feedDto.getFeedIndex());
+			String sql = "DELETE FROM feeds WHERE feed_index = ?;";
+			pstmt = conn.prepareStatement(sql);
+			System.out.println(feedDto.getFeedIndex());
+			pstmt.setInt(1, feedDto.getFeedIndex());
+			pstmt.execute();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}finally {
+            DBManager.close(conn, pstmt);
+        }
+	}
 }

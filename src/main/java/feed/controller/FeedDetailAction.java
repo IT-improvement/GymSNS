@@ -17,9 +17,7 @@ import feed.model.FeedDAO;
 import feed.model.FeedRequestDTO;
 import feed.model.FeedResponseDTO;
 
-/**
- * Servlet implementation class FeedDetailAction
- */
+
 public class FeedDetailAction extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -52,24 +50,33 @@ public class FeedDetailAction extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-		System.out.println(request.getPathInfo());
 		String url[] = request.getPathInfo().split("/");
-		
-		for(int i = 0; i < url.length; i++) {
-			System.out.println(url[i]);
-		}
 		
 		int feedIndex = Integer.parseInt(url[1]);
 		String title = request.getParameter("title");
 		String content = request.getParameter("content");
-		
-		System.out.println(feedIndex);
 		
 		FeedRequestDTO feedDto = new FeedRequestDTO(title, content, feedIndex);
 		FeedDAO feedDao = FeedDAO.getInstance();
 		FeedResponseDTO feed = feedDao.updateFeed(feedDto);
 		
 	}
+
+	@Override
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		
+		String url[] = request.getPathInfo().split("/");
+		
+		int feedIndex = Integer.parseInt(url[1]);
+		
+		System.out.println(feedIndex);
+		
+		FeedRequestDTO feedDto = new FeedRequestDTO(feedIndex);
+		FeedDAO feedDao = FeedDAO.getInstance();
+		feedDao.deleteFeed(feedDto);
+	}
+	
 
 
 }

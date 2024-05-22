@@ -22,6 +22,10 @@ public class FeedRequestDTO {
 		this.title = title;
 		this.content = content;
 	}
+	
+	public FeedRequestDTO(int feedIndex) {
+		this.feedIndex = feedIndex;
+	}
 
 	public String getTitle() {
 		return title;
