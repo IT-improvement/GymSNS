@@ -48,7 +48,18 @@ public class UserCreateAction implements Action {
 		UserDao dao = UserDao.getInstance();
 		UserRequestDto userDto = new UserRequestDto(id, password, email, name, birth, gender, telecom, phone);
 		
-		dao.createUser(userDto);
+		try {
+			dao.createUser(userDto);
+			System.out.println("유저 생성 완료");
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("유저 생성 실패");
+		}
+		
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		
+		
 	}
 
 }
