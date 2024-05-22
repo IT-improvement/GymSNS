@@ -3,6 +3,7 @@ package user.model;
 public class UserResponseDto {
 	
 	private String id;
+	private String password;
 	private String email;
 	private String name;
 	private String birth;
@@ -87,6 +88,14 @@ public class UserResponseDto {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+	
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	
 	
