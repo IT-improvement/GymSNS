@@ -20,7 +20,7 @@ public class LoginAction implements Action {
 		StringBuilder sb = new StringBuilder();
         BufferedReader reader = request.getReader();
         
-        String line;
+        String line = "";
         while ((line = reader.readLine()) != null) {
             sb.append(line);
         }
