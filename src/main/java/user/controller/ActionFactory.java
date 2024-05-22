@@ -20,6 +20,8 @@ public class ActionFactory {
 		
 		if(command.equals("create")) 
 			action = new UserCreateAction();
+		else if(command.equals("login"))
+			action = new LoginAction();
 		else if(command.equals("test"))
 			action = new TestAction();
 		
