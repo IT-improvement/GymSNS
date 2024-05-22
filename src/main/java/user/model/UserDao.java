@@ -18,18 +18,12 @@ public class UserDao {
 	private PreparedStatement pstmt;
 	private ResultSet rs;
 	
-	// UserDao 객체를 단일 인스턴스로 만들기 위해 
-	// Singleton Pattern 적용 
-	
-	// 1. 생성자를 private으로 
 	private UserDao() {
-		//setConnection();
+		
 	}
 	
-	// 2. 단일 인스턴스를 생성 (클래스 내부에서) 
 	private static UserDao instance = new UserDao();
 	
-	// 3. 단일 인스턴스에 대한 getter 
 	public static UserDao getInstance() {
 		return instance;
 	}
@@ -73,12 +67,6 @@ public class UserDao {
 	public UserResponseDto findUserByIdAndPassword(String id, String password) {
 		UserResponseDto user = null;
 		
-		// 데이터베이스에 있는 암호화된 패스워드 str 를 얻어와
-		// PasswordCrypto.decrypto(str) 를 통해
-		// 일치여부 확인 후
-		// return
-		
-		
 		try {
 			conn = DBManager.getConnection();
 			
@@ -120,10 +108,6 @@ public class UserDao {
 	
 	
 	public UserResponseDto createUser(UserRequestDto userDto) {
-		// sql 구문을 쿼리하고 
-		// 성공을 했다면 -> UserResponseDto 객체 생성하여 
-		// 반환 
-		
 		try {
 			conn = DBManager.getConnection();
 			
@@ -132,7 +116,6 @@ public class UserDao {
 			System.out.println("conn : " + conn);
 			pstmt = conn.prepareStatement(sql);
 			
-			// sql 구문에 맵핑할 값 설정 
 			pstmt.setString(1, userDto.getId());
 			pstmt.setString(2, PasswordCrypto.encrypt(userDto.getPassword()));
 			
@@ -215,33 +198,6 @@ public class UserDao {
 		return user;
 	}
 	
-	public UserResponseDto updateUserLicense(UserRequestDto userDto) {
-		UserResponseDto user = null;
-		
-		if(!userExists(userDto)) {
-			return user;
-		}
-		
-		try {
-			conn = DBManager.getConnection();
-			String sql = "UPDATE users SET license=? WHERE id=?";
-			
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(2, userDto.getId());
-			
-			pstmt.execute();
-			
-			user = findUserByIdAndPassword(userDto.getId(), userDto.getPassword());
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DBManager.close(conn, pstmt);
-		}
-		
-		return user;
-	}
-	
 	public UserResponseDto updateUserPhone(UserRequestDto userDto) {
 		UserResponseDto user = null;
 		
@@ -252,7 +208,7 @@ public class UserDao {
 		try {
 			conn = DBManager.getConnection();
 			
-			String sql = "UPDATE users SET telecom=?, phone=? WHERE userId=?";
+			String sql = "UPDATE users SET telecom=?, phone=? WHERE id=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, userDto.getTelecom());
 			pstmt.setString(2, userDto.getPhone());
