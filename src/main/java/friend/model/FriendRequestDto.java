@@ -9,6 +9,15 @@ public class FriendRequestDto {
 	
 	public FriendRequestDto() { }
 
+	public FriendRequestDto(int userCodeSelf) {
+		this.userCodeSelf = userCodeSelf;
+	}
+	
+	public FriendRequestDto(int userCodeSelf, int userCodeFriend) {
+		this.userCodeSelf = userCodeSelf;
+		this.userCodeFriend = userCodeFriend;
+	}
+
 	public int getIndex() {
 		return index;
 	}
