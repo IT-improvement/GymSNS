@@ -6,6 +6,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 
@@ -17,6 +18,19 @@ public class LoginAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		
+		if (session.getAttribute("id") != null) {
+	        JSONObject jsonResponse = new JSONObject();
+	        jsonResponse.put("status", 400);
+	        jsonResponse.put("message", "이미 로그인된 사용자입니다.");
+	        
+	        response.setContentType("application/json");
+	        response.setCharacterEncoding("UTF-8");
+	        response.getWriter().write(jsonResponse.toString());
+	        return;
+	    }
+		
 		StringBuilder sb = new StringBuilder();
         BufferedReader reader = request.getReader();
         
@@ -41,10 +55,13 @@ public class LoginAction implements Action {
 		 JSONObject jsonResponse = new JSONObject();
 		 
 		 if(isValid) {
-			 UserDao dao = UserDao.getInstance();
-			 UserResponseDto user = dao.findUserByIdAndPassword(id, password);
+			 UserDao userDao = UserDao.getInstance();
+			 UserResponseDto user = userDao.findUserByIdAndPassword(id, password);
 			 
 			 if(user != null) {
+				 session.setAttribute("code", user.getCode());
+				 session.setAttribute("id", user.getId());
+				 
 				 jsonResponse.put("status", 200);
 				 jsonResponse.put("message", "로그인 성공");
 			 } else {
