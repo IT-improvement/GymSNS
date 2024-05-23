@@ -1,7 +1,10 @@
 package user.controller;
 
+import user.controller.action.LeaveAction;
 import user.controller.action.LoginAction;
+import user.controller.action.LogoutAction;
 import user.controller.action.TestAction;
+import user.controller.action.UpdateAction;
 import user.controller.action.UserCreateAction;
 
 public class ActionFactory {
@@ -22,8 +25,15 @@ public class ActionFactory {
 			action = new UserCreateAction();
 		else if(command.equals("login"))
 			action = new LoginAction();
+		else if(command.equals("logout"))
+			action = new LogoutAction();
+		else if(command.equals("leave"))
+			action = new LeaveAction();
+		else if(command.equals("update"))
+			action = new UpdateAction();
 		else if(command.equals("test"))
-			action= new TestAction();
+			action = new TestAction();
+		
 		return action;
 	}
 }
