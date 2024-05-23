@@ -32,6 +32,15 @@
 	</servlet-mapping>
 	
 	<servlet>
+		<servlet-name>leaveAction</servlet-name>
+		<servlet-class>user.controller.action.LeaveAction</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>leaveAction</servlet-name>
+		<url-pattern>/leaveAction</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
 		<servlet-name>loginAction</servlet-name>
 		<servlet-class>user.controller.action.LoginAction</servlet-class>
 	</servlet>
@@ -56,6 +65,15 @@
 	<servlet-mapping>
 		<servlet-name>testAction</servlet-name>
 		<url-pattern>/testAction</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>updateAction</servlet-name>
+		<servlet-class>user.controller.action.UpdateAction</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>updateAction</servlet-name>
+		<url-pattern>/updateAction</url-pattern>
 	</servlet-mapping>
 	
 	<servlet>
@@ -91,7 +109,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>UserServiceServlet</servlet-name>
-		<url-pattern>/user/service</url-pattern>
+		<url-pattern>/user/*</url-pattern>
 	</servlet-mapping>
 
 	<servlet>

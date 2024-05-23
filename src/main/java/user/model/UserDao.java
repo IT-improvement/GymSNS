@@ -37,7 +37,7 @@ public class UserDao {
 			conn = DBManager.getConnection();
 			
 			// 쿼리할 준비 
-			String sql = "SELECT id, email, name, birth, gender, telecom, phone FROM users";
+			String sql = "SELECT code, id, email, name, birth, gender, telecom, phone FROM users";
 			pstmt = conn.prepareStatement(sql);
 			
 			// 쿼리 실행 
@@ -45,15 +45,16 @@ public class UserDao {
 			
 			// 튜플 읽기 
 			while(rs.next()) {
-				String id = rs.getString(1);
-				String email = rs.getString(2);
-				String name = rs.getString(3);
-				String birth = rs.getString(4);
-				String gender = rs.getString(5);
-				String telecom = rs.getString(6);
-				String phone = rs.getString(7);
+				String code = rs.getString(1);
+				String id = rs.getString(2);
+				String email = rs.getString(3);
+				String name = rs.getString(4);
+				String birth = rs.getString(5);
+				String gender = rs.getString(6);
+				String telecom = rs.getString(7);
+				String phone = rs.getString(8);
 				
-				UserResponseDto user = new UserResponseDto(id, email, name, birth, gender, telecom, phone);
+				UserResponseDto user = new UserResponseDto(code, id, email, name, birth, gender, telecom, phone);
 				list.add(user);
 			}
 		} catch (SQLException e) {
@@ -70,7 +71,7 @@ public class UserDao {
 		try {
 			conn = DBManager.getConnection();
 			
-			String sql = "SELECT id, email, name, birth, gender, telecom, phone, password FROM users WHERE id=?";
+			String sql = "SELECT id, code, email, name, birth, gender, telecom, phone, password FROM users WHERE id=?";
 			
 			pstmt = conn.prepareStatement(sql);
 			
@@ -79,16 +80,17 @@ public class UserDao {
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
-				String email = rs.getString(2);
-				String name = rs.getString(3);
-				String birth = rs.getString(4);
-				String gender = rs.getString(5);
-				String telecom = rs.getString(6);
-				String phone = rs.getString(7);
-				String encryptedPassword = rs.getString(8);
+				String code = rs.getString(2);
+				String email = rs.getString(3);
+				String name = rs.getString(4);
+				String birth = rs.getString(5);
+				String gender = rs.getString(6);
+				String telecom = rs.getString(7);
+				String phone = rs.getString(8);
+				String encryptedPassword = rs.getString(9);
 				
 				if(PasswordCrypto.decrypt(password, encryptedPassword))
-					user = new UserResponseDto(id, email, name, birth, gender, telecom, phone);
+					user = new UserResponseDto(code, id, email, name, birth, gender, telecom, phone);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -165,6 +167,31 @@ public class UserDao {
 			User userVo = findUserById(userDto.getId());
 			user = new UserResponseDto(userVo);
 			return user;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt);
+		}
+		return user;
+	}
+	
+	public UserResponseDto updateUserName(UserRequestDto userDto) {
+		UserResponseDto user = null;
+		
+		if (!userExists(userDto)) {
+			return user;
+		}
+		try {
+			conn = DBManager.getConnection();
+			
+			String sql = "UPDATE users SET name=? WHERE id=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userDto.getName());
+			pstmt.setString(2, userDto.getId());
+			
+			pstmt.execute();
+			
+			user = findUserByIdAndPassword(userDto.getId(), userDto.getPassword());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -250,7 +277,7 @@ public class UserDao {
 		return false;
 	}
 	
-	private User findUserById(String id) {
+	public User findUserById(String id) {
 		User user = null;
 		
 		try {
@@ -270,8 +297,8 @@ public class UserDao {
 				String gender = rs.getString(5);
 				String telecom = rs.getString(6);
 				String phone = rs.getString(7);
-				Timestamp regDate = rs.getTimestamp(9);
-				Timestamp modDate = rs.getTimestamp(10);
+				Timestamp regDate = rs.getTimestamp(8);
+				Timestamp modDate = rs.getTimestamp(9);
 				
 				user = new User(id, email, name, birth, gender, telecom, phone, regDate, modDate);
 			}
