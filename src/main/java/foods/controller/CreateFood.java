@@ -1,6 +1,8 @@
 package foods.controller;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,11 +24,6 @@ public class CreateFood extends HttpServlet {
 
 	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-
-		request.getRequestDispatcher("").forward(request, response);
-	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -47,10 +44,13 @@ public class CreateFood extends HttpServlet {
 		food.setCalory(calory);
 		food.setCarbs(carbs);
 		food.setSize(size);
+		food.setCreateDate(new Timestamp(System.currentTimeMillis()));
 
 		FoodDao foodDao = new FoodDao();
 		foodDao.insertFood(food);
 		
-		response.sendRedirect("");
+		System.out.println("저장 성공");
+		
+		response.sendRedirect("/");
 	}
 }

@@ -207,77 +207,23 @@
 	<error-page>
 		<location>/error</location>
 	</error-page>
-
+	
 	<servlet>
-		<servlet-name>diet</servlet-name>
-		<jsp-file>/views/diet/diet.jsp</jsp-file>
+		<servlet-name>FoodCategoryActionFactory</servlet-name>
+		<servlet-class>foodCategory.controller.FoodCategoryActionFactory</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>diet</servlet-name>
-		<url-pattern>/diet</url-pattern>
+		<servlet-name>FoodCategoryActionFactory</servlet-name>
+		<url-pattern>/FoodCategoryActionFactory</url-pattern>
 	</servlet-mapping>
 
 	<servlet>
-		<servlet-name>createFoodForm</servlet-name>
-		<jsp-file>/views/diet/createFoodForm.jsp</jsp-file>
+		<servlet-name>FoodCategoryServiceServlet</servlet-name>
+		<servlet-class>foodCategory.controller.ServiceServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>createFoodForm</servlet-name>
-		<url-pattern>/createFoodForm</url-pattern>
+		<servlet-name>FoodCategoryServiceServlet</servlet-name>
+		<url-pattern>/foodCategory/service</url-pattern>
 	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>createFoodCategoryForm</servlet-name>
-		<jsp-file>/views/diet/createFoodCategoryForm.jsp</jsp-file>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>createFoodCategoryForm</servlet-name>
-		<url-pattern>/createFoodCategoryForm</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>FoodList</servlet-name>
-		<servlet-class>foods.controller.FoodList</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>FoodList</servlet-name>
-		<url-pattern>/diet/foods</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>CreateFood</servlet-name>
-		<servlet-class>foods.controller.CreateFood</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>CreateFood</servlet-name>
-		<url-pattern>/diet/foods/create</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>UpdateFood</servlet-name>
-		<servlet-class>foods.controller.UpdateFood</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>UpdateFood</servlet-name>
-		<url-pattern>/diet/foods/update</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>DeleteFood</servlet-name>
-		<servlet-class>foods.controller.DeleteFood</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>DeleteFood</servlet-name>
-		<url-pattern>/diet/foods/delete</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>CreateFoodCategory</servlet-name>
-		<servlet-class>foodCategory.controller.CreateFoodCategory</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>CreateFoodCategory</servlet-name>
-		<url-pattern>/diet/foods/CreateFoodCategory</url-pattern>
-	</servlet-mapping>
-
+	
 </web-app>
