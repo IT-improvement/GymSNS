@@ -3,10 +3,14 @@ package friendRequest.model;
 public class FriendRequestResponseDto {
 	private	int userCodeSelf;
 	private	int userCodeOther;
+	private String userIdOther;
+	private String userNameOther;
 
-	public FriendRequestResponseDto(int userCodeSelf, int userCodeOther) {
+	public FriendRequestResponseDto(int userCodeSelf, int userCodeOther, String userIdOther, String userNameOther) {
 		this.userCodeSelf = userCodeSelf;
 		this.userCodeOther = userCodeOther;
+		this.userIdOther = userIdOther;
+		this.userNameOther = userNameOther;
 	}
 
 	public int getUserCodeSelf() {
@@ -23,5 +27,21 @@ public class FriendRequestResponseDto {
 
 	public void setUserCodeOther(int userCodeOther) {
 		this.userCodeOther = userCodeOther;
+	}
+
+	public String getUserIdOther() {
+		return userIdOther;
+	}
+
+	public void setUserIdOther(String userIdOther) {
+		this.userIdOther = userIdOther;
+	}
+
+	public String getUserNameOther() {
+		return userNameOther;
+	}
+
+	public void setUserNameOther(String userNameOther) {
+		this.userNameOther = userNameOther;
 	}
 }

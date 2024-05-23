@@ -19,12 +19,87 @@ public class FriendRequestDao {
 	public static FriendRequestDao getInstance() {
 		return instance;
 	}
+
+	public boolean isUserInReceivedFriendRequest(FriendRequestRequestDto friendRequestDto) {
+		return findUserInReceivedFriendRequest(friendRequestDto) != null;
+	}
 	
-	public List<FriendRequestResponseDto> findFriendRequestAll(FriendRequestRequestDto friendDto) {
-		List<FriendRequestResponseDto> friendRequests = new ArrayList<>();
-		String sql = "SELECT user_code_self, user_code_other "
-					+ "FROM friend_requests "
-					+ "WHERE user_code_self=?";
+	public boolean isUserInSentFriendRequest(FriendRequestRequestDto friendRequestDto) {
+		return findUserInSentFriendRequest(friendRequestDto) != null;
+	}
+
+	public FriendRequestResponseDto findUserInReceivedFriendRequest(FriendRequestRequestDto friendDto) {
+		FriendRequestResponseDto friendRequest = null;
+		String sql = "SELECT user_code_self, user_code_other, users.id, users.name "
+				+ "FROM friend_requests "
+				+ "JOIN users ON friend_requests.user_code_other = users.code "
+				+ "WHERE user_code_self=? AND user_code_other=?";
+
+		try {
+			conn = DBManager.getConnection();
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setInt(1, friendDto.getUserCodeSelf());
+			pstmt.setInt(2, friendDto.getUserCodeOther());
+
+			rs = pstmt.executeQuery();
+			
+			if (rs.next()) {
+				int userCodeSelf = rs.getInt(1);
+				int userCodeOther = rs.getInt(2);
+				String userIdOther = rs.getString(3);
+				String userNameOther = rs.getString(4);
+				
+				friendRequest = new FriendRequestResponseDto(userCodeSelf, userCodeOther, userIdOther, userNameOther);
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			DBManager.close(conn, pstmt, rs);
+		}
+
+		return friendRequest;
+	}
+
+	public FriendRequestResponseDto findUserInSentFriendRequest(FriendRequestRequestDto friendDto) {
+		FriendRequestResponseDto friendRequest = null;
+		String sql = "SELECT user_code_other AS \"self_code\", user_code_self AS \"receiver_code\", users.id, users.name "
+				+ "FROM friend_requests "
+				+ "JOIN users ON friend_requests.user_code_self = users.code "
+				+ "WHERE user_code_other=? AND user_code_self=?";
+
+		try {
+			conn = DBManager.getConnection();
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setInt(1, friendDto.getUserCodeSelf());
+			pstmt.setInt(2, friendDto.getUserCodeOther());
+
+			rs = pstmt.executeQuery();
+			
+			if (rs.next()) {
+				int userCodeSelf = rs.getInt(1);
+				int userCodeOther = rs.getInt(2);
+				String userIdOther = rs.getString(3);
+				String userNameOther = rs.getString(4);
+				
+				friendRequest = new FriendRequestResponseDto(userCodeSelf, userCodeOther, userIdOther, userNameOther);
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			DBManager.close(conn, pstmt, rs);
+		}
+
+		return friendRequest;
+	}
+	
+	public List<FriendRequestResponseDto> findReceivedFriendRequestAll(FriendRequestRequestDto friendDto) { List<FriendRequestResponseDto> friendRequests = new ArrayList<>();
+		String sql = "SELECT user_code_self, user_code_other, users.id, users.name "
+				+ "FROM friend_requests "
+				+ "JOIN users ON friend_requests.user_code_other = users.code "
+				+ "WHERE user_code_self=?";
+
 		try {
 			conn = DBManager.getConnection();
 			pstmt = conn.prepareStatement(sql);
@@ -36,8 +111,10 @@ public class FriendRequestDao {
 			while (rs.next()) {
 				int userCodeSelf = rs.getInt(1);
 				int userCodeOther = rs.getInt(2);
+				String userIdOther = rs.getString(3);
+				String userNameOther = rs.getString(4);
 				
-				friendRequests.add(new FriendRequestResponseDto(userCodeSelf, userCodeOther));
+				friendRequests.add(new FriendRequestResponseDto(userCodeSelf, userCodeOther, userIdOther, userNameOther));
 			}
 		} catch (Exception e) {
 			System.out.println(e);
@@ -69,6 +146,32 @@ public class FriendRequestDao {
 		}
 
 		return isAdded;
+	}
+	
+	public boolean deleteFriendRequest(FriendRequestRequestDto friendDto) {
+		boolean isDeleted = true;
+		String sql = "DELETE FROM friend_requests "
+				+ "WHERE (user_code_self=? AND user_code_other=?) "
+				+ "OR (user_code_self=? AND user_code_other=?)";
+
+		try {
+			conn = DBManager.getConnection();
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setInt(1, friendDto.getUserCodeSelf());
+			pstmt.setInt(2, friendDto.getUserCodeOther());
+			pstmt.setInt(3, friendDto.getUserCodeOther());
+			pstmt.setInt(4, friendDto.getUserCodeSelf());
+
+			pstmt.execute();
+		} catch (Exception e) {
+			System.out.println(e);
+			isDeleted = false;
+		} finally {
+			DBManager.close(conn, pstmt);
+		}
+		
+		return isDeleted;
 	}
 	
 	public boolean deleteReceivedFriendRequest(FriendRequestRequestDto friendDto) {
