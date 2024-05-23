@@ -1,7 +1,7 @@
 package user.model;
 
 public class UserResponseDto {
-	private String code;
+	private int code;
 	private String id;
 	private String password;
 	private String email;
@@ -11,7 +11,7 @@ public class UserResponseDto {
 	private String telecom;
 	private String phone;
 	
-	public UserResponseDto(String code, String id, String email, String name, String birth, String gender, String telecom,
+	public UserResponseDto(int code, String id, String email, String name, String birth, String gender, String telecom,
 			String phone) {
 		super();
 		this.code = code;
@@ -47,11 +47,11 @@ public class UserResponseDto {
 		this.phone = user.getPhone();
 	}
 
-	public String getCode() {
+	public int getCode() {
 		return code;
 	}
 	
-	public void setCode(String code) {
+	public void setCode(int code) {
 		this.code = code;
 	}
 	
