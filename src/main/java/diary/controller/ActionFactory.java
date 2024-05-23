@@ -16,7 +16,6 @@ public class ActionFactory {
 		Action action = null;
 		
 		if (command.equals("read")) {
-			System.out.println(new DiaryReadAction());
 			action = new DiaryReadAction();
 		}
 		
