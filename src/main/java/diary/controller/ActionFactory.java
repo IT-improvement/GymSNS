@@ -1,4 +1,5 @@
-package diary.controller;import org.apache.jasper.compiler.NewlineReductionServletWriter;
+package diary.controller;
+
 
 public class ActionFactory {
 
@@ -14,11 +15,14 @@ public class ActionFactory {
 
 	public Action getAction(String command) {
 		Action action = null;
-		
+
 		if (command.equals("read")) {
 			action = new DiaryReadAction();
+		} else if (command.equals("write")) {
+		} else if (command.equals("update")) {
+		} else if (command.equals("delete")) {
 		}
-		
+
 		return action;
 	}
 
