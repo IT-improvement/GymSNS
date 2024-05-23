@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import util.DBManager;
+
 public class FoodCategoryDao {
     private Connection conn;
     private PreparedStatement pstmt;
@@ -39,6 +41,7 @@ public class FoodCategoryDao {
     public int addFoodCategory(FoodCategoryRequestDto foodCategoryRequestDto) {
         String sql = "INSERT INTO food_categories (user_code, category_name, category_image_url, create_date) VALUES (?, ?, ?, CURRENT_TIMESTAMP)";
         try {
+        	conn = DBManager.getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, foodCategoryRequestDto.getUserCode());
             pstmt.setString(2, foodCategoryRequestDto.getCategoryName());

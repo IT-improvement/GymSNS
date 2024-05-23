@@ -1,5 +1,6 @@
 package foods.model;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 public class Food {
@@ -15,6 +16,7 @@ public class Food {
 
     // 기본 생성자
     public Food() {
+    
     }
 
     // 모든 필드를 포함하는 생성자

@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import util.DBManager;
+
 public class FoodDao {
     private Connection conn;
     private PreparedStatement pstmt;
@@ -39,6 +41,7 @@ public class FoodDao {
     public boolean insertFood(Food food) {
         String sql = "INSERT INTO foods (user_code, food_category_index, food_name, protein, calory, carbs, size, create_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try {
+        	conn = DBManager.getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, food.getUserCode());
             pstmt.setInt(2, food.getFoodCategoryIndex());
@@ -62,6 +65,7 @@ public class FoodDao {
     public FoodResponseDto getFoodByIndex(int foodIndex) {
         String sql = "SELECT * FROM foods WHERE food_index = ?";
         try {
+        	conn = DBManager.getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, foodIndex);
             rs = pstmt.executeQuery();
@@ -90,6 +94,7 @@ public class FoodDao {
         List<Food> foods = new ArrayList<>();
         String sql = "SELECT * FROM foods WHERE user_code = 0 UNION SELECT * FROM foods WHERE user_code = ?";
         try {
+        	conn = DBManager.getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, userCode);
             rs = pstmt.executeQuery();
@@ -118,6 +123,7 @@ public class FoodDao {
     public boolean updateFood(Food food) {
         String sql = "UPDATE foods SET user_code = ?, food_category_index = ?, food_name = ?, protein = ?, calory = ?, carbs = ?, size = ?, create_date = ? WHERE food_index = ?";
         try {
+        	conn = DBManager.getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, food.getUserCode());
             pstmt.setInt(2, food.getFoodCategoryIndex());
@@ -142,6 +148,7 @@ public class FoodDao {
     public boolean deleteFood(int foodIndex) {
         String sql = "DELETE FROM foods WHERE food_index = ?";
         try {
+        	conn = DBManager.getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, foodIndex);
             int rowsDeleted = pstmt.executeUpdate();

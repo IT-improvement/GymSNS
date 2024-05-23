@@ -22,6 +22,6 @@ public class DeleteFood extends HttpServlet {
 		FoodDao foodDao = FoodDao.getInstance();
 		foodDao.deleteFood(foodIndex);
 		
-		response.sendRedirect("");
+		response.sendRedirect("/");
 	}
 }
