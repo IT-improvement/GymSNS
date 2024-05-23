@@ -14,6 +14,10 @@ public class User {
 	private String phone;
 	private Timestamp regDate;
 	private Timestamp modDate;
+		
+	public User() {
+		
+	}
 	
 	public User(String id, String email, String name, String birth, String gender, String telecom, String phone,
 			Timestamp regDate, Timestamp modDate) {
