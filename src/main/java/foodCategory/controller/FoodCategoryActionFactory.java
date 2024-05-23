@@ -1,6 +1,7 @@
 package foodCategory.controller;
 
 import foodCategory.controller.action.CreateFoodCategoryAction;
+import foodCategory.controller.action.DeleteFoodCategoryAction;
 import user.controller.Action;
 
 public class FoodCategoryActionFactory {
