@@ -14,6 +14,15 @@
 	</welcome-file-list>
 	
 	<servlet>
+		<servlet-name>DiaryServiceServlet</servlet-name>
+		<servlet-class>diary.controller.DiaryServiceServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DiaryServiceServlet</servlet-name>
+		<url-pattern>/diary</url-pattern>	
+	</servlet-mapping>
+	
+	<servlet>
 		<servlet-name>joinFormAction</servlet-name>
 		<servlet-class>user.controller.action.JoinFormAction</servlet-class>
 	</servlet>
@@ -83,15 +92,6 @@
 	<servlet-mapping>
 		<servlet-name>UserServiceServlet</servlet-name>
 		<url-pattern>/user/service</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>DiaryFormAction</servlet-name>
-		<servlet-class>diary.controller.DiaryFormAction</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>DiaryFormAction</servlet-name>
-		<url-pattern>/diary</url-pattern>
 	</servlet-mapping>
 
 	<servlet>
