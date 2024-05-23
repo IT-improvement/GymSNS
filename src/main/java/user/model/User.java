@@ -3,7 +3,7 @@ package user.model;
 import java.sql.Timestamp;
 
 public class User {
-	private String code;
+	private int code;
 	private String id;
 	private String password;
 	private String email;
@@ -42,7 +42,7 @@ public class User {
 		this.phone = phone;
 	}
 
-	public User(String code, String id, String password, String email, String name, String birth, String gender,
+	public User(int code, String id, String password, String email, String name, String birth, String gender,
 			String telecom, String phone) {
 		super();
 		this.code = code;
@@ -56,7 +56,7 @@ public class User {
 		this.phone = phone;
 	}
 
-	public String getCode() {
+	public int getCode() {
 		return code;
 	}
 
