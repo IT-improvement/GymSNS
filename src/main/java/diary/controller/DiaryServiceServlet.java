@@ -14,6 +14,8 @@ public class DiaryServiceServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String command = request.getParameter("command");
+		String date =request.getParameter("date");
+		System.out.println(date);
 		ActionFactory actionFactory = ActionFactory.getInstance();
 		Action action =  actionFactory.getAction(command);
 		
