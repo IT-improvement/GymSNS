@@ -1,7 +1,7 @@
 package user.model;
 
 public class UserResponseDto {
-	
+	private String code;
 	private String id;
 	private String password;
 	private String email;
@@ -11,6 +11,18 @@ public class UserResponseDto {
 	private String telecom;
 	private String phone;
 	
+	public UserResponseDto(String code, String id, String email, String name, String birth, String gender, String telecom,
+			String phone) {
+		super();
+		this.code = code;
+		this.id = id;
+		this.email = email;
+		this.name = name;
+		this.birth = birth;
+		this.gender = gender;
+		this.telecom = telecom;
+		this.phone = phone;
+	}
 	public UserResponseDto(String id, String email, String name, String birth, String gender, String telecom,
 			String phone) {
 		super();
@@ -25,6 +37,7 @@ public class UserResponseDto {
 	
 	public UserResponseDto(User user) {
 		super();
+		this.code = user.getCode();
 		this.id = user.getId();
 		this.email = user.getEmail();
 		this.name = user.getName();
@@ -34,6 +47,14 @@ public class UserResponseDto {
 		this.phone = user.getPhone();
 	}
 
+	public String getCode() {
+		return code;
+	}
+	
+	public void setCode(String code) {
+		this.code = code;
+	}
+	
 	public String getId() {
 		return id;
 	}
