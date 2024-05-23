@@ -45,7 +45,7 @@ public class UserDao {
 			
 			// 튜플 읽기 
 			while(rs.next()) {
-				String code = rs.getString(1);
+				int code = rs.getInt(1);
 				String id = rs.getString(2);
 				String email = rs.getString(3);
 				String name = rs.getString(4);
@@ -80,7 +80,7 @@ public class UserDao {
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
-				String code = rs.getString(2);
+				int code = rs.getInt(2);
 				String email = rs.getString(3);
 				String name = rs.getString(4);
 				String birth = rs.getString(5);
