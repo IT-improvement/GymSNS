@@ -51,20 +51,31 @@ public class UserCreateAction implements Action {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		
-		try {
-			dao.createUser(userDto);
-			System.out.println("유저 생성 완료");
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("유저 생성 실패");
-		}
-		
 		JSONObject jsonResponse = new JSONObject();
 		
-		jsonResponse.put("status", 200);
-		jsonResponse.put("message", "회원가입 완료");
-		
-		
+		if (dao.isIdDuplicate(id) || dao.isEmailDuplicate(email)) {
+			jsonResponse.put("status", 401);
+			String message = "";
+			if (dao.isIdDuplicate(id)) {
+				message += "이미 사용 중인 ID입니다. ";
+			}
+			if (dao.isEmailDuplicate(email)) {
+				message += "이미 사용 중인 이메일입니다.";
+			}
+			jsonResponse.put("message", message);
+		} else {
+			try {
+				dao.createUser(userDto);
+				System.out.println("유저 생성 완료");
+				jsonResponse.put("status", 200);
+				jsonResponse.put("message", "회원가입 완료");
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("유저 생성 실패");
+				jsonResponse.put("status", 401);
+				jsonResponse.put("message", "회원가입 실패");
+			}
+		}
 		
 		response.getWriter().write(jsonResponse.toString());
 		
