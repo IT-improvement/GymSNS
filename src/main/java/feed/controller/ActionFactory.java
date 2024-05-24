@@ -3,6 +3,7 @@ package feed.controller;
 import feed.controller.action.FeedCreateAction;
 import feed.controller.action.FeedDeleteAction;
 import feed.controller.action.FeedDetailAction;
+import feed.controller.action.FeedFavoriteReadAction;
 import feed.controller.action.FeedReadAction;
 import feed.controller.action.FeedUpdateAction;
 
@@ -29,6 +30,8 @@ private ActionFactory() {
 			action = new FeedDeleteAction();
 		}else if (command.equals("feedDetail")) {
 			action = new FeedDetailAction();
+		}else if (command.equals("feedCountFavorite")) {
+			action = new FeedFavoriteReadAction();
 		}
 	
 		

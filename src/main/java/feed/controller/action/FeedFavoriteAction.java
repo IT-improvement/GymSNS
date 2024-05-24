@@ -34,19 +34,7 @@ public class FeedFavoriteAction extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		int feedIndex = Integer.parseInt(request.getParameter("feedIndex"));
 		
-		FeedRequestDTO feedDto = new FeedRequestDTO(feedIndex);
-		FeedDAO feedDao = FeedDAO.getInstance();
-		FeedResponseDTO feed = feedDao.readFeedFavoriteInfo(feedDto);
-		
-		JSONObject feedFavoriteCount = new JSONObject();
-		
-		feedFavoriteCount.put("feedFavoriteCount", feed.getFavoriteCount());
-		
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(feedFavoriteCount.toString());
 		
 	}
 
