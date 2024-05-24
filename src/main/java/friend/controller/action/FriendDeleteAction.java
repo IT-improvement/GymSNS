@@ -10,31 +10,23 @@ import org.json.JSONObject;
 
 import friend.model.FriendDao;
 import friend.model.FriendRequestDto;
+import util.ApiResponseManager;
 
 public class FriendDeleteAction implements Action {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String friendCodeStr = request.getParameter("code");
-
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
+
+		String friendCodeStr = request.getParameter("code");
 		JSONObject resObj = new JSONObject();
-		
-		if (friendCodeStr == null) {
-			resObj.put("status", 404);
-			resObj.put("message", "Invalid Request");
-			
-			response.getWriter().write(resObj.toString());
-			return;
-		}
 		
 		int friendCode = 0;
 		
 		try {
 			friendCode = Integer.parseInt(friendCodeStr);
 		} catch (Exception e) {
-			resObj.put("status", 404);
-			resObj.put("message", "Invalid Request");
+			resObj = ApiResponseManager.getStatusObject(400);
 			
 			response.getWriter().write(resObj.toString());
 			return;
@@ -45,11 +37,9 @@ public class FriendDeleteAction implements Action {
 		FriendRequestDto friendDto = new FriendRequestDto(1, friendCode);
 		
 		if (friendDao.deleteFriendById(friendDto)) {
-			resObj.put("status", 200);
-			resObj.put("message", "Friend Delete is finished successfully");
+			ApiResponseManager.getStatusObject(200, "Friend Delete is finished successfully");
 		} else {
-			resObj.put("status", 500);
-			resObj.put("message", "Server Error");
+			ApiResponseManager.getStatusObject(500);
 		}
 		
 		response.getWriter().write(resObj.toString());
