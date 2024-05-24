@@ -310,5 +310,56 @@ public class UserDao {
 		return user;
 	}
 	
+	public boolean isIdDuplicate(String id) {
+		boolean isDuplicate = false;
+		
+		try {
+			conn = DBManager.getConnection();
+			
+			String sql = "SELECT id FROM users WHERE id=?";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, id);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				isDuplicate = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt, rs);
+		}
+		
+		return isDuplicate;
+	}
+	
+	public boolean isEmailDuplicate(String email) {
+		boolean isDuplicate = false;
+		
+		try {
+			conn = DBManager.getConnection();
+			
+			String sql = "SELECT email FROM users WHERE email=?";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, email);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				isDuplicate = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt, rs);
+		}
+		
+		return isDuplicate;
+	}
 	
 }
