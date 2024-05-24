@@ -1,9 +1,6 @@
 package foodCategory.controller.action;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
+import foodCategory.model.FoodCategoryDao;
 import user.controller.Action;
 
 public class DeleteFoodCategoryAction implements Action{
@@ -18,19 +16,26 @@ public class DeleteFoodCategoryAction implements Action{
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		InputStream in = request.getInputStream();
-		BufferedReader br = new BufferedReader(new InputStreamReader(in));
+		int foodCategoryIndex = Integer.parseInt(request.getParameter("foodCategoryIndex"));
 		
-		String data = "";
-		while(br.ready()) {
-			data += br.readLine();
+		FoodCategoryDao dao = FoodCategoryDao.getInstance();
+		
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		
+		JSONObject object = new JSONObject();
+		
+		try {
+			dao.deleteFoodCategory(foodCategoryIndex);
+			object.put("status", 200);
+			object.put("message", "카테고리 삭제 완료");
+			System.out.println("음식 카테고리 삭제 완료");
+		} catch (Exception e) {
+			e.printStackTrace();
+			object.put("status", 500);
+			object.put("message", "카테고리 삭제 실패");
+			System.out.println("음식 카테고리 삭제 실패");
 		}
-		
-		System.out.print("data : " + data);
-		JSONObject object = new JSONObject(data);
-		
-		
-		
+		response.getWriter().write(object.toString());
 	}
-
 }

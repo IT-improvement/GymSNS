@@ -217,15 +217,6 @@
 	<error-page>
 		<location>/error</location>
 	</error-page>
-	
-	<servlet>
-		<servlet-name>FoodCategoryActionFactory</servlet-name>
-		<servlet-class>foodCategory.controller.FoodCategoryActionFactory</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>FoodCategoryActionFactory</servlet-name>
-		<url-pattern>/FoodCategoryActionFactory</url-pattern>
-	</servlet-mapping>
 
 	<servlet>
 		<servlet-name>FoodCategoryServiceServlet</servlet-name>
@@ -234,6 +225,15 @@
 	<servlet-mapping>
 		<servlet-name>FoodCategoryServiceServlet</servlet-name>
 		<url-pattern>/foodCategory/service</url-pattern>
+	</servlet-mapping>
+	
+		<servlet>
+		<servlet-name>FoodServiceServlet</servlet-name>
+		<servlet-class>foods.controller.ServiceServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>FoodServiceServlet</servlet-name>
+		<url-pattern>/food/service</url-pattern>
 	</servlet-mapping>
 	
 </web-app>

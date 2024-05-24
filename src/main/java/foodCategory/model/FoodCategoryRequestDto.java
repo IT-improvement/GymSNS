@@ -1,6 +1,7 @@
 package foodCategory.model;
 
 public class FoodCategoryRequestDto {
+    private int foodCategoryIndex;
     private int userCode;
     private String categoryName;
     private String categoryImageUrl;
@@ -10,12 +11,21 @@ public class FoodCategoryRequestDto {
     }
     
     public FoodCategoryRequestDto(int userCode, String categoryName, String categoryImageUrl) {
-        this.userCode = userCode;
+    	this.userCode = userCode;
         this.categoryName = categoryName;
         this.categoryImageUrl = categoryImageUrl;
     }
 
-    public int getUserCode() {
+
+	public int getFoodCategoryIndex() {
+		return foodCategoryIndex;
+	}
+
+	public void setFoodCategoryIndex(int foodCategoryIndex) {
+		this.foodCategoryIndex = foodCategoryIndex;
+	}
+
+	public int getUserCode() {
         return userCode;
     }
 
