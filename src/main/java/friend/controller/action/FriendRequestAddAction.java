@@ -10,15 +10,15 @@ import org.json.JSONObject;
 
 import friendRequest.model.FriendRequestDao;
 import friendRequest.model.FriendRequestRequestDto;
+import util.ApiResponseManager;
 
 public class FriendRequestAddAction implements Action {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String userCodeOtherStr = request.getParameter("code");
-
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 
+		String userCodeOtherStr = request.getParameter("code");
 	    int userCodeOther = Integer.parseInt(userCodeOtherStr);
 
 		//FriendRequestRequestDto friendRequestDto = new FriendRequestRequestDto(user.getCode(), userCodeOther);
@@ -28,11 +28,9 @@ public class FriendRequestAddAction implements Action {
 		JSONObject resObj = new JSONObject();
 
 		if (friendRequestDao.addFriendRequest(friendRequestDto)) {
-			resObj.put("status", 200);
-			resObj.put("message", "Friend Request Add is finished successfully");
+			resObj = ApiResponseManager.getStatusObject(200, "Friend Request Add is finished successfully");
 		} else {
-			resObj.put("status", 404);
-			resObj.put("message", "Invalid Request");
+			resObj = ApiResponseManager.getStatusObject(404);
 		}
 			
 		response.getWriter().write(resObj.toString());
