@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.mysql.cj.xdevapi.JsonArray;
+
 public class DiaryServiceServlet extends HttpServlet {
     public DiaryServiceServlet() {
         super();
@@ -22,9 +24,7 @@ public class DiaryServiceServlet extends HttpServlet {
 		if(action !=null) {
 			action.execute(request, response);
 		}
-		
 		System.out.println(command);
-		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
