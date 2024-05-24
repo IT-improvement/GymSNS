@@ -38,19 +38,19 @@ public class FoodDao {
     }
 
     // Create
-    public boolean insertFood(Food food) {
+    public boolean insertFood(FoodRequestDto foodRequestDto) {
         String sql = "INSERT INTO foods (user_code, food_category_index, food_name, protein, calory, carbs, size, create_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try {
         	conn = DBManager.getConnection();
             pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, food.getUserCode());
-            pstmt.setInt(2, food.getFoodCategoryIndex());
-            pstmt.setString(3, food.getFoodName());
-            pstmt.setInt(4, food.getProtein());
-            pstmt.setInt(5, food.getCalory());
-            pstmt.setInt(6, food.getCarbs());
-            pstmt.setInt(7, food.getSize());
-            pstmt.setTimestamp(8, food.getCreateDate());
+            pstmt.setInt(1, foodRequestDto.getUserCode());
+            pstmt.setInt(2, foodRequestDto.getFoodCategoryIndex());
+            pstmt.setString(3, foodRequestDto.getFoodName());
+            pstmt.setInt(4, foodRequestDto.getProtein());
+            pstmt.setInt(5, foodRequestDto.getCalory());
+            pstmt.setInt(6, foodRequestDto.getCarbs());
+            pstmt.setInt(7, foodRequestDto.getSize());
+            pstmt.setTimestamp(8, foodRequestDto.getCreateDate());
             int rowsInserted = pstmt.executeUpdate();
             return rowsInserted > 0;
         } catch (SQLException e) {
@@ -90,16 +90,17 @@ public class FoodDao {
         return null;
     }
 
-    public List<Food> getAllFoodsByUserCode(int userCode) {
-        List<Food> foods = new ArrayList<>();
-        String sql = "SELECT * FROM foods WHERE user_code = 0 UNION SELECT * FROM foods WHERE user_code = ?";
+    public List<FoodResponseDto> getAllFoodsByUserCode(int userCode) {
+        List<FoodResponseDto> foods = new ArrayList<>();
+        String sql = "SELECT * FROM foods WHERE user_code = 1001 UNION SELECT * FROM foods WHERE user_code = ?";
         try {
         	conn = DBManager.getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, userCode);
             rs = pstmt.executeQuery();
             while (rs.next()) {
-                foods.add(new Food(
+            	System.out.println("되는중");
+                foods.add(new FoodResponseDto(
                         rs.getInt("food_index"),
                         rs.getInt("user_code"),
                         rs.getInt("food_category_index"),
@@ -120,20 +121,20 @@ public class FoodDao {
     }
 
     // Update
-    public boolean updateFood(Food food) {
+    public boolean updateFood(int foodIndex,FoodRequestDto foodRequestDto) {
         String sql = "UPDATE foods SET user_code = ?, food_category_index = ?, food_name = ?, protein = ?, calory = ?, carbs = ?, size = ?, create_date = ? WHERE food_index = ?";
         try {
         	conn = DBManager.getConnection();
             pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, food.getUserCode());
-            pstmt.setInt(2, food.getFoodCategoryIndex());
-            pstmt.setString(3, food.getFoodName());
-            pstmt.setInt(4, food.getProtein());
-            pstmt.setInt(5, food.getCalory());
-            pstmt.setInt(6, food.getCarbs());
-            pstmt.setInt(7, food.getSize());
-            pstmt.setTimestamp(8, food.getCreateDate());
-            pstmt.setInt(9, food.getFoodIndex());
+            pstmt.setInt(1, foodRequestDto.getUserCode());
+            pstmt.setInt(2, foodRequestDto.getFoodCategoryIndex());
+            pstmt.setString(3, foodRequestDto.getFoodName());
+            pstmt.setInt(4, foodRequestDto.getProtein());
+            pstmt.setInt(5, foodRequestDto.getCalory());
+            pstmt.setInt(6, foodRequestDto.getCarbs());
+            pstmt.setInt(7, foodRequestDto.getSize());
+            pstmt.setTimestamp(8, foodRequestDto.getCreateDate());
+            pstmt.setInt(9, foodIndex);
             int rowsUpdated = pstmt.executeUpdate();
             return rowsUpdated > 0;
         } catch (SQLException e) {

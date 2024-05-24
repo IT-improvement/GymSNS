@@ -77,34 +77,12 @@ public class FoodCategoryDao {
         }
         return null;
     }
-
-    public List<FoodCategoryResponseDto> getAllFoodCategories() {
-        List<FoodCategoryResponseDto> foodCategories = new ArrayList<>();
-        String sql = "SELECT * FROM food_categories";
-        try {
-            pstmt = conn.prepareStatement(sql);
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                foodCategories.add(new FoodCategoryResponseDto(
-                        rs.getInt("food_category_index"),
-                        rs.getInt("user_code"),
-                        rs.getString("category_name"),
-                        rs.getString("category_image_url"),
-                        rs.getDate("create_date")
-                ));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            closeResources();
-        }
-        return foodCategories;
-    }
     
     public List<FoodCategoryResponseDto> getAllFoodCategoriesByUserCode(int userCode) {
         List<FoodCategoryResponseDto> foodCategories = new ArrayList<>();
-        String sql = "SELECT * FROM food_categories WHERE user_code = ? OR user_code = 0";
+        String sql = "SELECT * FROM food_categories WHERE user_code = ? OR user_code = 1001";
         try {
+        	conn = DBManager.getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, userCode);
             rs = pstmt.executeQuery();
@@ -128,6 +106,7 @@ public class FoodCategoryDao {
     public int updateFoodCategory(int foodCategoryIndex, FoodCategoryRequestDto foodCategoryRequestDto) {
         String sql = "UPDATE food_categories SET category_name = ?, category_image_url = ?, user_code = ? WHERE food_category_index = ?";
         try {
+        	conn = DBManager.getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, foodCategoryRequestDto.getCategoryName());
             pstmt.setString(2, foodCategoryRequestDto.getCategoryImageUrl());
@@ -145,6 +124,7 @@ public class FoodCategoryDao {
     public int deleteFoodCategory(int foodCategoryIndex) {
         String sql = "DELETE FROM food_categories WHERE food_category_index = ?";
         try {
+        	conn = DBManager.getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, foodCategoryIndex);
             return pstmt.executeUpdate();

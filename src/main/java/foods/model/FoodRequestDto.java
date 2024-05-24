@@ -3,6 +3,7 @@ package foods.model;
 import java.sql.Timestamp;
 
 public class FoodRequestDto {
+    private int foodIndex;
     private int userCode;
     private int foodCategoryIndex;
     private String foodName;
@@ -27,7 +28,30 @@ public class FoodRequestDto {
     }
 
 
-    public int getUserCode() {
+    public FoodRequestDto(int userCode, int foodCategoryIndex, String foodName, int protein, int calory, int carbs,
+			int size) {
+		super();
+		this.userCode = userCode;
+		this.foodCategoryIndex = foodCategoryIndex;
+		this.foodName = foodName;
+		this.protein = protein;
+		this.calory = calory;
+		this.carbs = carbs;
+		this.size = size;
+		this.createDate = new Timestamp(System.currentTimeMillis());
+	}
+
+    
+    
+	public int getFoodIndex() {
+		return foodIndex;
+	}
+
+	public void setFoodIndex(int foodIndex) {
+		this.foodIndex = foodIndex;
+	}
+
+	public int getUserCode() {
         return userCode;
     }
 
