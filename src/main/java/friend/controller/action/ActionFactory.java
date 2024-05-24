@@ -13,8 +13,12 @@ public class ActionFactory {
 		Action action = null;
 		
 		switch (command) {
-			case "get_list":
-				action = new FriendListAction();
+			// friend
+			case "read_all":
+				action = new FriendReadAllAction();
+				break;
+			case "read_one":
+				action = new FriendReadOneAction();
 				break;
 			case "add":
 				action = new FriendAddAction();
@@ -22,8 +26,10 @@ public class ActionFactory {
 			case "delete":
 				action = new FriendDeleteAction();
 				break;
-			case "get_friend_request_list":
-				action = new FriendRequestListAction();
+				
+			// friend request
+			case "read_friend_request_all":
+				action = new FriendRequestReadAllAction();
 				break;
 			case "add_friend_request":
 				action = new FriendRequestAddAction();
@@ -32,11 +38,7 @@ public class ActionFactory {
 				action = new FriendRequestDeleteAction();
 				break;
 		}
-		
-		System.out.println(action);
 
 		return action;
 	}
 }
-
-

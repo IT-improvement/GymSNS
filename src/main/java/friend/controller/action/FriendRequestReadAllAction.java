@@ -14,14 +14,13 @@ import friendRequest.model.FriendRequestDao;
 import friendRequest.model.FriendRequestRequestDto;
 import friendRequest.model.FriendRequestResponseDto;
 
-public class FriendRequestListAction implements Action {
+public class FriendRequestReadAllAction implements Action {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException , IOException {
-		String userCodeOtherStr = request.getParameter("code");
-		
 		response.setContentType("application/json");
 	    response.setCharacterEncoding("UTF-8");
 
+		String userCodeOtherStr = request.getParameter("code");
 		FriendRequestDao friendRequestDao = FriendRequestDao.getInstance();
 		//FriendRequestRequestDto friendRequestDto = new FriendRequestRequestDto(user.getCode());
 
