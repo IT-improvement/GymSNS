@@ -28,8 +28,6 @@ public class ExerciseDao {
 		try {
 			conn = DBManager.getConnection();
 			pstmt = conn.prepareStatement(sql);
-
-			pstmt.setInt(1, exerciseDto.getUserCode());
 			
 			rs = pstmt.executeQuery();
 
@@ -38,11 +36,12 @@ public class ExerciseDao {
 				int categoryIndex = rs.getInt(2);
 				int userCode = rs.getInt(3);
 				String name = rs.getString(4);
-				String content = rs.getString(5);
-				Timestamp createDate = rs.getTimestamp(6);
-				Timestamp modDate = rs.getTimestamp(7);
+				String categoryName = rs.getString(5);
+				String content = rs.getString(6);
+				Timestamp createDate = rs.getTimestamp(7);
+				Timestamp modDate = rs.getTimestamp(8);
 				
-				exercises.add(new ExerciseResponseDto(index, categoryIndex, userCode, name, content, createDate, modDate));
+				exercises.add(new ExerciseResponseDto(index, categoryIndex, userCode, name, categoryName, content, createDate, modDate));
 			}
 		} catch (Exception e) {
 			System.out.println(e);
@@ -53,7 +52,40 @@ public class ExerciseDao {
 		return exercises;
 	}
 
-	public boolean addExercise(ExerciseRequestDto exerciseDto) {
+	public ExerciseResponseDto findExerciseOne(ExerciseRequestDto exerciseDto) {
+		ExerciseResponseDto exercise = null;
+		String sql = "";
+
+		try {
+			conn = DBManager.getConnection();
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setInt(1, exerciseDto.getIndex());
+			
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				int index = rs.getInt(1);
+				int categoryIndex = rs.getInt(2);
+				int userCode = rs.getInt(3);
+				String name = rs.getString(4);
+				String categoryName = rs.getString(5);
+				String content = rs.getString(6);
+				Timestamp createDate = rs.getTimestamp(7);
+				Timestamp modDate = rs.getTimestamp(8);
+				
+				exercise = new ExerciseResponseDto(index, categoryIndex, userCode, name, categoryName, content, createDate, modDate);
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			DBManager.close(conn, pstmt, rs);
+		}
+		
+		return exercise;
+	}
+
+	public boolean createExercise(ExerciseRequestDto exerciseDto) {
 		boolean isAdded = true;
 		String sql = "";
 
@@ -94,5 +126,30 @@ public class ExerciseDao {
 		}
 		
 		return isDeleted;
+	}
+
+	public boolean updateExercise(ExerciseRequestDto exerciseDto) {
+		boolean isUpdated = true;
+		String sql = "";
+
+		try {
+			conn = DBManager.getConnection();
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setInt(1, exerciseDto.getIndex());
+			pstmt.setInt(2, exerciseDto.getCategoryIndex());
+			pstmt.setInt(3, exerciseDto.getUserCode());
+			pstmt.setString(4, exerciseDto.getName());
+			pstmt.setString(5, exerciseDto.getContent());
+			
+			pstmt.execute();
+		} catch (Exception e) {
+			System.out.println(e);
+			isUpdated = false;
+		} finally {
+			DBManager.close(conn, pstmt);
+		}
+		
+		return isUpdated;
 	}
 }
