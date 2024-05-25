@@ -48,7 +48,7 @@ public class ExerciseCategoryDao {
 		return exerciseCategories;
 	}
 
-	public boolean addExerciseCategory(ExerciseCategoryRequestDto exerciseCategoryDto) {
+	public boolean createExerciseCategory(ExerciseCategoryRequestDto exerciseCategoryDto) {
 		boolean isAdded = true;
 		String sql = "";
 
@@ -89,5 +89,28 @@ public class ExerciseCategoryDao {
 		}
 		
 		return isDeleted;
+	}
+
+	public boolean updateExerciseCategory(ExerciseCategoryRequestDto exerciseCategoryDto) {
+		boolean isUpdated = true;
+		String sql = "";
+
+		try {
+			conn = DBManager.getConnection();
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setInt(1, exerciseCategoryDto.getIndex());
+			pstmt.setInt(2, exerciseCategoryDto.getUserCode());
+			pstmt.setString(3, exerciseCategoryDto.getName());
+			
+			pstmt.execute();
+		} catch (Exception e) {
+			System.out.println(e);
+			isUpdated = false;
+		} finally {
+			DBManager.close(conn, pstmt);
+		}
+		
+		return isUpdated;
 	}
 }
