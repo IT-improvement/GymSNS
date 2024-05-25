@@ -38,7 +38,7 @@ public class FoodCategoryDao {
         }
     }
 
-    public int addFoodCategory(FoodCategoryRequestDto foodCategoryRequestDto) {
+    public void addFoodCategory(FoodCategoryRequestDto foodCategoryRequestDto) {
         String sql = "INSERT INTO food_categories (user_code, category_name, category_image_url, create_date) VALUES (?, ?, ?, CURRENT_TIMESTAMP)";
         try {
         	conn = DBManager.getConnection();
@@ -46,13 +46,12 @@ public class FoodCategoryDao {
             pstmt.setInt(1, foodCategoryRequestDto.getUserCode());
             pstmt.setString(2, foodCategoryRequestDto.getCategoryName());
             pstmt.setString(3, foodCategoryRequestDto.getCategoryImageUrl());
-            return pstmt.executeUpdate();
+            pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             closeResources();
         }
-        return 0;
     }
 
     public FoodCategoryResponseDto getFoodCategoryByIndex(int foodCategoryIndex) {
