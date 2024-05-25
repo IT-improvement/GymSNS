@@ -7,13 +7,31 @@ public class ExerciseRequestDto {
 	private int categoryIndex;
 	private int userCode;
 	private String name;
+	private String categoryName;
 	private String content;
 	private Timestamp createDate;
 	private Timestamp modDate;
 
 	public ExerciseRequestDto() { }
+
+	public ExerciseRequestDto(int userCode) {
+		this.userCode = userCode;
+	}
+
+	public ExerciseRequestDto(int index, int userCode) {
+		this.index = index;
+		this.userCode = userCode;
+	}
 	
 	public ExerciseRequestDto(int categoryIndex, int userCode, String name, String content) {
+		this.categoryIndex = categoryIndex;
+		this.userCode = userCode;
+		this.name = name;
+		this.content = content;
+	}
+
+	public ExerciseRequestDto(int index, int categoryIndex, int userCode, String name, String content) {
+		this.index = index;
 		this.categoryIndex = categoryIndex;
 		this.userCode = userCode;
 		this.name = name;
@@ -60,6 +78,14 @@ public class ExerciseRequestDto {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
 	}
 
 	public String getContent() {
