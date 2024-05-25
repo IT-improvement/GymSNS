@@ -137,7 +137,7 @@ public class FriendDao {
 		return friends;
 	}
 	
-	public boolean addFriend(FriendRequestDto friendRequestDto) {
+	public boolean createFriend(FriendRequestDto friendRequestDto) {
 		boolean isAdded = true;
 		String sql = "INSERT INTO friends(user_code_one, user_code_two) "
 				+ "VALUES (?, ?)";
