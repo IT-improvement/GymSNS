@@ -7,15 +7,17 @@ public class ExerciseResponseDto {
 	private int categoryIndex;
 	private int userCode;
 	private String name;
+	private String categoryName;
 	private String content;
 	private Timestamp createDate;
 	private Timestamp modDate;
 
-	public ExerciseResponseDto(int index, int categoryIndex, int userCode, String name, String content, Timestamp createDate, Timestamp modDate) {
+	public ExerciseResponseDto(int index, int categoryIndex, int userCode, String name, String categoryName, String content, Timestamp createDate, Timestamp modDate) {
 		this.index = index;
 		this.categoryIndex = categoryIndex;
 		this.userCode = userCode;
 		this.name = name;
+		this.categoryName = categoryName;
 		this.content = content;
 		this.createDate = createDate;
 		this.modDate = modDate;
@@ -51,6 +53,14 @@ public class ExerciseResponseDto {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
 	}
 
 	public String getContent() {
