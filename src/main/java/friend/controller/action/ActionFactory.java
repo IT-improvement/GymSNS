@@ -20,19 +20,19 @@ public class ActionFactory {
 			case "read_one":
 				action = new FriendReadOneAction();
 				break;
-			case "add":
-				action = new FriendAddAction();
+			case "create":
+				action = new FriendCreateAction();
 				break;
 			case "delete":
 				action = new FriendDeleteAction();
 				break;
 				
 			// friend request
-			case "read_friend_request_all":
+			case "read_all_friend_request":
 				action = new FriendRequestReadAllAction();
 				break;
-			case "add_friend_request":
-				action = new FriendRequestAddAction();
+			case "create_friend_request":
+				action = new FriendRequestCreateAction();
 				break;
 			case "delete_friend_request":
 				action = new FriendRequestDeleteAction();

@@ -30,6 +30,7 @@ public class FriendReadAllAction implements Action {
 		
 		for (FriendResponseDto friend : friends) {
 			JSONObject friendObj = new JSONObject();
+
 			friendObj.put("index", friend.getIndex());
 			friendObj.put("user_code_self", friend.getUserCodeSelf());
 			friendObj.put("user_code_friend", friend.getUserCodeFriend());

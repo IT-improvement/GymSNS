@@ -12,7 +12,7 @@ import friend.model.FriendDao;
 import friend.model.FriendRequestDto;
 import util.ApiResponseManager;
 
-public class FriendAddAction implements Action {
+public class FriendCreateAction implements Action {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json");
@@ -29,8 +29,8 @@ public class FriendAddAction implements Action {
 		
 		if (friendDao.isFriend(friendDto)) {
 			resObj = ApiResponseManager.getStatusObject(400);
-		} else if (friendDao.addFriend(friendDto)) {
-			resObj = ApiResponseManager.getStatusObject(200, "Friend Add is finished successfully");
+		} else if (friendDao.createFriend(friendDto)) {
+			resObj = ApiResponseManager.getStatusObject(200, "Friend Create is finished successfully");
 			//new FriendRequestDeleteAction().execute(request, response);
 		} else {
 			resObj = ApiResponseManager.getStatusObject(500);
