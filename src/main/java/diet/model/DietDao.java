@@ -44,7 +44,7 @@ public class DietDao {
 	}
 
 	public void createDiet(DietRequestDto dietRequestDto) throws SQLException {
-		String sql = "INSERT INTO diets (user_code, food_index, total_calories, total_protein, create_date, mod_date) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
+		String sql = "INSERT INTO diets (user_code, food_index, total_calories, total_protein) VALUES (?, ?, ?, ?)";
 		try {
 			conn = DBManager.getConnection();
 			pstmt = conn.prepareStatement(sql);
@@ -60,7 +60,7 @@ public class DietDao {
 		}
 	}
 
-	public DietResponseDto getDietById(int dietIndex) throws SQLException {
+	public DietResponseDto getDietByDietIndex(int dietIndex) throws SQLException {
 		String sql = "SELECT * FROM diets WHERE diet_index = ?";
 		try {
 			conn = DBManager.getConnection();
@@ -68,8 +68,12 @@ public class DietDao {
 			pstmt.setInt(1, dietIndex);
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
-				return new DietResponseDto(rs.getInt("diet_index"), rs.getInt("user_code"), rs.getInt("food_index"),
-						rs.getInt("total_calories"), rs.getInt("total_protein"), rs.getTimestamp("create_date"),
+				return new DietResponseDto(rs.getInt("diet_index"), 
+						rs.getInt("user_code"), 
+						rs.getInt("food_index"),
+						rs.getInt("total_calories"), 
+						rs.getInt("total_protein"), 
+						rs.getTimestamp("create_date"),
 						rs.getTimestamp("mod_date"));
 			}
 		} catch (SQLException e) {
@@ -80,7 +84,6 @@ public class DietDao {
 		return null;
 	}
 
-	// READ: 모든 식단을 조회
 	public List<DietResponseDto> getAllDietsByUserCode(int userCode) throws SQLException {
 		List<DietResponseDto> diets = new ArrayList<>();
 		String sql = "SELECT * FROM diets WHERE user_code = ?";
@@ -109,7 +112,7 @@ public class DietDao {
 	}
 
 
-	public void updateDiet(DietRequestDto dietRequestDto) throws SQLException {
+	public void updateDiet(int dietIndex, DietRequestDto dietRequestDto) throws SQLException {
 		
 		String sql = "UPDATE diets SET user_code = ?, food_index = ?, total_calories = ?, total_protein = ?,  mod_date = ? WHERE diet_index = ?";
 		try {
@@ -120,7 +123,7 @@ public class DietDao {
 			pstmt.setInt(3, dietRequestDto.getTotalCalories());
 			pstmt.setInt(4, dietRequestDto.getTotalProtein());
 			pstmt.setTimestamp(5, Timestamp.from(Instant.now()));
-			pstmt.setInt(6, dietRequestDto.getDietIndex());
+			pstmt.setInt(6, dietIndex);
 			pstmt.executeUpdate();
 		} finally {
 			closeResources();

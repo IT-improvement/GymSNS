@@ -52,7 +52,7 @@ public class ReadDetailFoodAction implements Action {
 		        response.getWriter().write(jsonResponse.toString());
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 
 	}
