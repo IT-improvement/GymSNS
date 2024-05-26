@@ -56,7 +56,7 @@ public class CreateFoodAction implements Action {
 		JSONObject jsonResponse = new JSONObject();
 
 		jsonResponse.put("status", 200);
-		jsonResponse.put("message", "카테고리 생성완료");
+		jsonResponse.put("message", "음식 생성완료");
 
 		response.getWriter().write(jsonResponse.toString());
 	}

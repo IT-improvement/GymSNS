@@ -1,5 +1,6 @@
 package diet.controller;
 
+import diet.controller.action.CreateDietAction;
 import user.controller.Action;
 
 public class DietActionFactory {
@@ -16,8 +17,10 @@ public class DietActionFactory {
 	public Action getAction(String command) {
 		Action action = null;
 		
-//		if(command.equals(""))
-//			action = new 
+		if(command.equals("createDiet")) {
+			System.out.println("dddd");
+			action = new CreateDietAction();
+		}
 			
 		
 		return action;

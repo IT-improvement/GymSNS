@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,115 +30,113 @@ public class DietDao {
 		this.conn = conn;
 	}
 
-    public void closeResources() {
-        try {
-            if (rs != null) rs.close();
-            if (pstmt != null) pstmt.close();
-            if (conn != null) conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    
-    public void createDiet(Diet diet) throws SQLException {
-        String query = "INSERT INTO diets (user_code, food_index, total_calories, total_protein, create_date, mod_date) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
-        try {
-        	conn = DBManager.getConnection();
-            pstmt = conn.prepareStatement(query);
-            pstmt.setInt(1, diet.getUserCode());
-            pstmt.setInt(2, diet.getFoodIndex());
-            pstmt.setInt(3, diet.getTotalCalories());
-            pstmt.setInt(4, diet.getTotalProtein());
-            pstmt.setTimestamp(5, diet.getCreateDate());
-            pstmt.setTimestamp(6, diet.getModDate());
-            pstmt.executeUpdate();
-        }catch (Exception e) {
-        	e.printStackTrace();
-        } finally {
-            closeResources();
-        }
-    }
+	public void closeResources() {
+		try {
+			if (rs != null)
+				rs.close();
+			if (pstmt != null)
+				pstmt.close();
+			if (conn != null)
+				conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
- // READ: 특정 식단을 ID로 조회
-    public Diet getDietById(int dietIndex) throws SQLException {
-        Diet diet = null;
-        String query = "SELECT * FROM diets WHERE diet_index = ?";
-        try {
-        	conn = DBManager.getConnection();
-            pstmt = conn.prepareStatement(query);
-            pstmt.setInt(1, dietIndex);
-            rs = pstmt.executeQuery();
-            if (rs.next()) {
-                diet = new Diet();
-                diet.setDietIndex(rs.getInt("diet_index"));
-                diet.setUserCode(rs.getInt("user_code"));
-                diet.setFoodIndex(rs.getInt("food_index"));
-                diet.setTotalCalories(rs.getInt("total_calories"));
-                diet.setTotalProtein(rs.getInt("total_protein"));
-                diet.setCreateDate(rs.getTimestamp("create_date"));
-                diet.setModDate(rs.getTimestamp("mod_date"));
-            }
-        } finally {
-            closeResources();
-        }
-        return diet;
-    }
+	public void createDiet(DietRequestDto dietRequestDto) throws SQLException {
+		String sql = "INSERT INTO diets (user_code, food_index, total_calories, total_protein, create_date, mod_date) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
+		try {
+			conn = DBManager.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, dietRequestDto.getUserCode());
+			pstmt.setInt(2, dietRequestDto.getFoodIndex());
+			pstmt.setInt(3, dietRequestDto.getTotalCalories());
+			pstmt.setInt(4, dietRequestDto.getTotalProtein());
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			closeResources();
+		}
+	}
 
-    // READ: 모든 식단을 조회
-    public List<Diet> getAllDiets() throws SQLException {
-        List<Diet> diets = new ArrayList<>();
-        String query = "SELECT * FROM diets";
-        try {
-        	conn = DBManager.getConnection();
-            pstmt = conn.prepareStatement(query);
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                Diet diet = new Diet();
-                diet.setDietIndex(rs.getInt("diet_index"));
-                diet.setUserCode(rs.getInt("user_code"));
-                diet.setFoodIndex(rs.getInt("food_index"));
-                diet.setTotalCalories(rs.getInt("total_calories"));
-                diet.setTotalProtein(rs.getInt("total_protein"));
-                diet.setCreateDate(rs.getTimestamp("create_date"));
-                diet.setModDate(rs.getTimestamp("mod_date"));
-                diets.add(diet);
-            }
-        } finally {
-            closeResources();
-        }
-        return diets;
-    }
+	public DietResponseDto getDietById(int dietIndex) throws SQLException {
+		String sql = "SELECT * FROM diets WHERE diet_index = ?";
+		try {
+			conn = DBManager.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, dietIndex);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				return new DietResponseDto(rs.getInt("diet_index"), rs.getInt("user_code"), rs.getInt("food_index"),
+						rs.getInt("total_calories"), rs.getInt("total_protein"), rs.getTimestamp("create_date"),
+						rs.getTimestamp("mod_date"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeResources();
+		}
+		return null;
+	}
 
-    // UPDATE: 특정 식단을 업데이트
-    public void updateDiet(Diet diet) throws SQLException {
-        String query = "UPDATE diets SET user_code = ?, food_index = ?, total_calories = ?, total_protein = ?, create_date = ?, mod_date = ? WHERE diet_index = ?";
-        try {
-        	conn = DBManager.getConnection();
-            pstmt = conn.prepareStatement(query);
-            pstmt.setInt(1, diet.getUserCode());
-            pstmt.setInt(2, diet.getFoodIndex());
-            pstmt.setInt(3, diet.getTotalCalories());
-            pstmt.setInt(4, diet.getTotalProtein());
-            pstmt.setTimestamp(5, diet.getCreateDate());
-            pstmt.setTimestamp(6, diet.getModDate());
-            pstmt.setInt(7, diet.getDietIndex());
-            pstmt.executeUpdate();
-        } finally {
-            closeResources();
-        }
-    }
+	// READ: 모든 식단을 조회
+	public List<DietResponseDto> getAllDietsByUserCode(int userCode) throws SQLException {
+		List<DietResponseDto> diets = new ArrayList<>();
+		String sql = "SELECT * FROM diets WHERE user_code = ?";
+		try {
+			conn = DBManager.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, userCode);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				diets.add(new DietResponseDto(
+						rs.getInt("diet_index"), 
+						rs.getInt("user_code"), 
+						rs.getInt("food_index"),
+						rs.getInt("total_calories"), 
+						rs.getInt("total_protein"), 
+						rs.getTimestamp("create_date"),
+						rs.getTimestamp("mod_date")
+				));
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeResources();
+		}
+		return diets;
+	}
 
-    // DELETE: 특정 식단을 삭제
-    public void deleteDiet(int dietIndex) throws SQLException {
-        String query = "DELETE FROM diets WHERE diet_index = ?";
-        try {
-        	conn = DBManager.getConnection();
-            pstmt = conn.prepareStatement(query);
-            pstmt.setInt(1, dietIndex);
-            pstmt.executeUpdate();
-        } finally {
-            closeResources();
-        }
-    }
-    
+
+	public void updateDiet(DietRequestDto dietRequestDto) throws SQLException {
+		
+		String sql = "UPDATE diets SET user_code = ?, food_index = ?, total_calories = ?, total_protein = ?,  mod_date = ? WHERE diet_index = ?";
+		try {
+			conn = DBManager.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, dietRequestDto.getUserCode());
+			pstmt.setInt(2, dietRequestDto.getFoodIndex());
+			pstmt.setInt(3, dietRequestDto.getTotalCalories());
+			pstmt.setInt(4, dietRequestDto.getTotalProtein());
+			pstmt.setTimestamp(5, Timestamp.from(Instant.now()));
+			pstmt.setInt(6, dietRequestDto.getDietIndex());
+			pstmt.executeUpdate();
+		} finally {
+			closeResources();
+		}
+	}
+
+	public void deleteDiet(int dietIndex) throws SQLException {
+		String sql = "DELETE FROM diets WHERE diet_index = ?";
+		try {
+			conn = DBManager.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, dietIndex);
+			pstmt.executeUpdate();
+		} finally {
+			closeResources();
+		}
+	}
+
 }
