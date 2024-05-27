@@ -3,6 +3,7 @@ package foods.controller;
 import foods.controller.action.CreateFoodAction;
 import foods.controller.action.DeleteFoodAction;
 import foods.controller.action.ReadAllFoodAction;
+import foods.controller.action.ReadDetailFoodAction;
 import foods.controller.action.UpdateFoodAction;
 import user.controller.Action;
 
@@ -28,6 +29,8 @@ public class FoodsActionFactory {
 			action = new UpdateFoodAction();
 		else if(command.equals("readFoodList"))
 			action = new ReadAllFoodAction();
+		else if(command.equals("readDetailFood"))
+			action = new ReadDetailFoodAction();
 		
 		return action;
 	}

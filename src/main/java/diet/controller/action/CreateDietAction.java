@@ -1,4 +1,4 @@
-package foods.controller.action;
+package diet.controller.action;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,11 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
-import foods.model.FoodDao;
-import foods.model.FoodRequestDto;
+import diet.model.DietDao;
+import diet.model.DietRequestDto;
 import user.controller.Action;
 
-public class CreateFoodAction implements Action {
+public class CreateDietAction implements Action {
+
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -31,34 +32,29 @@ public class CreateFoodAction implements Action {
 		JSONObject object = new JSONObject(data);
 
 		int userCode = object.getInt("userCode");
-		int foodCategoryIndex = object.getInt("foodCategoryIndex");
-		String foodName = object.getString("foodName");
-		int protein = object.getInt("protein");
-		int calory = object.getInt("calory");
-		int carbs = object.getInt("carbs");
-		int size = object.getInt("size");
+		int foodIndex = object.getInt("foodIndex");
+		int totalCalories = object.getInt("totalCalories");
+		int totalProtein = object.getInt("totalProtein");
 
-		FoodDao dao = FoodDao.getInstance();
-		FoodRequestDto foodDto = new FoodRequestDto(userCode, foodCategoryIndex, foodName, protein, calory, carbs,
-				size);
+		DietDao dao = DietDao.getInstance();
+		DietRequestDto dietDto = new DietRequestDto(userCode, foodIndex, totalCalories, totalProtein);
 
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 
 		try {
-			dao.insertFood(foodDto);
-			System.out.println("음식 생성 완료");
+			dao.createDiet(dietDto);
+			System.out.println("식단 생성 완료");
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("음식 생성 실패");
+			System.out.println("식단 생성 실패");
 		}
 
 		JSONObject jsonResponse = new JSONObject();
 
 		jsonResponse.put("status", 200);
-		jsonResponse.put("message", "음식 생성완료");
+		jsonResponse.put("message", "식단 생성완료");
 
 		response.getWriter().write(jsonResponse.toString());
 	}
-
 }

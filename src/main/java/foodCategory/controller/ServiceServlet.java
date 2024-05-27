@@ -18,10 +18,12 @@ public class ServiceServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		String command = request.getParameter("command");
+		String foodCategoryIndex = request.getParameter("foodCategoryIndex");
 		String userCode = request.getParameter("userCode");
 		String categoryName = request.getParameter("categoryName");
 		String categoryImageUrl = request.getParameter("categoryImageUrl");
 		
+		request.setAttribute("foodCategoryIndex", foodCategoryIndex);
 		request.setAttribute("userCode", userCode);
 		request.setAttribute("categoryName", categoryName);
 		request.setAttribute("categoryImageUrl", categoryImageUrl);
