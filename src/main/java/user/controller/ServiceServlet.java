@@ -15,6 +15,7 @@ public class ServiceServlet extends HttpServlet {
 		//ㄴ 행위 패턴인 Command Pattern
 		
 		String command = request.getParameter("command");
+		System.out.print("command!");
 		
 		if(command != null) {
 			ActionFactory af = ActionFactory.getInstance();
