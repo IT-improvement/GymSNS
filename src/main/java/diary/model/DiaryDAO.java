@@ -77,5 +77,19 @@ public class DiaryDAO {
 			e.printStackTrace();
 		}
 	}
+	
+	public void deleteDiary(int diaryIndex) {
+		conn = DBManager.getConnection();
+		try {
+			String sql = "DELETE FROM diary WHERE diary_index=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, diaryIndex);
+			
+			pstmt.execute();
+		} catch (Exception e) {
+			System.out.println("다이어리 삭제 오류");
+			e.printStackTrace();
+		}
+	}
 
 }
