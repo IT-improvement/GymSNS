@@ -73,7 +73,8 @@ public class DiaryDAO {
 			
 			pstmt.execute();
 		} catch (Exception e) {
-			
+			System.out.println("다이어리 수정 오류");
+			e.printStackTrace();
 		}
 	}
 
