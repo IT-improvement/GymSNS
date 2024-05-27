@@ -25,12 +25,6 @@ public class DiaryDAO {
 		return instance;
 	}
 	
-	public DiaryResponseDTO diaryAllRead() {
-		DiaryResponseDTO responseDTO = new DiaryResponseDTO();
-		
-		return responseDTO;
-	}
-	
 	public void writeDiary(DiaryRequestDTO dto) {
 		int code = dto.getUserCode();
 		String content = dto.getContent();
