@@ -5,9 +5,11 @@ import java.sql.Timestamp;
 public class ExerciseRequestDto {
 	private int index;
 	private int categoryIndex;
-	private int userCode;
-	private String name;
 	private String categoryName;
+	private int userCode;
+	private String userId;
+	private String userName;
+	private String name;
 	private String content;
 	private Timestamp createDate;
 	private Timestamp modDate;
@@ -64,6 +66,14 @@ public class ExerciseRequestDto {
 		this.categoryIndex = categoryIndex;
 	}
 
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
+
 	public int getUserCode() {
 		return userCode;
 	}
@@ -72,20 +82,28 @@ public class ExerciseRequestDto {
 		this.userCode = userCode;
 	}
 
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
 	public String getName() {
 		return name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getCategoryName() {
-		return categoryName;
-	}
-
-	public void setCategoryName(String categoryName) {
-		this.categoryName = categoryName;
 	}
 
 	public String getContent() {

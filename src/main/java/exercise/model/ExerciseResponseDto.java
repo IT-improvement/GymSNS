@@ -6,18 +6,22 @@ public class ExerciseResponseDto {
 	private int index;
 	private int categoryIndex;
 	private int userCode;
+	private String userId;
+	private String userName;
 	private String name;
 	private String categoryName;
 	private String content;
 	private Timestamp createDate;
 	private Timestamp modDate;
 
-	public ExerciseResponseDto(int index, int categoryIndex, int userCode, String name, String categoryName, String content, Timestamp createDate, Timestamp modDate) {
+	public ExerciseResponseDto(int index, int categoryIndex, String categoryName, int userCode, String userId, String userName, String name, String content, Timestamp createDate, Timestamp modDate) {
 		this.index = index;
 		this.categoryIndex = categoryIndex;
-		this.userCode = userCode;
-		this.name = name;
 		this.categoryName = categoryName;
+		this.userCode = userCode;
+		this.userId = userId;
+		this.userName = userName;
+		this.name = name;
 		this.content = content;
 		this.createDate = createDate;
 		this.modDate = modDate;
@@ -39,6 +43,14 @@ public class ExerciseResponseDto {
 		this.categoryIndex = categoryIndex;
 	}
 
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
+
 	public int getUserCode() {
 		return userCode;
 	}
@@ -47,20 +59,28 @@ public class ExerciseResponseDto {
 		this.userCode = userCode;
 	}
 
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
 	public String getName() {
 		return name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getCategoryName() {
-		return categoryName;
-	}
-
-	public void setCategoryName(String categoryName) {
-		this.categoryName = categoryName;
 	}
 
 	public String getContent() {
