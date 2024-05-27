@@ -26,7 +26,6 @@ public class DiaryDAO {
 	}
 	
 	public void writeDiary(DiaryRequestDTO dto) {
-		
 		conn = DBManager.getConnection();
 		try {
 			String sql = "INSERT INTO diary(user_code, content, diary_date)"
@@ -63,9 +62,19 @@ public class DiaryDAO {
 		}
 		return diaryListItem;
 	}
-	
-	public void updateDiary(DiaryRequestDTO dto) {
-		
+    
+	public void updateDiary(int diaryIndex, String content) {
+		conn = DBManager.getConnection();
+		try {
+			String sql = "UPDATE  diary SET content=? WHERE diary_index=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, content);
+			pstmt.setInt(2, diaryIndex);
+			
+			pstmt.execute();
+		} catch (Exception e) {
+			
+		}
 	}
 
 }
