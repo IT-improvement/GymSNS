@@ -1,6 +1,8 @@
 package diary.controller.action;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -8,6 +10,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import diary.controller.Action;
+import diary.model.Diary;
+import diary.model.DiaryDAO;
 
 public class DiaryReadAction implements Action {
 
@@ -17,16 +21,17 @@ public class DiaryReadAction implements Action {
         response.setCharacterEncoding("UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*"); // CORS 헤더 추가
         
-        JSONObject object1 = new JSONObject();
-        object1.put("status", "200");
-        object1.put("message", "완료");
-        JSONObject object2 = new JSONObject();
-        object2.put("status", "400");
-        object2.put("message", "badrequest");
-
+        DiaryDAO dao = DiaryDAO.getInstance();
+        List<Diary> diaryListItem = dao.readDairy();
         JSONArray array = new JSONArray();
-        array.put(object1);
-        array.put(object2);
+        for(Diary diary : diaryListItem) {
+        	JSONObject object = new JSONObject();
+        	object.put("diary_index", diary.getDairyIndex());
+        	object.put("user_cod", diary.getUserCode());
+        	object.put("content", diary.getContent());
+        	object.put("diary_date", diary.getDiaryDate());
+        	array.put(object);
+        }
 
         response.getWriter().write(array.toString());
     }
