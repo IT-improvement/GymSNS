@@ -9,6 +9,11 @@ public class ExerciseCategoryRequestDto {
 		this.userCode = userCode;
 	}
 
+	public ExerciseCategoryRequestDto(int userCode, String name) {
+		this.userCode = userCode;
+		this.name = name;
+	}
+
 	public ExerciseCategoryRequestDto(int index, int userCode) {
 		this.index = index;
 		this.userCode = userCode;

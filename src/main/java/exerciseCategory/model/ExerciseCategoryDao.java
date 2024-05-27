@@ -22,7 +22,11 @@ public class ExerciseCategoryDao {
 	
 	public List<ExerciseCategoryResponseDto> findExerciseCategoryAll(ExerciseCategoryRequestDto exerciseCategoryDto) {
 		List<ExerciseCategoryResponseDto> exerciseCategories = new ArrayList<>();
-		String sql = "";
+		String sql = "SELECT exercise_category_index, name "
+					+ "FROM exercise_categories "
+					+ "WHERE user_code = ?";
+
+		System.out.println("Code: " + exerciseCategoryDto.getUserCode());
 
 		try {
 			conn = DBManager.getConnection();
@@ -34,10 +38,9 @@ public class ExerciseCategoryDao {
 
 			while (rs.next()) {
 				int index = rs.getInt(1);
-				int userCode = rs.getInt(2);
-				String name = rs.getString(3);
+				String name = rs.getString(2);
 				
-				exerciseCategories.add(new ExerciseCategoryResponseDto(index, userCode, name));
+				exerciseCategories.add(new ExerciseCategoryResponseDto(index, name));
 			}
 		} catch (Exception e) {
 			System.out.println(e);
@@ -50,14 +53,16 @@ public class ExerciseCategoryDao {
 
 	public boolean createExerciseCategory(ExerciseCategoryRequestDto exerciseCategoryDto) {
 		boolean isAdded = true;
-		String sql = "";
+		String sql = "INSERT INTO exercise_categories (user_code, name) " +
+					"VALUES (?, ?)";
 
 		try {
 			conn = DBManager.getConnection();
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setInt(1, exerciseCategoryDto.getUserCode());
-			
+			pstmt.setString(2, exerciseCategoryDto.getName());
+
 			pstmt.execute();
 		} catch (Exception e) {
 			System.out.println(e);
@@ -71,7 +76,8 @@ public class ExerciseCategoryDao {
 
 	public boolean deleteExerciseCategory(ExerciseCategoryRequestDto exerciseCategoryDto) {
 		boolean isDeleted = true;
-		String sql = "";
+		String sql = "DELETE FROM exercise_categories " +
+					"WHERE exercise_category_index = ? AND user_code = ?";
 
 		try {
 			conn = DBManager.getConnection();
@@ -93,16 +99,18 @@ public class ExerciseCategoryDao {
 
 	public boolean updateExerciseCategory(ExerciseCategoryRequestDto exerciseCategoryDto) {
 		boolean isUpdated = true;
-		String sql = "";
+		String sql = "UPDATE exercise_categories "
+				+ "SET name = ? "
+				+ "WHERE exercise_category_index = ? AND user_code = ?";
 
 		try {
 			conn = DBManager.getConnection();
 			pstmt = conn.prepareStatement(sql);
 
-			pstmt.setInt(1, exerciseCategoryDto.getIndex());
-			pstmt.setInt(2, exerciseCategoryDto.getUserCode());
-			pstmt.setString(3, exerciseCategoryDto.getName());
-			
+			pstmt.setString(1, exerciseCategoryDto.getName());
+			pstmt.setInt(2, exerciseCategoryDto.getIndex());
+			pstmt.setInt(3, exerciseCategoryDto.getUserCode());
+
 			pstmt.execute();
 		} catch (Exception e) {
 			System.out.println(e);

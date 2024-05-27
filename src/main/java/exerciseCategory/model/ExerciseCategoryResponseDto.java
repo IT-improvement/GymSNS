@@ -5,6 +5,11 @@ public class ExerciseCategoryResponseDto {
 	private int userCode;
 	private String name;
 
+	public ExerciseCategoryResponseDto(int index, String name) {
+		this.index = index;
+		this.name = name;
+	}
+
 	public ExerciseCategoryResponseDto(int index, int userCode, String name) {
 		this.index = index;
 		this.userCode = userCode;
