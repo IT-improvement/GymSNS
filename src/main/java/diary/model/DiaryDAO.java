@@ -26,14 +26,17 @@ public class DiaryDAO {
 	}
 	
 	public void writeDiary(DiaryRequestDTO dto) {
-		int code = dto.getUserCode();
-		String content = dto.getContent();
-		Timestamp date = dto.getDiary_date();
 		
 		conn = DBManager.getConnection();
 		try {
 			String sql = "INSERT INTO diary(user_code, content, diary_date)"
 					+ "VALUES(?, ?, ?)";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, dto.getUserCode());
+			pstmt.setString(2, dto.getContent());
+			pstmt.setTimestamp(3, dto.getDiary_date());
+			
+			pstmt.execute();
 		} catch (Exception e) {
 			
 		}
