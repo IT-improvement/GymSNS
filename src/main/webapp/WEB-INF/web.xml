@@ -49,7 +49,7 @@
 		<servlet-name>leaveAction</servlet-name>
 		<url-pattern>/leaveAction</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>loginAction</servlet-name>
 		<servlet-class>user.controller.action.LoginAction</servlet-class>
@@ -58,7 +58,7 @@
 		<servlet-name>loginAction</servlet-name>
 		<url-pattern>/loginAction</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>logoutAction</servlet-name>
 		<servlet-class>user.controller.action.LogoutAction</servlet-class>
@@ -67,7 +67,7 @@
 		<servlet-name>logoutAction</servlet-name>
 		<url-pattern>/logoutAction</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>testAction</servlet-name>
 		<servlet-class>user.controller.action.TestAction</servlet-class>
@@ -76,7 +76,7 @@
 		<servlet-name>testAction</servlet-name>
 		<url-pattern>/testAction</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>updateAction</servlet-name>
 		<servlet-class>user.controller.action.UpdateAction</servlet-class>
@@ -85,7 +85,7 @@
 		<servlet-name>updateAction</servlet-name>
 		<url-pattern>/updateAction</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>userCreateAction</servlet-name>
 		<servlet-class>user.controller.action.UserCreateAction</servlet-class>
@@ -94,24 +94,24 @@
 		<servlet-name>userCreateAction</servlet-name>
 		<url-pattern>/userCreateAction</url-pattern>
 	</servlet-mapping>
-	
-	<servlet>
-		<servlet-name>Action</servlet-name>
-		<servlet-class>user.controller.Action</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>Action</servlet-name>
-		<url-pattern>/Action</url-pattern>
-	</servlet-mapping>
-	
-	<servlet>
-		<servlet-name>ActionFactory</servlet-name>
-		<servlet-class>user.controller.ActionFactory</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>ActionFactory</servlet-name>
-		<url-pattern>/ActionFactory</url-pattern>
-	</servlet-mapping>
+
+<!--	<servlet>-->
+<!--		<servlet-name>Action</servlet-name>-->
+<!--		<servlet-class>user.controller.Action</servlet-class>-->
+<!--	</servlet>-->
+<!--	<servlet-mapping>-->
+<!--		<servlet-name>Action</servlet-name>-->
+<!--		<url-pattern>/Action</url-pattern>-->
+<!--	</servlet-mapping>-->
+
+<!--	<servlet>-->
+<!--		<servlet-name>ActionFactory</servlet-name>-->
+<!--		<servlet-class>user.controller.ActionFactory</servlet-class>-->
+<!--	</servlet>-->
+<!--	<servlet-mapping>-->
+<!--		<servlet-name>ActionFactory</servlet-name>-->
+<!--		<url-pattern>/ActionFactory</url-pattern>-->
+<!--	</servlet-mapping>-->
 	
 	<servlet>
 		<servlet-name>UserServiceServlet</servlet-name>
