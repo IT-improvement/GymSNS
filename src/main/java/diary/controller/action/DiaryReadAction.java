@@ -1,4 +1,4 @@
-package diary.controller;
+package diary.controller.action;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import diary.controller.Action;
+
 public class DiaryReadAction implements Action {
 
     @Override
@@ -14,7 +16,7 @@ public class DiaryReadAction implements Action {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*"); // CORS 헤더 추가
-
+        
         JSONObject object1 = new JSONObject();
         object1.put("status", "200");
         object1.put("message", "완료");
