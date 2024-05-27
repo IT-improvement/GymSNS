@@ -18,16 +18,11 @@ public class DiaryUpdateAction implements Action{
 		HttpSession session = request.getSession();
 //		String userCode = (String)session.getAttribute("user");
 		int userCode = 123;
-		Timestamp date = Timestamp.valueOf(request.getParameter("diaryDate"));
+		int diaryIndex = Integer.parseInt(request.getParameter("diaryIndex"));
 		String content = request.getParameter("content");
 		
-		DiaryRequestDTO dto = new DiaryRequestDTO();
-		dto.setUserCode(userCode);
-		dto.setContent(content);
-		dto.setDiary_date(date);
-		
 		DiaryDAO dao = DiaryDAO.getInstance();
-		dao.updateDiary(dto);
+		dao.updateDiary(diaryIndex, content);
 	}
 
 }
