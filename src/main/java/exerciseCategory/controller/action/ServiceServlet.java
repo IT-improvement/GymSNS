@@ -13,7 +13,7 @@ public class ServiceServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String command = request.getParameter("command");
 		ActionFactory af = ActionFactory.getInstance();
-		
+
 		Action action = af.getAction(command);
 		
 		if (action != null) {

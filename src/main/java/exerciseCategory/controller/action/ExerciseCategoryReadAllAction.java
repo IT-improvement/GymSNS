@@ -23,16 +23,15 @@ public class ExerciseCategoryReadAllAction implements Action {
 		ExerciseCategoryDao exerciseCategoryDao = ExerciseCategoryDao.getInstance();
 
 		// ExerciseCategoryRequestDto friendDto = new ExerciseCategoryRequestDto(user.getCode());
-		ExerciseCategoryRequestDto exerciseCategoryDto = new ExerciseCategoryRequestDto(1);
+		ExerciseCategoryRequestDto exerciseCategoryDto = new ExerciseCategoryRequestDto(1001);
 		List<ExerciseCategoryResponseDto> exerciseCategories = exerciseCategoryDao.findExerciseCategoryAll(exerciseCategoryDto);
-		
+
 		JSONArray exerciseCategoryJsonArr = new JSONArray();
 		
 		for (ExerciseCategoryResponseDto exerciseCategory : exerciseCategories) {
 			JSONObject exerciseCategoryObj = new JSONObject();
 
 			exerciseCategoryObj.put("index", exerciseCategory.getIndex());
-			exerciseCategoryObj.put("user_code", exerciseCategory.getUserCode());
 			exerciseCategoryObj.put("name", exerciseCategory.getName());
 			
 			exerciseCategoryJsonArr.put(exerciseCategoryObj);

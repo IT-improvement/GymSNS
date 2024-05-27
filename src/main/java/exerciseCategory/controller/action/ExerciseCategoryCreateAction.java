@@ -19,9 +19,10 @@ public class ExerciseCategoryCreateAction implements Action {
 		response.setCharacterEncoding("UTF-8");
 
 		ExerciseCategoryDao exerciseCategoryDao = ExerciseCategoryDao.getInstance();
+		String name = request.getParameter("name");
 
 		// ExerciseCategoryRequestDto friendDto = new ExerciseCategoryRequestDto(user.getCode());
-		ExerciseCategoryRequestDto exerciseCategoryDto = new ExerciseCategoryRequestDto(1);
+		ExerciseCategoryRequestDto exerciseCategoryDto = new ExerciseCategoryRequestDto(1001, name);
 		
 		JSONObject resObj = new JSONObject();
 		

@@ -24,7 +24,7 @@ public class ExerciseCategoryDeleteAction implements Action {
 		ExerciseCategoryDao exerciseCategoryDao = ExerciseCategoryDao.getInstance();
 
 		// ExerciseCategoryRequestDto friendDto = new ExerciseCategoryRequestDto(index, user.getCode());
-		ExerciseCategoryRequestDto exerciseCategoryDto = new ExerciseCategoryRequestDto(index, 1);
+		ExerciseCategoryRequestDto exerciseCategoryDto = new ExerciseCategoryRequestDto(index, 1001);
 		
 		JSONObject resObj = new JSONObject();
 		

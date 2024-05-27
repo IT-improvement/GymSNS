@@ -25,7 +25,7 @@ public class ExerciseCategoryUpdateAction implements Action {
 		ExerciseCategoryDao exerciseCategoryDao = ExerciseCategoryDao.getInstance();
 
 		// ExerciseCategoryRequestDto friendDto = new ExerciseCategoryRequestDto(index, user.getCode(), name);
-		ExerciseCategoryRequestDto exerciseCategoryDto = new ExerciseCategoryRequestDto(index, 1, name);
+		ExerciseCategoryRequestDto exerciseCategoryDto = new ExerciseCategoryRequestDto(index, 1001, name);
 		
 		JSONObject resObj = new JSONObject();
 		
