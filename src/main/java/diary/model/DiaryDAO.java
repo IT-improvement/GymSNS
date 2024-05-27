@@ -63,5 +63,9 @@ public class DiaryDAO {
 		}
 		return diaryListItem;
 	}
+	
+	public void updateDiary(DiaryRequestDTO dto) {
+		
+	}
 
 }
