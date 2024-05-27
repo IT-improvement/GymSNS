@@ -22,7 +22,7 @@ public class DiaryReadAction implements Action {
         response.setHeader("Access-Control-Allow-Origin", "*"); // CORS 헤더 추가
         
         DiaryDAO dao = DiaryDAO.getInstance();
-        List<Diary> diaryListItem = dao.readDairy();
+        List<Diary> diaryListItem = dao.readDiary();
         JSONArray array = new JSONArray();
         for(Diary diary : diaryListItem) {
         	JSONObject object = new JSONObject();

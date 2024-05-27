@@ -42,7 +42,7 @@ public class DiaryDAO {
 		}
 	}
 	
-	public List<Diary> readDairy(){
+	public List<Diary> readDiary(){
 		List<Diary> diaryListItem = new ArrayList<Diary>();
 		conn = DBManager.getConnection();
 		try {
