@@ -23,7 +23,8 @@ public class ExerciseReadOneAction implements Action {
 
 		ExerciseDao exerciseDao = ExerciseDao.getInstance();
 
-		ExerciseRequestDto exerciseDto = new ExerciseRequestDto(exerciseIndex);
+		ExerciseRequestDto exerciseDto = new ExerciseRequestDto();
+		exerciseDto.setIndex(exerciseIndex);
 		
 		ExerciseResponseDto exercise = exerciseDao.findExerciseOne(exerciseDto);
 

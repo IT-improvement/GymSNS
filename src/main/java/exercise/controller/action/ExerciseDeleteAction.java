@@ -24,7 +24,7 @@ public class ExerciseDeleteAction implements Action {
 		ExerciseDao exerciseDao = ExerciseDao.getInstance();
 
 		//ExerciseRequestDto exerciseRequestDto = new ExerciseRequestDto(exerciseIndex, user.getCode());
-		ExerciseRequestDto exerciseDto = new ExerciseRequestDto(exerciseIndex, 1);
+		ExerciseRequestDto exerciseDto = new ExerciseRequestDto(exerciseIndex, 1001);
 		
 		JSONObject resObj = new JSONObject();
 		

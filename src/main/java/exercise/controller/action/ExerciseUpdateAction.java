@@ -20,7 +20,7 @@ public class ExerciseUpdateAction implements Action {
 		
 		String exerciseIndexStr = request.getParameter("exercise_index");;
 		String categoryIndexStr = request.getParameter("category_index");;
-		String name = request.getParameter("content");;
+		String name = request.getParameter("name");;
 		String content = request.getParameter("content");;
 
 		int exerciseIndex = Integer.parseInt(exerciseIndexStr);
@@ -29,7 +29,7 @@ public class ExerciseUpdateAction implements Action {
 		ExerciseDao exerciseDao = ExerciseDao.getInstance();
 
 		//ExerciseRequestDto exerciseRequestDto = new ExerciseRequestDto(exerciseIndex, categoryIndex, user.getCode(), name, content);
-		ExerciseRequestDto exerciseDto = new ExerciseRequestDto(exerciseIndex, categoryIndex, 1, name, content);
+		ExerciseRequestDto exerciseDto = new ExerciseRequestDto(exerciseIndex, categoryIndex, 1001, name, content);
 		
 		JSONObject resObj = new JSONObject();
 		

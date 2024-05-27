@@ -27,7 +27,7 @@ public class ExerciseCreateAction implements Action {
 		ExerciseDao exerciseDao = ExerciseDao.getInstance();
 
 		//ExerciseRequestDto exerciseRequestDto = new ExerciseRequestDto(categoryIndex, user.getCode(), name, content);
-		ExerciseRequestDto exerciseDto = new ExerciseRequestDto(categoryIndex, 1, name, content);
+		ExerciseRequestDto exerciseDto = new ExerciseRequestDto(categoryIndex, 1001, name, content);
 		
 		JSONObject resObj = new JSONObject();
 		
