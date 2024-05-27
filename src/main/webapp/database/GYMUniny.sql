@@ -74,7 +74,7 @@ CREATE TABLE exercises
 	exercise_category_index INT           NOT NULL,
 	user_code               INT           NOT NULL,
 	name                    VARCHAR(50)   NOT NULL,
-	information             VARCHAR(1000) NOT NULL,
+	content                 VARCHAR(1000) NOT NULL,
 	create_date             TIMESTAMP     NOT NULL DEFAULT NOW(),
 	mod_date                TIMESTAMP     NULL,
 	FOREIGN KEY (exercise_category_index) REFERENCES exercise_categories(exercise_category_index) ON DELETE CASCADE ON UPDATE CASCADE,
