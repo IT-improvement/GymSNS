@@ -23,13 +23,14 @@ public class FriendReadAllAction implements Action {
 		FriendDao friendDao = FriendDao.getInstance();
 
 		//FriendRequestDto friendDto = new FriendRequestDto(user.getCode());
-		FriendRequestDto friendDto = new FriendRequestDto(1);
+		FriendRequestDto friendDto = new FriendRequestDto(1001);
 		List<FriendResponseDto> friends = friendDao.findFriendAll(friendDto);
 		
 		JSONArray friendJsonArr = new JSONArray();
 		
 		for (FriendResponseDto friend : friends) {
 			JSONObject friendObj = new JSONObject();
+
 			friendObj.put("index", friend.getIndex());
 			friendObj.put("user_code_self", friend.getUserCodeSelf());
 			friendObj.put("user_code_friend", friend.getUserCodeFriend());

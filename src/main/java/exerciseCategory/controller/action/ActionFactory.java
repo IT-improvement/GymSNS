@@ -1,4 +1,4 @@
-package exerciseCategory.controller;
+package exerciseCategory.controller.action;
 
 public class ActionFactory {
 	private static ActionFactory instance = new ActionFactory();
@@ -16,11 +16,14 @@ public class ActionFactory {
 			case "read_all":
 				action = new ExerciseCategoryReadAllAction();
 				break;
-			case "add":
-				action = new ExerciseCategoryAddAction();
+			case "create":
+				action = new ExerciseCategoryCreateAction();
 				break;
 			case "delete":
 				action = new ExerciseCategoryDeleteAction();
+				break;
+			case "update":
+				action = new ExerciseCategoryUpdateAction();
 				break;
 		}
 

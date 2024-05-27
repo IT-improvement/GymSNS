@@ -23,10 +23,11 @@ public class FriendReadOneAction implements Action {
 		
 		int friendCode = Integer.parseInt(friendCodeStr);
 		//FriendRequestDto friendDto = new FriendRequestDto(user.getCode(), friendCode);
-		FriendRequestDto friendDto = new FriendRequestDto(1, friendCode);
+		FriendRequestDto friendDto = new FriendRequestDto(1001, friendCode);
 		FriendResponseDto friend = friendDao.findFriendByUserCode(friendDto);
 
 		JSONObject friendObj = new JSONObject();
+
 		friendObj.put("index", friend.getIndex());
 		friendObj.put("user_code_self", friend.getUserCodeSelf());
 		friendObj.put("user_code_friend", friend.getUserCodeFriend());
