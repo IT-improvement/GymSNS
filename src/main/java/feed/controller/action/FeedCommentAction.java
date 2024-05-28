@@ -38,14 +38,39 @@ public class FeedCommentAction implements Action {
 			JSONObject feedObj = new JSONObject();
 			feedObj.put("feedIndex", feed.getFeedIndex());
 			feedObj.put("userCode", feed.getUserCode());
-			feedObj.put("comment", feed.getComment());
+//			feedObj.put("comment", feed.getComment());
 			feedObj.put("midDate", feed.getModDate());
 
 			feedJsonArr.put(feedObj);
 		}
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+
+		String a[] = request.getPathInfo().split("/");
+		int b = Integer.parseInt(a[1]);
+
+		Feed[] feeds = {};
+
+		JSONObject feedObj = new JSONObject();
+
+		for (Feed feed : feeds) {
+			if (feed.getFeedIndex() == b) {
+				feedObj.put("title", feed.getTitle());
+				feedObj.put("content", feed.getContent());
+				feedObj.put("feedIndex", feed.getFeedIndex());
+				feedObj.put("userCode", feed.getUserCode());
+			}
+		}
 
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(feedJsonArr.toString());
+//		response.getWriter().write(feedJsonArr.toString());
 	}
 }

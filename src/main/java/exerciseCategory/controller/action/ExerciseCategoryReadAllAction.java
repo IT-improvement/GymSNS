@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import exerciseCategory.controller.Action;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

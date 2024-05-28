@@ -1,11 +1,6 @@
 package user.controller;
 
-import user.controller.action.LeaveAction;
-import user.controller.action.LoginAction;
-import user.controller.action.LogoutAction;
-import user.controller.action.TestAction;
-import user.controller.action.UpdateAction;
-import user.controller.action.UserCreateAction;
+import user.controller.action.*;
 
 public class ActionFactory {
 
@@ -31,9 +26,13 @@ public class ActionFactory {
 			action = new LeaveAction();
 		else if(command.equals("update"))
 			action = new UpdateAction();
+		else if(command.equals("read_all"))
+			action = new UserReadAllAction();
+		else if(command.equals("read_all_by_query"))
+			action = new UserReadAllByQueryAction();
 		else if(command.equals("test"))
 			action = new TestAction();
-		
+
 		return action;
 	}
 }

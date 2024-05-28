@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import exerciseCategory.controller.Action;
 import org.json.JSONObject;
 
 import exerciseCategory.model.ExerciseCategoryDao;
@@ -24,7 +25,7 @@ public class ExerciseCategoryDeleteAction implements Action {
 		ExerciseCategoryDao exerciseCategoryDao = ExerciseCategoryDao.getInstance();
 
 		// ExerciseCategoryRequestDto friendDto = new ExerciseCategoryRequestDto(index, user.getCode());
-		ExerciseCategoryRequestDto exerciseCategoryDto = new ExerciseCategoryRequestDto(index, 1001);
+		ExerciseCategoryRequestDto exerciseCategoryDto = new ExerciseCategoryRequestDto(1);
 		
 		JSONObject resObj = new JSONObject();
 		

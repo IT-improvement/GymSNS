@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import exercise.controller.Action;
 import org.json.JSONObject;
 
 import exercise.model.ExerciseDao;
@@ -26,18 +27,20 @@ public class ExerciseReadOneAction implements Action {
 		ExerciseRequestDto exerciseDto = new ExerciseRequestDto();
 		exerciseDto.setIndex(exerciseIndex);
 		
-		ExerciseResponseDto exercise = exerciseDao.findExerciseOne(exerciseDto);
+		ExerciseResponseDto exercise = exerciseDao.findExerciseOneByIndex(exerciseDto);
 
 		JSONObject exerciseObj = new JSONObject();
 
 		exerciseObj.put("index", exercise.getIndex());
-		exerciseObj.put("category_index", exercise.getCategoryIndex());
-		exerciseObj.put("category_name", exercise.getCategoryName());
-		exerciseObj.put("user_code", exercise.getUserCode());
+		exerciseObj.put("categoryIndex", exercise.getCategoryIndex());
+		exerciseObj.put("categoryName", exercise.getCategoryName());
+		exerciseObj.put("userCode", exercise.getUserCode());
+		exerciseObj.put("userId", exercise.getUserId());
+		exerciseObj.put("userName", exercise.getUserName());
 		exerciseObj.put("name", exercise.getName());
 		exerciseObj.put("content", exercise.getContent());
-		exerciseObj.put("create_date", exercise.getCreateDate());
-		exerciseObj.put("mod_date", exercise.getModDate());
+		exerciseObj.put("createDate", exercise.getCreateDate());
+		exerciseObj.put("modDate", exercise.getModDate());
 
 		response.getWriter().write(exerciseObj.toString());
 	}

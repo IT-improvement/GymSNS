@@ -1,30 +1,30 @@
 package exercise.controller.action;
 
-import java.io.IOException;
-import java.util.List;
+import exercise.controller.Action;
+import exercise.model.ExerciseDao;
+import exercise.model.ExerciseRequestDto;
+import exercise.model.ExerciseResponseDto;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
 
-import exercise.controller.Action;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import exercise.model.ExerciseDao;
-import exercise.model.ExerciseRequestDto;
-import exercise.model.ExerciseResponseDto;
-
-public class ExerciseReadAllAction implements Action {
+public class ExerciseReadAllByQueryAction implements Action {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 
+		String query = request.getParameter("query");
+
 		ExerciseDao exerciseDao = ExerciseDao.getInstance();
 
 		ExerciseRequestDto exerciseDto = new ExerciseRequestDto();
-		List<ExerciseResponseDto> exercises = exerciseDao.findExerciseAll(exerciseDto);
+		List<ExerciseResponseDto> exercises = exerciseDao.findExerciseAllByQuery(exerciseDto, query);
 		
 		JSONArray exerciseJsonArr = new JSONArray();
 		

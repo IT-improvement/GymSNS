@@ -33,10 +33,12 @@ public class FeedReadAction implements Action{
 				
 		for (Feed feed : list) {
 			JSONObject feedObj = new JSONObject();
+
 			feedObj.put("title", feed.getTitle());
 			feedObj.put("content", feed.getContent());
 			feedObj.put("userCode", feed.getUserCode());
 			feedObj.put("createDate", feed.getCreateDate());
+			feedObj.put("comments", feed.getComments());
 					
 			feedJsonArr.put(feedObj);
 		}

@@ -1,4 +1,4 @@
-package friend.controller.action;
+package exerciseCategory.controller;
 
 import java.io.IOException;
 
