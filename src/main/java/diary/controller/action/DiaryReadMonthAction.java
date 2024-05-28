@@ -22,12 +22,14 @@ public class DiaryReadMonthAction implements Action{
 		response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*"); // CORS 헤더 추가
+        
         int userCode = 123;
         Timestamp startMonth = Timestamp.valueOf(request.getParameter("startMonth"));
         Timestamp endMonth = Timestamp.valueOf(request.getParameter("endMonth"));
         DiaryDAO dao = DiaryDAO.getInstance();
         List<Diary> diaryListItem = dao.readDiaryMonth(userCode, startMonth, endMonth);
         JSONArray array = new JSONArray();
+        
         for(Diary diary : diaryListItem) {
         	JSONObject object = new JSONObject();
         	object.put("diary_index", diary.getDairyIndex());

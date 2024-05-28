@@ -47,8 +47,8 @@ public class RoutineDAO {
 					+ ";";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, code);
-			
 			rs = pstmt.executeQuery();
+			
 			while(rs.next()) {
 				RoutineResponseDTO dto = new RoutineResponseDTO();
 				dto.setName(rs.getString(1));
@@ -61,7 +61,6 @@ public class RoutineDAO {
 			e.printStackTrace();
 			System.out.println("루틴 읽기 실패");
 		}
-		
 		
 		return list;
 	}
