@@ -36,11 +36,8 @@ public class FeedCommentAction extends HttpServlet {
 		int b = Integer.parseInt(a[1]);
 		
 		Feed[] feeds = {
-				new Feed("오계완", "오늘도 계란완료", 1, 1, "안녕하세요~"),
-				new Feed("밤양갱", "마싯어", 2, 2, "댓글 남깁니다"),
-				new Feed("장추동", "왕족발보쌈", 3, 3, "마싯어요")
 		};
-		
+
 		JSONObject feedObj = new JSONObject();
 				
 		for (Feed feed : feeds) {
