@@ -1,12 +1,6 @@
 package feed.controller;
 
-import feed.controller.action.FeedCreateAction;
-import feed.controller.action.FeedDeleteAction;
-import feed.controller.action.FeedDetailAction;
-import feed.controller.action.FeedFavoriteCreateAction;
-import feed.controller.action.FeedFavoriteReadAction;
-import feed.controller.action.FeedReadAction;
-import feed.controller.action.FeedUpdateAction;
+import feed.controller.action.*;
 
 public class ActionFactory {
 private ActionFactory() {
@@ -35,6 +29,8 @@ private ActionFactory() {
 			action = new FeedFavoriteReadAction();
 		}else if (command.equals("feedFavoritePlus")) {
 			action = new FeedFavoriteCreateAction();
+		}else if (command.equals("feedFavoriteCheck")) {
+			action = new FeedFavoriteCheckAction();
 		}
 	
 		

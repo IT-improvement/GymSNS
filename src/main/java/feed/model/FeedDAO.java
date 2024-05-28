@@ -160,12 +160,13 @@ public class FeedDAO {
 		FeedResponseDTO feed = new FeedResponseDTO();
 		try {
 			conn = DBManager.getConnection();
-			String sql = "INSERT INTO favorites(feed_index, user_index) VALUES(?,?);";
+			String sql = "INSERT INTO favorites(feed_index, user_code) VALUES(?,?);";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, feedDto.getFeedIndex());
 			pstmt.setInt(2, feedDto.getUserCode());
 			pstmt.execute();
-			
+
+
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -173,6 +174,32 @@ public class FeedDAO {
             DBManager.close(conn, pstmt);
         }
 		
+		return feed;
+	}
+
+	public FeedResponseDTO checkFeedFavorite(FeedRequestDTO feedDto) {
+		FeedResponseDTO feed = new FeedResponseDTO();
+
+		try {
+			conn = DBManager.getConnection();
+			String sql = "SELECT feed_index, user_code FROM favorites WHERE feed_index = ? AND user_code = ?;";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, feedDto.getFeedIndex());
+			pstmt.setInt(2, feedDto.getUserCode());
+			pstmt.execute();
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				feed.setFeedIndex(rs.getInt(1));
+				feed.setUserCode(rs.getInt(2));
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt);
+		}
+
 		return feed;
 	}
 }
