@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import exerciseCategory.controller.Action;
 import org.json.JSONObject;
 
 import exerciseCategory.model.ExerciseCategoryDao;
@@ -25,7 +26,7 @@ public class ExerciseCategoryUpdateAction implements Action {
 		ExerciseCategoryDao exerciseCategoryDao = ExerciseCategoryDao.getInstance();
 
 		// ExerciseCategoryRequestDto friendDto = new ExerciseCategoryRequestDto(index, user.getCode(), name);
-		ExerciseCategoryRequestDto exerciseCategoryDto = new ExerciseCategoryRequestDto(index, 1001, name);
+		ExerciseCategoryRequestDto exerciseCategoryDto = new ExerciseCategoryRequestDto(index, name);
 		
 		JSONObject resObj = new JSONObject();
 		

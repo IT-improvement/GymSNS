@@ -1,4 +1,4 @@
-package exerciseCategory.controller.action;
+package exerciseCategory.controller;
 
 import java.io.IOException;
 
