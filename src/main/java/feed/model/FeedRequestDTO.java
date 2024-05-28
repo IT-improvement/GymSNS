@@ -32,6 +32,12 @@ public class FeedRequestDTO {
 		this.userCode = userCode;
 	}
 
+	public FeedRequestDTO(int feedIndex, int userCode, String comment) {
+		this.feedIndex = feedIndex;
+		this.userCode = userCode;
+		this.comment = comment;
+	}
+
 	public String getTitle() {
 		return title;
 	}

@@ -19,7 +19,31 @@ public class FeedDAO {
 		return instance;
 	}
 	
-	
+	public FeedResponseDTO searchCommentByFeedIndexAndUserCode(FeedRequestDTO feedDto) {
+		FeedResponseDTO feed = new FeedResponseDTO();
+
+		try {
+			conn = DBManager.getConnection();
+			String sql = "SELECT feed_index, user_code, comment FROM feed_comments WHERE feed_index =? AND user_code= ? AND comment = ?;";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, feedDto.getFeedIndex());
+			pstmt.setInt(2, feedDto.getUserCode());
+			pstmt.setString(3, feedDto.getComment());
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				feed.setFeedIndex(rs.getInt(1));
+				feed.setUserCode(rs.getInt(2));
+				feed.setComment(rs.getString(3));
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt);
+		}
+		return feed;
+	}
+
+
 	public ArrayList<Feed> getAllFeed() {
 		ArrayList<Feed> list = new ArrayList<Feed>();
 		try {
@@ -251,6 +275,27 @@ public class FeedDAO {
 		}
 
 		return list;
+	}
+
+	public FeedResponseDTO createComment(FeedRequestDTO feedDto) {
+		FeedResponseDTO feed = null;
+		try {
+			conn = DBManager.getConnection();
+			String sql = "INSERT INTO feed_comments(feed_index, user_code, comment) VALUES(?, ?, ?);";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, feedDto.getFeedIndex());
+			pstmt.setInt(2, feedDto.getUserCode());
+			pstmt.setString(3, feedDto.getComment());
+			pstmt.execute();
+			feed = searchCommentByFeedIndexAndUserCode(feedDto);
+
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt);
+		}
+
+		return feed;
 	}
 
 }
