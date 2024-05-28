@@ -1,0 +1,68 @@
+package routine.model;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
+import util.DBManager;
+
+public class RoutineDAO {
+	
+	private Connection conn;
+	private PreparedStatement pstmt;
+	private ResultSet rs;
+	
+	private RoutineDAO() {
+		
+	}
+	
+	private static RoutineDAO instance = new RoutineDAO();
+	
+	public static RoutineDAO getInstance() {
+		return instance;
+	}
+	
+	public List<RoutineResponseDTO> readRoutine(int code){
+		List<RoutineResponseDTO> list = new ArrayList<RoutineResponseDTO>();
+		
+		conn = DBManager.getConnection();
+		try {
+			String sql ="SELECT e.name, ec.name, r.day, e.exercise_index"
+					+ "FROM exercises e, exercise_categories ec, routines r, routine_details rd"
+					+ "WHERE e.exercise_index IN ("
+					+ "    SELECT rd.exercise_index"
+					+ "    FROM routine_details rd"
+					+ "    WHERE rd.routine_index in("
+					+ "		SELECT routine_index"
+					+ "        FROM routines"
+					+ "        WHERE user_code=?"
+					+ "    )"
+					+ ")"
+					+ "and e.exercise_category_index = ec.exercise_category_index"
+					+ "and r.routine_index = rd.routine_index"
+					+ "and e.exercise_index = rd.exercise_index"
+					+ "order by day asc"
+					+ ";";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, code);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				RoutineResponseDTO dto = new RoutineResponseDTO();
+				dto.setName(rs.getString(1));
+				dto.setCategory(rs.getString(2));
+				dto.setDay(rs.getString(3));
+				dto.setExerciseIndex(rs.getInt(4));
+				list.add(dto);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("루틴 읽기 실패");
+		}
+		
+		return list;
+	}
+	
+}

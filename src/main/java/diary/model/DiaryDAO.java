@@ -42,23 +42,51 @@ public class DiaryDAO {
 		}
 	}
 	
-	public List<Diary> readDiary(){
+	public DiaryResponseDTO readDiaryDate(int userCode, Timestamp date){
+		DiaryResponseDTO dto = new DiaryResponseDTO();
+		conn = DBManager.getConnection();
+		System.out.println(date);
+		try {
+			String sql = "SELECT * FROM diary WHERE user_code=? and diary_date=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, userCode);
+			pstmt.setTimestamp(2, date);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				dto.setDairyIndex(rs.getInt("diary_index"));
+				dto.setUserCode(rs.getInt("user_code"));
+				dto.setContent(rs.getString("content"));
+				dto.setDiaryDate(rs.getTimestamp("diary_date"));
+			}
+			DBManager.close(conn, pstmt, rs);
+		} catch (Exception e) {
+			System.out.println("다이어리 읽기(날짜) 오류");
+			e.printStackTrace();
+		}
+		return dto;
+	}
+	
+	public List<Diary> readDiaryMonth(int userCode, Timestamp startMonth, Timestamp endMonth){
 		List<Diary> diaryListItem = new ArrayList<Diary>();
 		conn = DBManager.getConnection();
 		try {
-			String sql = "SELECT * FROM diary";
+			String sql = "SELECT * FROM diary WHERE user_code=? and diary_date BETWEEN ? and ?";
 			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, userCode);
+			pstmt.setTimestamp(2, startMonth);
+			pstmt.setTimestamp(3, endMonth);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
-				Diary diary = new Diary();
-				diary.setDairyIndex(rs.getInt(1));
-				diary.setUserCode(rs.getInt(2));
-				diary.setContent(rs.getString(3));
-				diary.setDiaryDate(rs.getTimestamp(4));
-				diaryListItem.add(diary);
+				 Diary diary = new Diary();
+		         diary.setDairyIndex(rs.getInt("diary_index")); 
+		         diary.setUserCode(rs.getInt("user_code")); 
+		         diary.setContent(rs.getString("content")); 
+		         diary.setDiaryDate(rs.getTimestamp("diary_date"));
+		         diaryListItem.add(diary);
 			}
+			DBManager.close(conn, pstmt, rs);
 		} catch (Exception e) {
-			System.out.println("다이어리 읽기 오류");
+			System.out.println("다이어리 읽기(달) 오류");
 			e.printStackTrace();
 		}
 		return diaryListItem;

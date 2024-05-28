@@ -278,6 +278,15 @@
 	<servlet-mapping>
 		<servlet-name>DietServiceServlet</servlet-name>
 		<url-pattern>/diet/service</url-pattern>
+	</servlet-mapping
+	>
+	<servlet>
+		<servlet-name>RoutineServiceServlet</servlet-name>
+		<servlet-class>routine.controller.RoutineServiceServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>RoutineServiceServlet</servlet-name>
+		<url-pattern>/routine</url-pattern>
 	</servlet-mapping>
 
 </web-app>

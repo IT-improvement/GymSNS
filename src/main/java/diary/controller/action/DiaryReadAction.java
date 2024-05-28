@@ -1,17 +1,16 @@
 package diary.controller.action;
 
 import java.io.IOException;
-import java.util.List;
+import java.sql.Timestamp;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import diary.controller.Action;
-import diary.model.Diary;
 import diary.model.DiaryDAO;
+import diary.model.DiaryResponseDTO;
 
 public class DiaryReadAction implements Action {
 
@@ -20,19 +19,16 @@ public class DiaryReadAction implements Action {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*"); // CORS 헤더 추가
-        
+        int userCode = 123;
+        Timestamp date = Timestamp.valueOf(request.getParameter("date"));
+        System.out.println("date: "+date);
         DiaryDAO dao = DiaryDAO.getInstance();
-        List<Diary> diaryListItem = dao.readDiary();
-        JSONArray array = new JSONArray();
-        for(Diary diary : diaryListItem) {
-        	JSONObject object = new JSONObject();
-        	object.put("diary_index", diary.getDairyIndex());
-        	object.put("user_cod", diary.getUserCode());
-        	object.put("content", diary.getContent());
-        	object.put("diary_date", diary.getDiaryDate());
-        	array.put(object);
-        }
-
-        response.getWriter().write(array.toString());
+        DiaryResponseDTO dto =  dao.readDiaryDate(userCode, date);
+        JSONObject object = new JSONObject();
+        object.put("diary_index", dto.getDairyIndex());
+    	object.put("user_cod", dto.getUserCode());
+    	object.put("content", dto.getContent());
+    	object.put("diary_date", dto.getDiaryDate());
+        response.getWriter().write(object.toString());
     }
 }
