@@ -176,15 +176,6 @@
 	</servlet-mapping>
 
 	<servlet>
-		<servlet-name>FoodCategoryActionFactory</servlet-name>
-		<servlet-class>foodCategory.controller.FoodCategoryActionFactory</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>FoodCategoryActionFactory</servlet-name>
-		<url-pattern>/FoodCategoryActionFactory</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
 		<servlet-name>FeedCommentAction</servlet-name>
 		<servlet-class>feed.controller.FeedCommentAction</servlet-class>
 	</servlet>

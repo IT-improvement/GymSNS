@@ -19,28 +19,36 @@ public class ReadAllFoodAction implements Action{
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
 		FoodDao dao = FoodDao.getInstance();
 
 		HttpSession session = request.getSession();
-		
+
 //		int userCode = session.getAttribute("userCode");
-		int userCode = Integer.parseInt(request.getParameter("userCode"));		
-		
-		List<FoodResponseDto> food = dao.getAllFoodsByUserCode(userCode);
-		
-		JSONArray jsonArray = new JSONArray(food);
-		
-		response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        
-        System.out.println(jsonArray);
-		
-        JSONObject jsonResponse = new JSONObject();
-        jsonResponse.put("status", 200);
-        jsonResponse.put("message", "음식 리스트 가져오기 완료");
-        
-        response.getWriter().write(jsonResponse.toString());
-		
+		int userCode = Integer.parseInt(request.getParameter("userCode"));
+
+		List<FoodResponseDto> foods = dao.getAllFoodsByUserCode(userCode);
+
+		JSONArray foodJsonArray = new JSONArray();
+
+		for(FoodResponseDto food : foods){
+        	JSONObject foodObj = new JSONObject();
+
+			foodObj.put("foodName", food.getFoodName());
+			foodObj.put("calory", food.getCalory());
+			foodObj.put("foodIndex", food.getFoodIndex());
+			foodObj.put("size", food.getSize());
+			foodObj.put("carbs", food.getCarbs());
+			foodObj.put("protein", food.getProtein());
+			foodObj.put("userCode", userCode);
+			foodObj.put("createDate", food.getCreateDate());
+			foodObj.put("foodCategoryIndex", food.getFoodCategoryIndex());
+			foodJsonArray.put(foodObj);
+		}
+
+        System.out.println(foodJsonArray);
+        response.getWriter().write(foodJsonArray.toString());
 	}
 }
