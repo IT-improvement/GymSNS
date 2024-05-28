@@ -89,6 +89,7 @@ public class UpdateAction extends HttpServlet implements Action {
 
 //		UserRequestDto userDto = new UserRequestDto();
 		//UserRequestDto userDto = (UserRequestDto) user;
+
 		System.out.println("setId 시작 전!!");
 		userDto.setId(id);
 		userDto.setGender(gender);
