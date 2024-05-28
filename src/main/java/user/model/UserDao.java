@@ -99,7 +99,43 @@ public class UserDao {
 		}
 		return user;
 	}
-	
+
+	public List<UserResponseDto> findUserAllByIdOrName(String query) {
+		List<UserResponseDto> list = new ArrayList<UserResponseDto>();
+		String sql = "SELECT code, id, email, name, birth, gender, telecom, phone "
+					+ "FROM users "
+					+ "WHERE id LIKE ? OR name LIKE ?";
+
+		try {
+			conn = DBManager.getConnection();
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, "%" + query + "%");
+			pstmt.setString(2, "%" + query + "%");
+
+			rs = pstmt.executeQuery();
+
+			while(rs.next()) {
+				int code = rs.getInt(1);
+				String id = rs.getString(2);
+				String email = rs.getString(3);
+				String name = rs.getString(4);
+				String birth = rs.getString(5);
+				String gender = rs.getString(6);
+				String telecom = rs.getString(7);
+				String phone = rs.getString(8);
+
+				UserResponseDto user = new UserResponseDto(code, id, email, name, birth, gender, telecom, phone);
+				list.add(user);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt, rs);
+		}
+		return list;
+	}
+
 	public boolean userExists(UserRequestDto userDto) {
 		return findUserByIdAndPassword(userDto.getId(), userDto.getPassword()) != null;
 	}
