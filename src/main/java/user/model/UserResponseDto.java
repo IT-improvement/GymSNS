@@ -1,6 +1,6 @@
 package user.model;
 
-public class UserResponseDto {
+public class UserResponseDto extends User {
 	private int code;
 	private String id;
 	private String password;
