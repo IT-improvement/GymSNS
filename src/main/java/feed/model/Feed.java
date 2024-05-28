@@ -1,6 +1,8 @@
 package feed.model;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Feed {
 	private String title;
@@ -9,7 +11,7 @@ public class Feed {
 	private int userCode;
 	private Timestamp createDate;
 	private Timestamp modDate;
-	private String comment;
+	private List<String> comments = new ArrayList<>();
 	
 	public Feed() {
 		
@@ -23,13 +25,13 @@ public class Feed {
 		this.userCode = userCode;
 	}
 	
-	public Feed(String title, String content, int feedIndex, int userCode, String comment) {
+	public Feed(String title, String content, int feedIndex, int userCode, List<String> comments) {
 		super();
 		this.title = title;
 		this.content = content;
 		this.feedIndex = feedIndex;
 		this.userCode = userCode;
-		this.comment = comment;
+		this.comments = comments;
 	}
 	
 	public String getTitle() {
@@ -68,11 +70,16 @@ public class Feed {
 	public void setModDate(Timestamp modDate) {
 		this.modDate = modDate;
 	}
-	public String getComment() {
-		return comment;
+
+	public List<String> getComments() {
+		return comments;
 	}
 
-	public void setComment(String comment) {
-		this.comment = comment;
+	public void setComments(List<String> comments) {
+		this.comments = comments;
+	}
+
+	public void addComment(String comment) {
+		this.comments.add(comment);
 	}
 }
