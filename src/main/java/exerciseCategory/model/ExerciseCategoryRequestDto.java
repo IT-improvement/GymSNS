@@ -2,26 +2,18 @@ package exerciseCategory.model;
 
 public class ExerciseCategoryRequestDto {
 	private int index;
-	private int userCode;
 	private String name;
 
-	public ExerciseCategoryRequestDto(int userCode) {
-		this.userCode = userCode;
-	}
-
-	public ExerciseCategoryRequestDto(int userCode, String name) {
-		this.userCode = userCode;
+	public ExerciseCategoryRequestDto(String name) {
 		this.name = name;
 	}
 
-	public ExerciseCategoryRequestDto(int index, int userCode) {
+	public ExerciseCategoryRequestDto(int index) {
 		this.index = index;
-		this.userCode = userCode;
 	}
 
-	public ExerciseCategoryRequestDto(int index, int userCode, String name) {
+	public ExerciseCategoryRequestDto(int index, String name) {
 		this.index = index;
-		this.userCode = userCode;
 		this.name = name;
 	}
 
@@ -31,14 +23,6 @@ public class ExerciseCategoryRequestDto {
 
 	public void setIndex(int index) {
 		this.index = index;
-	}
-
-	public int getUserCode() {
-		return userCode;
-	}
-
-	public void setUserCode(int userCode) {
-		this.userCode = userCode;
 	}
 
 	public String getName() {
