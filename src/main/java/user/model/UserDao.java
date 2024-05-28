@@ -1,7 +1,6 @@
 package user.model;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -98,6 +97,32 @@ public class UserDao {
 			DBManager.close(conn, pstmt, rs);
 		}
 		return user;
+	}
+
+	public String findPassword(String id, String password) {
+		User user = null;
+		String encryptedPassword = "";
+
+		try {
+			conn = DBManager.getConnection();
+
+			String sql = "SELECT id, password FROM users WHERE id=?";
+
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setString(1, id);
+
+			rs = pstmt.executeQuery();
+
+			if(rs.next()) {
+				encryptedPassword = rs.getString(2);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt, rs);
+		}
+		return encryptedPassword;
 	}
 	
 	public boolean userExists(UserRequestDto userDto) {
