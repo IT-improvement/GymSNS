@@ -38,8 +38,13 @@ public class ServiceServlet extends HttpServlet {
 		
 		ActionFactory af = ActionFactory.getInstance();
 		Action action = af.getAction(command);
-		
-		action.execute(request, response);
+
+		if(action != null) {
+			action.execute(request, response);
+		}else {
+			response.sendError(404);
+		}
+
 	}
 
 	/**

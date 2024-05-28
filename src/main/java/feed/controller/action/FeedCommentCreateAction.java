@@ -1,6 +1,15 @@
 package feed.controller.action;
 
+import feed.controller.Action;
+import feed.model.Feed;
+import feed.model.FeedDAO;
+import feed.model.FeedRequestDTO;
+import feed.model.FeedResponseDTO;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,31 +19,29 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class FeedCommentCreateAction
  */
-public class FeedCommentCreateAction extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public FeedCommentCreateAction() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+public class FeedCommentCreateAction implements Action {
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	@Override
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		String url[] = request.getPathInfo().split("/");
+		int feedIndex = Integer.parseInt(url[1]);
+		String comment = request.getParameter("comment");
+		int userCode = 1002;
+
+		FeedRequestDTO feedDto = new FeedRequestDTO(feedIndex, userCode, comment);
+		FeedDAO feedDao = FeedDAO.getInstance();
+		FeedResponseDTO feed = feedDao.createComment(feedDto);
+
+		JSONObject feedObj = new JSONObject();
+		feedObj.put("feedIndex", feed.getFeedIndex());
+		feedObj.put("userCode", feed.getUserCode());
+		feedObj.put("comment", feed.getComment());
+
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().write(feedObj.toString());
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
 
 }

@@ -19,7 +19,31 @@ public class FeedDAO {
 		return instance;
 	}
 	
-	
+	public FeedResponseDTO searchCommentByFeedIndexAndUserCode(FeedRequestDTO feedDto) {
+		FeedResponseDTO feed = new FeedResponseDTO();
+
+		try {
+			conn = DBManager.getConnection();
+			String sql = "SELECT feed_index, user_code, comment FROM feed_comments WHERE feed_index =? AND user_code= ? AND comment = ?;";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, feedDto.getFeedIndex());
+			pstmt.setInt(2, feedDto.getUserCode());
+			pstmt.setString(3, feedDto.getComment());
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				feed.setFeedIndex(rs.getInt(1));
+				feed.setUserCode(rs.getInt(2));
+				feed.setComment(rs.getString(3));
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt);
+		}
+		return feed;
+	}
+
+
 	public ArrayList<Feed> getAllFeed() {
 		ArrayList<Feed> list = new ArrayList<Feed>();
 		try {
@@ -160,12 +184,13 @@ public class FeedDAO {
 		FeedResponseDTO feed = new FeedResponseDTO();
 		try {
 			conn = DBManager.getConnection();
-			String sql = "INSERT INTO favorites(feed_index, user_index) VALUES(?,?);";
+			String sql = "INSERT INTO favorites(feed_index, user_code) VALUES(?,?);";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, feedDto.getFeedIndex());
 			pstmt.setInt(2, feedDto.getUserCode());
 			pstmt.execute();
-			
+
+
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -175,4 +200,102 @@ public class FeedDAO {
 		
 		return feed;
 	}
+
+	public FeedResponseDTO checkFeedFavorite(FeedRequestDTO feedDto) {
+		FeedResponseDTO feed = null;
+
+		try {
+			conn = DBManager.getConnection();
+			String sql = "SELECT feed_index, user_code FROM favorites WHERE feed_index = ? AND user_code = ?;";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, feedDto.getFeedIndex());
+			pstmt.setInt(2, feedDto.getUserCode());
+			pstmt.execute();
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				feed.setFeedIndex(rs.getInt(1));
+				feed.setUserCode(rs.getInt(2));
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt);
+		}
+
+		return feed;
+	}
+
+	public FeedResponseDTO deleteFeedFavorite(FeedRequestDTO feedDto) {
+		FeedResponseDTO feed = null;
+		try {
+			conn = DBManager.getConnection();
+			String sql = "DELETE FROM favorites WHERE feed_index = ? AND user_code = ?;";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, feedDto.getFeedIndex());
+			pstmt.setInt(2, feedDto.getUserCode());
+			pstmt.execute();
+
+			feed = checkFeedFavorite(feedDto);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt);
+		}
+
+
+		return feed;
+	}
+
+	public ArrayList<Feed> commentRead(FeedRequestDTO feedDto) {
+		ArrayList<Feed> list = new ArrayList<Feed>();
+
+		try {
+			conn = DBManager.getConnection();
+			String sql = "SELECT feed_index, user_code, content, mod_date FROM feed_comments WHERE feed_index = ?;";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, feedDto.getFeedIndex());
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				Feed feed = new Feed();
+				feed.setFeedIndex(rs.getInt(1));
+				feed.setUserCode(rs.getInt(2));
+				feed.setComment(rs.getString(3));
+				feed.setModDate(rs.getTimestamp(4));
+				list.add(feed);
+			}
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt);
+		}
+
+		return list;
+	}
+
+	public FeedResponseDTO createComment(FeedRequestDTO feedDto) {
+		FeedResponseDTO feed = null;
+		try {
+			conn = DBManager.getConnection();
+			String sql = "INSERT INTO feed_comments(feed_index, user_code, comment) VALUES(?, ?, ?);";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, feedDto.getFeedIndex());
+			pstmt.setInt(2, feedDto.getUserCode());
+			pstmt.setString(3, feedDto.getComment());
+			pstmt.execute();
+			feed = searchCommentByFeedIndexAndUserCode(feedDto);
+
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt);
+		}
+
+		return feed;
+	}
+
 }

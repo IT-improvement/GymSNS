@@ -175,6 +175,7 @@
 		<url-pattern>/feed/*</url-pattern>
 	</servlet-mapping>
 
+
 	<servlet>
 		<servlet-name>FeedCommentAction</servlet-name>
 		<servlet-class>feed.controller.FeedCommentAction</servlet-class>
@@ -239,7 +240,15 @@
 		<url-pattern>/feed/*/comments/delete</url-pattern>
 	</servlet-mapping>
 
-
+	<servlet>
+		<servlet-name>FoodCategoryActionFactory</servlet-name>
+		<servlet-class>foodCategory.controller.FoodCategoryActionFactory</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>FoodCategoryActionFactory</servlet-name>
+		<url-pattern>/FoodCategoryActionFactory</url-pattern>
+	</servlet-mapping>
+	
 	<error-page>
 		<location>/error</location>
 	</error-page>
@@ -269,8 +278,8 @@
 	<servlet-mapping>
 		<servlet-name>DietServiceServlet</servlet-name>
 		<url-pattern>/diet/service</url-pattern>
-	</servlet-mapping
-	>
+	</servlet-mapping>
+	
 	<servlet>
 		<servlet-name>RoutineServiceServlet</servlet-name>
 		<servlet-class>routine.controller.RoutineServiceServlet</servlet-class>

@@ -29,9 +29,12 @@ public class FeedFavoriteCreateAction implements Action {
 		if (userDto == null) {
 			response.sendRedirect("/login");
 		}
-		
-		int userCode = userDto.getCode();
-		int feedIndex = Integer.parseInt(request.getParameter("feedIndex"));
+
+		String url[] = request.getPathInfo().split("/");
+		int feedIndex = Integer.parseInt(url[1]);
+
+		 int userCode = userDto.getCode();
+
 		
 		FeedRequestDTO feedDto = new FeedRequestDTO(feedIndex, userCode);
 		FeedDAO feedDao = FeedDAO.getInstance();
