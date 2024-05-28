@@ -1,4 +1,4 @@
-package friend.controller.action;
+package friend.controller;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -11,10 +11,6 @@ import javax.servlet.annotation.MultipartConfig;
 @MultipartConfig
 public class ServiceServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setHeader("Access-Control-Allow-Origin", "*");
-		response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-		response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-		System.out.println("get friends");
 		String command = request.getParameter("command");
 		ActionFactory af = ActionFactory.getInstance();
 		

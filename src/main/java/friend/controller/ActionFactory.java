@@ -1,4 +1,6 @@
-package friend.controller.action;
+package friend.controller;
+
+import friend.controller.action.*;
 
 public class ActionFactory {
 	private static ActionFactory instance = new ActionFactory();

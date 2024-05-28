@@ -1,4 +1,4 @@
-package friend.controller.action;
+package friend.controller;
 
 import java.io.IOException;
 

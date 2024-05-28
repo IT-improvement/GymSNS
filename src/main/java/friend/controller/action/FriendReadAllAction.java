@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import friend.controller.Action;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -32,9 +33,10 @@ public class FriendReadAllAction implements Action {
 			JSONObject friendObj = new JSONObject();
 
 			friendObj.put("index", friend.getIndex());
-			friendObj.put("user_code_self", friend.getUserCodeSelf());
-			friendObj.put("user_code_friend", friend.getUserCodeFriend());
-			
+			friendObj.put("userCode", friend.getUserCodeFriend());
+			friendObj.put("userId", friend.getUserId());
+			friendObj.put("userName", friend.getUserName());
+
 			friendJsonArr.put(friendObj);
 		}
 
