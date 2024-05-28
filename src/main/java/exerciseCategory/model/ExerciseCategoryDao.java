@@ -19,21 +19,16 @@ public class ExerciseCategoryDao {
 	public static ExerciseCategoryDao getInstance() {
 		return instance;
 	}
-	
+
 	public List<ExerciseCategoryResponseDto> findExerciseCategoryAll(ExerciseCategoryRequestDto exerciseCategoryDto) {
 		List<ExerciseCategoryResponseDto> exerciseCategories = new ArrayList<>();
 		String sql = "SELECT exercise_category_index, name "
-					+ "FROM exercise_categories "
-					+ "WHERE user_code = ?";
-
-		System.out.println("Code: " + exerciseCategoryDto.getUserCode());
+					+ "FROM exercise_categories ";
 
 		try {
 			conn = DBManager.getConnection();
 			pstmt = conn.prepareStatement(sql);
 
-			pstmt.setInt(1, exerciseCategoryDto.getUserCode());
-			
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -60,7 +55,7 @@ public class ExerciseCategoryDao {
 			conn = DBManager.getConnection();
 			pstmt = conn.prepareStatement(sql);
 
-			pstmt.setInt(1, exerciseCategoryDto.getUserCode());
+			//pstmt.setInt(1, exerciseCategoryDto.getUserCode());
 			pstmt.setString(2, exerciseCategoryDto.getName());
 
 			pstmt.execute();
@@ -70,7 +65,7 @@ public class ExerciseCategoryDao {
 		} finally {
 			DBManager.close(conn, pstmt);
 		}
-		
+
 		return isAdded;
 	}
 
@@ -84,8 +79,8 @@ public class ExerciseCategoryDao {
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setInt(1, exerciseCategoryDto.getIndex());
-			pstmt.setInt(2, exerciseCategoryDto.getUserCode());
-			
+			//pstmt.setInt(2, exerciseCategoryDto.getUserCode());
+
 			pstmt.execute();
 		} catch (Exception e) {
 			System.out.println(e);
@@ -93,7 +88,7 @@ public class ExerciseCategoryDao {
 		} finally {
 			DBManager.close(conn, pstmt);
 		}
-		
+
 		return isDeleted;
 	}
 
@@ -109,7 +104,7 @@ public class ExerciseCategoryDao {
 
 			pstmt.setString(1, exerciseCategoryDto.getName());
 			pstmt.setInt(2, exerciseCategoryDto.getIndex());
-			pstmt.setInt(3, exerciseCategoryDto.getUserCode());
+			//pstmt.setInt(3, exerciseCategoryDto.getUserCode());
 
 			pstmt.execute();
 		} catch (Exception e) {
@@ -118,7 +113,7 @@ public class ExerciseCategoryDao {
 		} finally {
 			DBManager.close(conn, pstmt);
 		}
-		
+
 		return isUpdated;
 	}
 }
