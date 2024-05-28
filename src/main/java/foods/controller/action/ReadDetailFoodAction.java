@@ -17,43 +17,40 @@ public class ReadDetailFoodAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		FoodDao dao = FoodDao.getInstance();
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
 
 		int foodIndex = Integer.parseInt(request.getParameter("foodIndex"));
+		FoodDao dao = FoodDao.getInstance();
 
 		try {
 			FoodResponseDto food = dao.getFoodByIndex(foodIndex);
 
 			if (food != null) {
-				response.setContentType("application/json");
-				response.setCharacterEncoding("UTF-8");
-				
-				JSONObject object = new JSONObject(food);
-				
-//				int foodIndex = object.getInt("foodIndex");
-//				int userCode = object.getInt("userCode");
-//				int foodCategoryIndex = object.getInt("foodCategoryIndex");
-//				String foodName = object.getString("foodName");
-//				int protein = object.getInt("protein");
-//				int calory = object.getInt("calory");
-//				int carbs = object.getInt("carbs");
-//				int size = object.getInt("size");
-//				String createDate = object.getString("createDate");
-				response.setContentType("application/json");
-		        response.setCharacterEncoding("UTF-8");
-		        
-				System.out.println(object);
-				
+				JSONObject foodObj = new JSONObject();
+				foodObj.put("foodIndex", food.getFoodIndex());
+				foodObj.put("userCode", food.getUserCode());
+				foodObj.put("foodCategoryIndex", food.getFoodCategoryIndex());
+				foodObj.put("foodName", food.getFoodName());
+				foodObj.put("protein", food.getProtein());
+				foodObj.put("calory", food.getCalory());
+				foodObj.put("carbs", food.getCarbs());
+				foodObj.put("size", food.getSize());
+				foodObj.put("createDate", food.getCreateDate());
+
+				response.getWriter().write(foodObj.toString());
+			} else {
 				JSONObject jsonResponse = new JSONObject();
-		        jsonResponse.put("status", 200);
-		        jsonResponse.put("message", "음식 상세정보 가져오기 완료");
-		        
-		        response.getWriter().write(jsonResponse.toString());
+				jsonResponse.put("status", 404);
+				jsonResponse.put("message", "음식을 찾을 수 없습니다.");
+				response.getWriter().write(jsonResponse.toString());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			JSONObject jsonResponse = new JSONObject();
+			jsonResponse.put("status", 500);
+			jsonResponse.put("message", "음식 상세정보 가져오기 실패");
+			response.getWriter().write(jsonResponse.toString());
 		}
-
 	}
 }
