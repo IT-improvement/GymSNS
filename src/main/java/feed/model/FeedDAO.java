@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 
 import util.DBManager;
 
@@ -18,22 +19,56 @@ public class FeedDAO {
 	public static FeedDAO getInstance() {
 		return instance;
 	}
-	
-	
+
+	private List<Feed> addCommentToFeed(List<Feed> feeds) {
+		String sql = "SELECT content "
+					+ "FROM feed_comments "
+					+ "WHERE feed_index = ?";
+
+		try {
+			conn = DBManager.getConnection();
+
+			for (int i = 0; i < feeds.size(); i++) {
+				Feed feed = feeds.get(i);
+
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, feed.getFeedIndex());
+				rs = pstmt.executeQuery();
+
+				while (rs.next()) {
+					feed.addComment(rs.getString(1));
+				}
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt);
+		}
+		return feeds;
+	}
+
 	public ArrayList<Feed> getAllFeed() {
 		ArrayList<Feed> list = new ArrayList<Feed>();
 		try {
 			conn = DBManager.getConnection();
-			String sql = "SELECT title, content, user_code, create_date FROM feeds;";
+			String sql = "SELECT DISTINCT f.feed_index, f.user_code, title, content, f.create_date, mod_date, " +
+					"(SELECT COUNT(*) FROM favorites WHERE f.feed_index = favorites.feed_index) AS favorite_count " +
+					"FROM feeds AS f " +
+					"JOIN favorites AS fav ON fav.feed_index = f.feed_index ";
+
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
-			
+
 			while (rs.next()) {
 				Feed feed = new Feed();
-				feed.setTitle(rs.getString(1));
-				feed.setContent(rs.getString(2));
-				feed.setUserCode(rs.getInt(3));
-				feed.setCreateDate(rs.getTimestamp(4));
+				feed.setFeedIndex(rs.getInt(1));
+				feed.setUserCode(rs.getInt(2));
+				feed.setTitle(rs.getString(3));
+				feed.setContent(rs.getString(4));
+				feed.setCreateDate(rs.getTimestamp(5));
+				feed.setModDate(rs.getTimestamp(6));
+
 				list.add(feed);
 			}
 			
@@ -43,6 +78,9 @@ public class FeedDAO {
 		}finally {
             DBManager.close(conn, pstmt);
         }
+
+		addCommentToFeed(list);
+
 		return list;
 	}
 	
