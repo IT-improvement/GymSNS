@@ -178,7 +178,7 @@ public class FeedDAO {
 	}
 
 	public FeedResponseDTO checkFeedFavorite(FeedRequestDTO feedDto) {
-		FeedResponseDTO feed = new FeedResponseDTO();
+		FeedResponseDTO feed = null;
 
 		try {
 			conn = DBManager.getConnection();
@@ -202,4 +202,55 @@ public class FeedDAO {
 
 		return feed;
 	}
+
+	public FeedResponseDTO deleteFeedFavorite(FeedRequestDTO feedDto) {
+		FeedResponseDTO feed = null;
+		try {
+			conn = DBManager.getConnection();
+			String sql = "DELETE FROM favorites WHERE feed_index = ? AND user_code = ?;";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, feedDto.getFeedIndex());
+			pstmt.setInt(2, feedDto.getUserCode());
+			pstmt.execute();
+
+			feed = checkFeedFavorite(feedDto);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt);
+		}
+
+
+		return feed;
+	}
+
+	public ArrayList<Feed> commentRead(FeedRequestDTO feedDto) {
+		ArrayList<Feed> list = new ArrayList<Feed>();
+
+		try {
+			conn = DBManager.getConnection();
+			String sql = "SELECT feed_index, user_code, content, mod_date FROM feed_comments WHERE feed_index = ?;";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, feedDto.getFeedIndex());
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				Feed feed = new Feed();
+				feed.setFeedIndex(rs.getInt(1));
+				feed.setUserCode(rs.getInt(2));
+				feed.setComment(rs.getString(3));
+				feed.setModDate(rs.getTimestamp(4));
+				list.add(feed);
+			}
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt);
+		}
+
+		return list;
+	}
+
 }
