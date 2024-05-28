@@ -21,37 +21,30 @@ import user.controller.Action;
 public class ReadAllFoodCategoryAction implements Action{
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
 
 		FoodCategoryDao dao = FoodCategoryDao.getInstance();
-		
-		HttpSession session = request.getSession();
-		
-//		int userCode = session.getAttribute("userCode");
+
 		int userCode = Integer.parseInt(request.getParameter("userCode"));
-		
-		List<FoodCategoryResponseDto> foodCategory = dao.getAllFoodCategoriesByUserCode(userCode);
-		
-		JSONArray jsonArray = new JSONArray(foodCategory);
-//		for(FoodCategoryRequestDto foodCategory : foodCategories) {
-//			JSONObject object = new JSONObject();
-//			
-//			object.put("foodCategory", foodCategory.getFoodCategoryIndex());
-//			object.put("userCode", foodCategory.getUserCode());
-//			object.put("categoryName", foodCategory.getCategoryName());
-//			object.put("categoryImageUrl", foodCategory.getCategoryImageUrl());
-//			
-//			jsonArray.put(object);
-//		}
-		response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        
-        System.out.println(jsonArray);
-		
-        JSONObject jsonResponse = new JSONObject();
-        jsonResponse.put("status", 200);
-        jsonResponse.put("message", "카테고리 리스트 가져오기 완료");
-        
-        response.getWriter().write(jsonResponse.toString());
+
+		List<FoodCategoryResponseDto> foodCategories = dao.getAllFoodCategoriesByUserCode(userCode);
+
+		JSONArray jsonArray = new JSONArray();
+
+		for (FoodCategoryResponseDto foodCategory : foodCategories) {
+			JSONObject foodCategoryObj = new JSONObject();
+
+			foodCategoryObj.put("foodCategoryIndex", foodCategory.getFoodCategoryIndex());
+			foodCategoryObj.put("userCode", foodCategory.getUserCode());
+			foodCategoryObj.put("categoryName", foodCategory.getCategoryName());
+			foodCategoryObj.put("categoryImageUrl", foodCategory.getCategoryImageUrl());
+
+			jsonArray.put(foodCategoryObj);
+		}
+
+		System.out.println(jsonArray.toString());
+
+		response.getWriter().write(jsonArray.toString());
 	}
-	
 }

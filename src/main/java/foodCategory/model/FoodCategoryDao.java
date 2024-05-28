@@ -38,6 +38,22 @@ public class FoodCategoryDao {
         }
     }
 
+    public boolean existsById(int foodCategoryIndex) {
+        String sql = "SELECT COUNT(*) FROM food_categories WHERE food_category_index = ?";
+        try (Connection conn = DBManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, foodCategoryIndex);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public void addFoodCategory(FoodCategoryRequestDto foodCategoryRequestDto) {
         String sql = "INSERT INTO food_categories (user_code, category_name, category_image_url, create_date) VALUES (?, ?, ?, CURRENT_TIMESTAMP)";
         try {
@@ -102,7 +118,8 @@ public class FoodCategoryDao {
         return foodCategories;
     }
 
-    public int updateFoodCategory(int foodCategoryIndex, FoodCategoryRequestDto foodCategoryRequestDto) {
+    public boolean updateFoodCategory(int foodCategoryIndex, FoodCategoryRequestDto foodCategoryRequestDto) {
+        boolean isUpdated = true;
         String sql = "UPDATE food_categories SET category_name = ?, category_image_url = ?, user_code = ? WHERE food_category_index = ?";
         try {
         	conn = DBManager.getConnection();
@@ -111,13 +128,14 @@ public class FoodCategoryDao {
             pstmt.setString(2, foodCategoryRequestDto.getCategoryImageUrl());
             pstmt.setInt(3, foodCategoryRequestDto.getUserCode());
             pstmt.setInt(4, foodCategoryIndex);
-            return pstmt.executeUpdate();
+           pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            isUpdated = false;
         } finally {
             closeResources();
         }
-        return 0;
+        return isUpdated;
     }
 
     public int deleteFoodCategory(int foodCategoryIndex) {
