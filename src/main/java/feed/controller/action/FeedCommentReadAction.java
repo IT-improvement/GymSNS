@@ -3,7 +3,6 @@ package feed.controller.action;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import feed.controller.Action;
 import feed.model.FeedDAO;
 import feed.model.FeedRequestDTO;
-import feed.model.FeedResponseDTO;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -20,7 +18,7 @@ import feed.model.Feed;
 /**
  * Servlet implementation class FeedCommentAction
  */
-public class FeedCommentAction implements Action {
+public class FeedCommentReadAction implements Action {
 
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String url[] = request.getPathInfo().split("/");
