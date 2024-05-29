@@ -15,29 +15,37 @@ import user.controller.Action;
 public class ReadDetailDietAction implements Action {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		DietDao dao = DietDao.getInstance();
-		
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+
 		int dietIndex = Integer.parseInt(request.getParameter("dietIndex"));
-		
+		DietDao dao = DietDao.getInstance();
+
 		try {
 			DietResponseDto diet = dao.getDietByDietIndex(dietIndex);
-			
-			if(diet != null) {
-				response.setContentType("application/json");
-				response.setCharacterEncoding("UTF-8");
-				
-				JSONObject object = new JSONObject(diet);
-				System.out.println(object);
-				
+
+			if (diet != null) {
+				JSONObject dietObj = new JSONObject();
+				dietObj.put("dietIndex", diet.getDietIndex());
+				dietObj.put("userCode", diet.getUserCode());
+				dietObj.put("foodIndex", diet.getFoodIndex());
+				dietObj.put("totalCalories", diet.getTotalCalories());
+				dietObj.put("totalProtein", diet.getTotalProtein());
+				dietObj.put("createDate", diet.getCreateDate());
+
+				response.getWriter().write(dietObj.toString());
+			} else {
 				JSONObject jsonResponse = new JSONObject();
-		        jsonResponse.put("status", 200);
-		        jsonResponse.put("message", "식단 상세정보 가져오기 완료");
-		        
-		        response.getWriter().write(jsonResponse.toString());
+				jsonResponse.put("status", 404);
+				jsonResponse.put("message", "식단을 찾을 수 없습니다.");
+				response.getWriter().write(jsonResponse.toString());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			JSONObject jsonResponse = new JSONObject();
+			jsonResponse.put("status", 500);
+			jsonResponse.put("message", "식단 상세정보 가져오기 실패");
+			response.getWriter().write(jsonResponse.toString());
 		}
 	}
 }

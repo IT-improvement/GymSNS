@@ -14,51 +14,76 @@ import org.json.JSONObject;
 import diet.model.DietDao;
 import diet.model.DietRequestDto;
 import user.controller.Action;
+import util.ApiResponseManager;
 
 public class UpdateDietAction implements Action{
 
-	@Override
-	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		InputStream in = request.getInputStream();
-        BufferedReader br = new BufferedReader(new InputStreamReader(in));
-        
-        StringBuilder sb = new StringBuilder();
-        String line;
-        while ((line = br.readLine()) != null) {
-            sb.append(line);
+        @Override
+        public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+
+                try {
+                        String dietIndexStr = request.getParameter("dietIndex");
+                        String userCodeStr = request.getParameter("userCode");
+
+                        int dietIndex = Integer.parseInt(dietIndexStr);
+                        int userCode = Integer.parseInt(userCodeStr);
+
+                        int foodIndex = Integer.parseInt(request.getParameter("foodIndex"));
+                        int totalCalories = Integer.parseInt(request.getParameter("totalCalories"));
+                        int totalProtein = Integer.parseInt(request.getParameter("totalProtein"));
+
+                        validateInput(dietIndex, userCode, foodIndex, totalCalories, totalProtein);
+
+                        DietDao dao = DietDao.getInstance();
+                        DietRequestDto dietDto = new DietRequestDto(dietIndex, userCode, foodIndex, totalCalories, totalProtein);
+
+                        if (!dao.existsById(dietIndex)) {
+                                JSONObject jsonResponse = ApiResponseManager.getStatusObject(404, "Diet not found");
+                                response.getWriter().write(jsonResponse.toString());
+                                return;
+                        }
+
+                        if (dao.updateDiet(dietIndex, dietDto)) {
+                                JSONObject jsonResponse = ApiResponseManager.getStatusObject(200, "식단 업데이트 성공");
+                                response.getWriter().write(jsonResponse.toString());
+                        } else {
+                                JSONObject jsonResponse = ApiResponseManager.getStatusObject(500, "Failed to update diet");
+                                response.getWriter().write(jsonResponse.toString());
+                        }
+                } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                        JSONObject jsonResponse = ApiResponseManager.getStatusObject(400, "Invalid input data");
+                        response.getWriter().write(jsonResponse.toString());
+                } catch (Exception e) {
+                        e.printStackTrace();
+                        JSONObject jsonResponse = ApiResponseManager.getStatusObject(500, "Failed to update diet");
+                        response.getWriter().write(jsonResponse.toString());
+                }
         }
-		
-        String data = sb.toString();
-        System.out.print("data : " + data);
-        JSONObject object = new JSONObject(data);
-        
-        int dietIndex = object.getInt("dietIndex");
-        // 나중에 물어보기 userCode 는 입력받는게 아니라 선택한 foodCategory 객체에 담겨있는
-        // userCode 를 그대로 가져와서 쓰고싶은데 session.getAttribute를 써야 하는지
-        // 일단 이걸로 postman에서 Body - raw - JSON 에서 정보 넣어서 하니 작동은됨
-        int userCode = object.getInt("userCode");
-        int foodIndex = object.getInt("foodIndex");
-        int totalCalories = object.getInt("totalCalories");
-        int totalProtein = object.getInt("totalProtein");
-        
-        DietDao dao = DietDao.getInstance();
-        DietRequestDto dietDto = new DietRequestDto(dietIndex, userCode, foodIndex, totalCalories, totalProtein);
-        
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        
-        try {
-            dao.updateDiet(dietIndex, dietDto);
-            System.out.println("식단 업데이트 완료");
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("식단 업데이트 실패");
+
+        private void validateInput(int dietIndex, int userCode, int foodIndex, int totalCalories, int totalProtein) throws ValidationException {
+                if (dietIndex <= 0) {
+                        throw new ValidationException("Invalid diet index");
+                }
+                if (userCode <= 0) {
+                        throw new ValidationException("Invalid user code");
+                }
+                if (foodIndex <= 0) {
+                        throw new ValidationException("Invalid food index");
+                }
+                if (totalCalories < 0) {
+                        throw new ValidationException("Total calories should be a non-negative value");
+                }
+                if (totalProtein < 0) {
+                        throw new ValidationException("Total protein should be a non-negative value");
+                }
         }
-        
-        JSONObject jsonResponse = new JSONObject();
-        jsonResponse.put("status", 200);
-        jsonResponse.put("message", "식단 업데이트 완료");
-        
-        response.getWriter().write(jsonResponse.toString());
-	}
+
+        public class ValidationException extends Exception {
+                public ValidationException(String message) {
+                        super(message);
+                }
+        }
 }
