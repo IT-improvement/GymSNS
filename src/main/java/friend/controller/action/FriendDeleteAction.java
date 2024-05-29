@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import friend.model.FriendDao;
 import friend.model.FriendRequestDto;
 import util.ApiResponseManager;
+import util.ParameterValidator;
 
 public class FriendDeleteAction implements Action {
 	@Override
@@ -19,23 +20,22 @@ public class FriendDeleteAction implements Action {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 
-		String friendCodeStr = request.getParameter("code");
+		String userCodeStr = request.getHeader("Authorization");
+		String userCodeFriendStr = request.getParameter("userCodeFriend");
+
 		JSONObject resObj = new JSONObject();
-		
-		int friendCode = 0;
-		
-		try {
-			friendCode = Integer.parseInt(friendCodeStr);
-		} catch (Exception e) {
+
+		if (!ParameterValidator.isInteger(userCodeStr) || !ParameterValidator.isInteger(userCodeFriendStr)) {
 			resObj = ApiResponseManager.getStatusObject(400);
-			
 			response.getWriter().write(resObj.toString());
 			return;
 		}
-		
+
+		int userCode = Integer.parseInt(userCodeStr);
+		int userCodeFriend = Integer.parseInt(userCodeFriendStr);
+
 		FriendDao friendDao = FriendDao.getInstance();
-		//FriendRequestDto friendDto = new FriendRequestDto(user.getCode());
-		FriendRequestDto friendDto = new FriendRequestDto(1, friendCode);
+		FriendRequestDto friendDto = new FriendRequestDto(userCode, userCodeFriend);
 		
 		if (friendDao.deleteFriendById(friendDto)) {
 			ApiResponseManager.getStatusObject(200, "Friend Delete is finished successfully");

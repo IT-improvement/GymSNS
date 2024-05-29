@@ -12,22 +12,31 @@ import org.json.JSONObject;
 import friendRequest.model.FriendRequestDao;
 import friendRequest.model.FriendRequestRequestDto;
 import util.ApiResponseManager;
+import util.ParameterValidator;
 
 public class FriendRequestDeleteAction implements Action {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json");
 	    response.setCharacterEncoding("UTF-8");
-	    
-		String userCodeOtherStr = request.getParameter("code");
-	    int userCodeOther = Integer.parseInt(userCodeOtherStr);
-	    
-		//FriendRequestRequestDto friendRequestDto = new FriendRequestRequestDto(user.getCode(), userCodeOther);
-		FriendRequestRequestDto friendRequestDto = new FriendRequestRequestDto(1, userCodeOther);
-		FriendRequestDao friendRequestDao = FriendRequestDao.getInstance();
+
+		String userCodeStr = request.getHeader("Authorization");
+		String userCodeOtherStr = request.getParameter("userCodeOther");
 
 		JSONObject resObj = new JSONObject();
-		
+
+		if (!ParameterValidator.isInteger(userCodeStr) || !ParameterValidator.isInteger(userCodeOtherStr)) {
+			resObj = ApiResponseManager.getStatusObject(400);
+			response.getWriter().write(resObj.toString());
+			return;
+		}
+
+		int userCode = Integer.parseInt(userCodeStr);
+		int userCodeOther = Integer.parseInt(userCodeOtherStr);
+
+		FriendRequestRequestDto friendRequestDto = new FriendRequestRequestDto(userCode, userCodeOther);
+		FriendRequestDao friendRequestDao = FriendRequestDao.getInstance();
+
 		if (friendRequestDao.deleteFriendRequest(friendRequestDto)) {
 			resObj = ApiResponseManager.getStatusObject(200, "Friend Request Delete is finished successfully");
 		} else {

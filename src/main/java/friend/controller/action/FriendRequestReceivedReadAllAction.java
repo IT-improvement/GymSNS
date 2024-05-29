@@ -14,8 +14,11 @@ import org.json.JSONObject;
 import friendRequest.model.FriendRequestDao;
 import friendRequest.model.FriendRequestRequestDto;
 import friendRequest.model.FriendRequestResponseDto;
+import util.ApiResponseManager;
+import util.ParameterValidator;
 
-public class FriendRequestReadAllAction implements Action {
+// 유저가 받은 친구 요청들을 반환
+public class FriendRequestReceivedReadAllAction implements Action {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException , IOException {
 		response.setContentType("application/json");
@@ -23,36 +26,30 @@ public class FriendRequestReadAllAction implements Action {
 
 		String userCodeStr = request.getHeader("Authorization");
 
-		String userCodeOtherStr = request.getParameter("code");
-		FriendRequestDao friendRequestDao = FriendRequestDao.getInstance();
-		//FriendRequestRequestDto friendRequestDto = new FriendRequestRequestDto(user.getCode());
-
-		// 받은 친구 요청들
-		if (userCodeOtherStr == null) {
-			FriendRequestRequestDto friendRequestDto = new FriendRequestRequestDto(1);
-			List<FriendRequestResponseDto> friendRequests = friendRequestDao.findReceivedFriendRequestAll(friendRequestDto);
-			JSONArray friendRequestJsonArr = new JSONArray();
-			
-			for (FriendRequestResponseDto friendRequest : friendRequests) {
-				JSONObject friendRequestObj = new JSONObject();
-
-				friendRequestObj.put("userCode", friendRequest.getUserCodeOther());
-				friendRequestObj.put("userId", friendRequest.getUserIdOther());
-				friendRequestObj.put("userName", friendRequest.getUserNameOther());
-				
-				friendRequestJsonArr.put(friendRequestObj);
-			}
-
-			response.getWriter().write(friendRequestJsonArr.toString());
-		} else {
-			// 특정 유저에게 내가 친구 요청을 보냈는지 여부
-			int code = Integer.parseInt(userCodeOtherStr);
-			JSONObject friendRequestObj = new JSONObject();
-			//FriendRequestRequestDto friendRequestDto = new FriendRequestRequestDto(user.getCode(), code);
-			FriendRequestRequestDto friendRequestDto = new FriendRequestRequestDto(1, code);
-			friendRequestObj.put("is_user_in_friend_request", friendRequestDao.isUserInSentFriendRequest(friendRequestDto));
-
-			response.getWriter().write(friendRequestObj.toString());
+		if (!ParameterValidator.isInteger(userCodeStr)) {
+			JSONObject resObj = ApiResponseManager.getStatusObject(400);
+			response.getWriter().write(resObj.toString());
+			return;
 		}
+
+		int userCode = Integer.parseInt(userCodeStr);
+
+		FriendRequestDao friendRequestDao = FriendRequestDao.getInstance();
+		FriendRequestRequestDto friendRequestDto = new FriendRequestRequestDto(userCode);
+		List<FriendRequestResponseDto> friendRequests = friendRequestDao.findReceivedFriendRequestAll(friendRequestDto);
+
+		JSONArray friendRequestJsonArr = new JSONArray();
+
+		for (FriendRequestResponseDto friendRequest : friendRequests) {
+			JSONObject friendRequestObj = new JSONObject();
+
+			friendRequestObj.put("userCode", friendRequest.getUserCodeOther());
+			friendRequestObj.put("userId", friendRequest.getUserIdOther());
+			friendRequestObj.put("userName", friendRequest.getUserNameOther());
+
+			friendRequestJsonArr.put(friendRequestObj);
+		}
+
+		response.getWriter().write(friendRequestJsonArr.toString());
 	}
 }
