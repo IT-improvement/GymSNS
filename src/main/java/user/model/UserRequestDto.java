@@ -10,6 +10,7 @@ public class UserRequestDto {
 	private String gender;
 	private String telecom;
 	private String phone;
+	private String profileImage;
 	
 	public UserRequestDto() {
 		
@@ -26,6 +27,20 @@ public class UserRequestDto {
 		this.gender = gender;
 		this.telecom = telecom;
 		this.phone = phone;
+	}
+
+	public UserRequestDto(String id, String password, String email, String name, String birth, String gender,
+						  String telecom, String phone, String profileImage) {
+		super();
+		this.id = id;
+		this.password = password;
+		this.email = email;
+		this.name = name;
+		this.birth = birth;
+		this.gender = gender;
+		this.telecom = telecom;
+		this.phone = phone;
+		this.profileImage = profileImage;
 	}
 
 	public String getId() {
@@ -90,6 +105,14 @@ public class UserRequestDto {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	public String getProfileImage() {
+		return profileImage;
+	}
+
+	public void setProfileImage(String phone) {
+		this.profileImage = profileImage;
 	}
 	
 }
