@@ -186,7 +186,7 @@ public class FoodDao {
         return false;
     }
 
-    public boolean existsById(int foodIndex) {
+    public boolean existsById(int foodIndex) throws SQLException {
         String sql = "SELECT COUNT(*) FROM foods WHERE food_index = ?";
         try (Connection conn = DBManager.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
