@@ -43,7 +43,8 @@ public class FeedDetailAction implements Action {
 		feedObj.put("title", feedDto.getTitle());
 		feedObj.put("content", feedDto.getContent());
 		feedObj.put("feedIndex", feedDto.getFeedIndex());
-		feedObj.put("userCode", feedDto.getUserCode());	
+		feedObj.put("userCode", feedDto.getUserCode());
+		feedObj.put("comment", feedDto.getComment());
 			
 	
 

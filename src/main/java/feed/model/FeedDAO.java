@@ -67,7 +67,7 @@ public class FeedDAO {
 
 
 	private List<Feed> addCommentToFeed(List<Feed> feeds) {
-		String sql = "SELECT content "
+		String sql = "SELECT comment "
 					+ "FROM feed_comments "
 					+ "WHERE feed_index = ?";
 
@@ -100,8 +100,7 @@ public class FeedDAO {
 			conn = DBManager.getConnection();
 			String sql = "SELECT DISTINCT f.feed_index, f.user_code, title, content, f.create_date, mod_date, " +
 					"(SELECT COUNT(*) FROM favorites WHERE f.feed_index = favorites.feed_index) AS favorite_count " +
-					"FROM feeds AS f " +
-					"JOIN favorites AS fav ON fav.feed_index = f.feed_index ";
+					"FROM feeds AS f ";
 
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
@@ -124,6 +123,7 @@ public class FeedDAO {
 		}finally {
             DBManager.close(conn, pstmt);
         }
+		System.out.println(list.size());
 
 		addCommentToFeed(list);
 
