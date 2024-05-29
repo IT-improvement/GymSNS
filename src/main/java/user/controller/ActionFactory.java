@@ -26,6 +26,8 @@ public class ActionFactory {
 			action = new LeaveAction();
 		else if(command.equals("update"))
 			action = new UpdateAction();
+		else if(command.equals("read_one"))
+			action = new UserReadOneAction();
 		else if(command.equals("read_all"))
 			action = new UserReadAllAction();
 		else if(command.equals("read_all_by_query"))
