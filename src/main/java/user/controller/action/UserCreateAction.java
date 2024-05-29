@@ -128,48 +128,6 @@ public class UserCreateAction extends HttpServlet implements Action {
 			message += "휴대폰 번호: 필수 정보입니다.";
 		}
 
-
-//		if (id.isEmpty() || id.equals("")) {
-//			isCreate = false;
-//			message += "아이디: 필수 정보입니다.";
-//		}
-//		if (password.isEmpty() || password.equals("")) {
-//			isCreate = false;
-//			if (!message.equals(""))
-//				message += System.lineSeparator();
-//			message += "비밀번호: 필수 정보입니다.";
-//		}
-//		if (name.isEmpty() || name.equals("")) {
-//			isCreate = false;
-//			if (!message.equals(""))
-//				message += System.lineSeparator();
-//			message += "이름: 필수 정보입니다.";
-//		}
-//		if (birth.isEmpty() || birth.equals("")) {
-//			isCreate = false;
-//			if (!message.equals(""))
-//				message += System.lineSeparator();
-//			message += "생년월일: 필수 정보입니다.";
-//		}
-//		if (gender.isEmpty() || gender.equals("")) {
-//			isCreate = false;
-//			if (!message.equals(""))
-//				message += System.lineSeparator();
-//			message += "성별: 필수 정보입니다.";
-//		}
-//		if (telecom.isEmpty() || telecom.equals("")) {
-//			isCreate = false;
-//			if (!message.equals(""))
-//				message += System.lineSeparator();
-//			message += "통신사: 필수 정보입니다.";
-//		}
-//		if (phone.isEmpty() || phone.equals("")) {
-//			isCreate = false;
-//			if (!message.equals(""))
-//				message += System.lineSeparator();
-//			message += "휴대폰 번호: 필수 정보입니다.";
-//		}
-
 		if (dao.isIdDuplicate(id)) {
 			isCreate = false;
 			if (!message.equals(""))
