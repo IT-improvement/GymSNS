@@ -40,7 +40,7 @@ public class FriendRequestDeleteAction implements Action {
 		if (friendRequestDao.deleteFriendRequest(friendRequestDto)) {
 			resObj = ApiResponseManager.getStatusObject(200, "Friend Request Delete is finished successfully");
 		} else {
-			resObj = ApiResponseManager.getStatusObject(404);
+			resObj = ApiResponseManager.getStatusObject(500);
 		}
 			
 		response.getWriter().write(resObj.toString());
