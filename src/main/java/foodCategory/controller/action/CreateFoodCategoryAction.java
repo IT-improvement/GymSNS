@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import foodCategory.model.FoodCategoryDao;
 import foodCategory.model.FoodCategoryRequestDto;
 import user.controller.Action;
+import util.ParameterValidator;
 
 public class CreateFoodCategoryAction implements Action {
 	@Override
@@ -21,20 +22,22 @@ public class CreateFoodCategoryAction implements Action {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 
+		String userCodeStr = request.getHeader("Authorization");
+		String categoryName = request.getParameter("categoryName");
+		String categoryImageUrl = request.getParameter("categoryImageUrl");
+
+		JSONObject resObj = new JSONObject();
+
 		try {
-			String data = request.getReader().lines().reduce("", (accumulator, actual) -> accumulator + actual);
-			JSONObject object = new JSONObject(data);
+			validateInput(userCodeStr, categoryName, categoryImageUrl);
 
-			int userCode = object.getInt("userCode");
-			String categoryName = object.getString("categoryName");
-			String categoryImageUrl = object.getString("categoryImageUrl");
-
-			validateInput(userCode, categoryName, categoryImageUrl);
+			int userCode = Integer.parseInt(userCodeStr);
 
 			FoodCategoryDao dao = FoodCategoryDao.getInstance();
 			FoodCategoryRequestDto foodCategoryDto = new FoodCategoryRequestDto(userCode, categoryName, categoryImageUrl);
 
 			dao.addFoodCategory(foodCategoryDto);
+
 			JSONObject jsonResponse = new JSONObject();
 			jsonResponse.put("status", 200);
 			jsonResponse.put("message", "카테고리 생성완료");
@@ -53,8 +56,8 @@ public class CreateFoodCategoryAction implements Action {
 		}
 	}
 
-	private void validateInput(int userCode, String categoryName, String categoryImageUrl) throws ValidationException {
-		if (userCode <= 0) {
+	private void validateInput(String userCodeStr, String categoryName, String categoryImageUrl) throws ValidationException {
+		if (userCodeStr == null || !ParameterValidator.isInteger(userCodeStr)) {
 			throw new ValidationException("Invalid user code");
 		}
 		if (categoryName == null || categoryName.trim().isEmpty()) {
