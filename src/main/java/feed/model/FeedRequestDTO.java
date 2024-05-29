@@ -7,10 +7,13 @@ public class FeedRequestDTO {
 	private String content;
 	private int feedIndex;
 	private int userCode;
+	private int commentIndex;
 	private Timestamp createDate;
 	private Timestamp modDate;
 	private String comment;
-	
+
+	public FeedRequestDTO() {}
+
 	public FeedRequestDTO(int userCode, String title, String content) {
 		this.userCode = userCode;
 		this.title = title;
@@ -93,4 +96,6 @@ public class FeedRequestDTO {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
+	public int getCommentIndex() {return commentIndex;}
+	public void setCommentIndex(int commentIndex) {this.commentIndex = commentIndex;}
 }

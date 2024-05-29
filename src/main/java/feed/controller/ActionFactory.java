@@ -37,6 +37,10 @@ private ActionFactory() {
 			action = new FeedCommentReadAction();
 		}else if (command.equals("feedCommentCreate")) {
 			action = new FeedCommentCreateAction();
+		}else if (command.equals("feedCommentUpdate")) {
+			action = new FeedCommentUpdateAction();
+		}else if (command.equals("feedCommentDelete")) {
+			action = new FeedCommentDeleteAction();
 		}
 	
 		

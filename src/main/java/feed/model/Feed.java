@@ -7,6 +7,7 @@ import java.util.List;
 public class Feed {
 	private String title;
 	private String content;
+	private String comment;
 	private int feedIndex;
 	private int userCode;
 	private Timestamp createDate;
@@ -82,4 +83,7 @@ public class Feed {
 	public void addComment(String comment) {
 		this.comments.add(comment);
 	}
+	public void setComment(String comment) {this.comment = comment;}
+
+	public String getComment() {return comment;}
 }

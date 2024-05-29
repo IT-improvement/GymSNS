@@ -1,5 +1,12 @@
 package feed.controller.action;
 
+import feed.controller.Action;
+import feed.model.FeedDAO;
+import feed.model.FeedRequestDTO;
+import feed.model.FeedResponseDTO;
+import org.json.JSONObject;
+import util.ApiResponseManager;
+
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,31 +17,27 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class FeedCommentDeleteAction
  */
-public class FeedCommentDeleteAction extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public FeedCommentDeleteAction() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+public class FeedCommentDeleteAction implements Action {
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
+		int commentIndex = Integer.parseInt(request.getParameter("commentIndex"));
+		FeedRequestDTO feedDto = new FeedRequestDTO();
+		feedDto.setCommentIndex(commentIndex);
+		FeedDAO feedDao = FeedDAO.getInstance();
+		FeedResponseDTO feed = feedDao.deleteComment(feedDto);
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
+		JSONObject feedObj = new JSONObject();
+		if (feed == null) {
+			feedObj = ApiResponseManager.getStatusObject(200);
+		} else {
+			feedObj = ApiResponseManager.getStatusObject(400);
+		}
 
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json;charset=utf-8");
+		response.getWriter().append(feedObj.toString());
+
+
+	}
 }

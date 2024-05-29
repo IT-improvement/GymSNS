@@ -19,9 +19,30 @@ public class FeedDAO {
 	public static FeedDAO getInstance() {
 		return instance;
 	}
+
+	public FeedResponseDTO searchCommentByCommentIndex(FeedRequestDTO feedDto) {
+		FeedResponseDTO feed = null;
+		try {
+			conn = DBManager.getConnection();
+			String sql = "SELECT feed_index, user_code, comment FROM feed_comments WHERE feed_comment_index = ?;";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, feedDto.getCommentIndex());
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				feed.setFeedIndex(rs.getInt(1));
+				feed.setUserCode(rs.getInt(2));
+				feed.setComment(rs.getString(3));
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt);
+		}
+		return feed;
+	}
 	
 	public FeedResponseDTO searchCommentByFeedIndexAndUserCode(FeedRequestDTO feedDto) {
-		FeedResponseDTO feed = new FeedResponseDTO();
+		FeedResponseDTO feed = null;
 
 		try {
 			conn = DBManager.getConnection();
@@ -292,7 +313,7 @@ public class FeedDAO {
 
 		try {
 			conn = DBManager.getConnection();
-			String sql = "SELECT feed_index, user_code, content, mod_date FROM feed_comments WHERE feed_index = ?;";
+			String sql = "SELECT feed_index, user_code, comment, mod_date FROM feed_comments WHERE feed_index = ?;";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, feedDto.getFeedIndex());
 			rs = pstmt.executeQuery();
@@ -301,7 +322,7 @@ public class FeedDAO {
 				Feed feed = new Feed();
 				feed.setFeedIndex(rs.getInt(1));
 				feed.setUserCode(rs.getInt(2));
-//				feed.setComment(rs.getString(3));
+				feed.setComment(rs.getString(3));
 				feed.setModDate(rs.getTimestamp(4));
 				list.add(feed);
 			}
@@ -328,6 +349,43 @@ public class FeedDAO {
 			pstmt.execute();
 			feed = searchCommentByFeedIndexAndUserCode(feedDto);
 
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt);
+		}
+
+		return feed;
+	}
+
+	public FeedResponseDTO updateComment(FeedRequestDTO feedDto) {
+		FeedResponseDTO feed = null;
+		try {
+			conn = DBManager.getConnection();
+			String sql = "UPDATE feed_comments SET comment = ? WHERE feed_comment_index = ?;";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, feedDto.getComment());
+			pstmt.setInt(2, feedDto.getCommentIndex());
+			pstmt.execute();
+			feed = searchCommentByCommentIndex(feedDto);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt);
+		}
+
+		return feed;
+	}
+
+	public FeedResponseDTO deleteComment(FeedRequestDTO feedDto) {
+		FeedResponseDTO feed = null;
+		try {
+			conn = DBManager.getConnection();
+			String sql = "DELETE FROM feed_comments WHERE feed_comment_index = ?;";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, feedDto.getCommentIndex());
+			pstmt.execute();
+			feed = searchCommentByCommentIndex(feedDto);
 		}catch (Exception e) {
 			e.printStackTrace();
 		}finally {
