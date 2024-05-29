@@ -26,7 +26,8 @@ public class ExerciseDao {
 		String sql = "SELECT exercise_index, exer.exercise_category_index, exer_cate.name, exer.user_code, users.id, users.name, exer.name, content, exer.create_date, exer.mod_date "
 				+ "FROM exercises AS exer "
 				+ "JOIN exercise_categories as exer_cate ON exer_cate.exercise_category_index = exer.exercise_category_index "
-				+ "JOIN users ON users.code = exer.user_code";
+				+ "JOIN users ON users.code = exer.user_code "
+				+ "ORDER BY create_date DESC";
 
 		try {
 			conn = DBManager.getConnection();
@@ -69,7 +70,8 @@ public class ExerciseDao {
 				+ "OR exer.name LIKE ? "
 				+ "OR users.id LIKE ? "
 				+ "OR users.name LIKE ? "
-				+ "OR content LIKE ?";
+				+ "OR content LIKE ? "
+				+ "ORDER BY create_date DESC";
 
 		try {
 			conn = DBManager.getConnection();
