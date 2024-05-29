@@ -69,6 +69,7 @@ public class LoginAction extends HttpServlet implements Action {
 			 UserResponseDto user = userDao.findUserByIdAndPassword(id, password);
 			 
 			 if(user != null) {
+				 session.setAttribute("user", user);
 				 session.setAttribute("code", user.getCode());
 				 session.setAttribute("id", user.getId());
 				 

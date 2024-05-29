@@ -99,6 +99,40 @@ public class UserDao {
 		return user;
 	}
 
+	public UserResponseDto findUserById(String id) {
+		UserResponseDto user = null;
+
+		try {
+			conn = DBManager.getConnection();
+
+			String sql = "SELECT id, email, name, birth, gender, telecom, phone, reg_date, mod_date FROM users WHERE id=?";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+
+			rs = pstmt.executeQuery();
+
+			if(rs.next()) {
+				String email = rs.getString(2);
+				String name = rs.getString(3);
+				String birth = rs.getString(4);
+				String gender = rs.getString(5);
+				String telecom = rs.getString(6);
+				String phone = rs.getString(7);
+				Timestamp regDate = rs.getTimestamp(8);
+				Timestamp modDate = rs.getTimestamp(9);
+
+				user = new UserResponseDto(id, email, name, birth, gender, telecom, phone);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt, rs);
+		}
+		return user;
+	}
+
 	public List<UserResponseDto> findUserAllByIdOrName(String query) {
 		List<UserResponseDto> list = new ArrayList<UserResponseDto>();
 		String sql = "SELECT code, id, email, name, birth, gender, telecom, phone "
@@ -203,16 +237,16 @@ public class UserDao {
 	}
 	
 	
-	public UserResponseDto updateUserPassword(UserRequestDto userDto, String newPassword) {
+	public void updateUserPassword(UserRequestDto userDto, String newPassword) {
 		UserResponseDto user = null;
 		
-		if(newPassword == null || newPassword.equals("")) {
-			return user;
-		}
-		
-		if (!userExists(userDto)) {
-			return user;
-		}
+//		if(newPassword == null || newPassword.equals("")) {
+//			return user;
+//		}
+//
+//		if (!userExists(userDto)) {
+//			return user;
+//		}
 		
 		try {
 			conn = DBManager.getConnection();
@@ -222,26 +256,27 @@ public class UserDao {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, PasswordCrypto.encrypt(newPassword));
 			pstmt.setString(2, userDto.getId());
-			
+
 			pstmt.execute();
 			
-			User userVo = findUserById(userDto.getId());
-			user = new UserResponseDto(userVo);
-			return user;
+//			User userVo = findUserById(userDto.getId());
+//			user = new UserResponseDto(userVo);
+			user = findUserById(userDto.getId());
+//			return user;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			DBManager.close(conn, pstmt);
 		}
-		return user;
+//		return user;
 	}
 	
-	public UserResponseDto updateUserName(UserRequestDto userDto) {
+	public void updateUserName(UserRequestDto userDto) {
 		UserResponseDto user = null;
 		
-		if (!userExists(userDto)) {
-			return user;
-		}
+//		if (!userExists(userDto)) {
+//			return user;
+//		}
 		try {
 			conn = DBManager.getConnection();
 			
@@ -249,24 +284,25 @@ public class UserDao {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, userDto.getName());
 			pstmt.setString(2, userDto.getId());
-			
+
 			pstmt.execute();
 			
 			user = findUserByIdAndPassword(userDto.getId(), userDto.getPassword());
+//			user = findUserById(userDto.getId());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			DBManager.close(conn, pstmt);
 		}
-		return user;
+//		return user;
 	}
 	
-	public UserResponseDto updateUserEmail(UserRequestDto userDto) {
+	public void updateUserEmail(UserRequestDto userDto) {
 		UserResponseDto user = null;
 		
-		if (!userExists(userDto)) {
-			return user;
-		}
+//		if (!userExists(userDto)) {
+//			return user;
+//		}
 		try {
 			conn = DBManager.getConnection();
 			
@@ -274,24 +310,51 @@ public class UserDao {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, userDto.getEmail());
 			pstmt.setString(2, userDto.getId());
-			
+
 			pstmt.execute();
-			
+
 			user = findUserByIdAndPassword(userDto.getId(), userDto.getPassword());
+//			user = findUserById(userDto.getId());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			DBManager.close(conn, pstmt);
 		}
-		return user;
+//		return user;
+	}
+
+	public void updateUserProfileImage(UserRequestDto userDto) {
+		UserResponseDto user = null;
+
+//		if (!userExists(userDto)) {
+//			return user;
+//		}
+		try {
+			conn = DBManager.getConnection();
+
+			String sql = "UPDATE users SET profile_image=? WHERE id=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userDto.getProfileImage());
+			pstmt.setString(2, userDto.getId());
+
+			pstmt.execute();
+
+			user = findUserByIdAndPassword(userDto.getId(), userDto.getPassword());
+//			user = findUserById(userDto.getId());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt);
+		}
+//		return user;
 	}
 	
-	public UserResponseDto updateUserPhone(UserRequestDto userDto) {
+	public void updateUserPhone(UserRequestDto userDto) {
 		UserResponseDto user = null;
 		
-		if (!userExists(userDto)) {
-			return user;
-		}
+//		if (!userExists(userDto)) {
+//			return user;
+//		}
 		
 		try {
 			conn = DBManager.getConnection();
@@ -301,16 +364,17 @@ public class UserDao {
 			pstmt.setString(1, userDto.getTelecom());
 			pstmt.setString(2, userDto.getPhone());
 			pstmt.setString(3, userDto.getId());
-			
+
 			pstmt.execute();
-			
+
 			user = findUserByIdAndPassword(userDto.getId(), userDto.getPassword());
+//			user = findUserById(userDto.getId());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			DBManager.close(conn, pstmt);
 		}
-		return user;
+//		return user;
 	}
 	
 	public boolean deleteUser(UserRequestDto userDto) {
@@ -337,40 +401,7 @@ public class UserDao {
 		
 		return false;
 	}
-	
-	public User findUserById(String id) {
-		User user = null;
-		
-		try {
-			conn = DBManager.getConnection();
-			
-			String sql = "SELECT id, email, name, birth, gender, telecom, phone, reg_date, mod_date FROM users WHERE id=?";
-			
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, id);
-			
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				String email = rs.getString(2);
-				String name = rs.getString(3);
-				String birth = rs.getString(4);
-				String gender = rs.getString(5);
-				String telecom = rs.getString(6);
-				String phone = rs.getString(7);
-				Timestamp regDate = rs.getTimestamp(8);
-				Timestamp modDate = rs.getTimestamp(9);
-				
-				user = new User(id, email, name, birth, gender, telecom, phone, regDate, modDate);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DBManager.close(conn, pstmt, rs);
-		}
-		return user;
-	}
-	
+
 	public boolean isIdDuplicate(String id) {
 		boolean isDuplicate = false;
 		

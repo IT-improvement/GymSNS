@@ -10,6 +10,7 @@ public class UserResponseDto extends User {
 	private String gender;
 	private String telecom;
 	private String phone;
+	private String profileImage;
 	
 	public UserResponseDto(int code, String id, String email, String name, String birth, String gender, String telecom,
 			String phone) {
@@ -33,6 +34,19 @@ public class UserResponseDto extends User {
 		this.gender = gender;
 		this.telecom = telecom;
 		this.phone = phone;
+	}
+
+	public UserResponseDto(String id, String email, String name, String birth, String gender, String telecom,
+						   String phone, String profileImage) {
+		super();
+		this.id = id;
+		this.email = email;
+		this.name = name;
+		this.birth = birth;
+		this.gender = gender;
+		this.telecom = telecom;
+		this.phone = phone;
+		this.profileImage = profileImage;
 	}
 	
 	public UserResponseDto(User user) {
@@ -118,6 +132,9 @@ public class UserResponseDto extends User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	
+
+
+	public void setProfileImage(String profileImage) {
+		this.profileImage = profileImage;
+	}
 }

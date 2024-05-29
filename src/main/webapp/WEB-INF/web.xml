@@ -113,6 +113,15 @@
 	</servlet-mapping>
 
 	<servlet>
+		<servlet-name>userReadOneAction</servlet-name>
+		<servlet-class>user.controller.action.UserReadOneAction</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>userReadOneAction</servlet-name>
+		<url-pattern>/userReadOneAction</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
 		<servlet-name>Action</servlet-name>
 		<servlet-class>user.controller.Action</servlet-class>
 	</servlet>
