@@ -30,8 +30,11 @@ public class ActionFactory {
 				break;
 				
 			// friend request
-			case "read_all_friend_request":
-				action = new FriendRequestReadAllAction();
+			case "read_all_friend_request_received":
+				action = new FriendRequestReceivedReadAllAction();
+				break;
+			case "read_one_friend_request_sent":
+				action = new FriendRequestSentReadAction();
 				break;
 			case "create_friend_request":
 				action = new FriendRequestCreateAction();
