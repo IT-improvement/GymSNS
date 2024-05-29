@@ -12,6 +12,7 @@ public class User {
 	private String gender;
 	private String telecom;
 	private String phone;
+	private String profileImage;
 	private Timestamp regDate;
 	private Timestamp modDate;
 		
@@ -44,6 +45,20 @@ public class User {
 		this.gender = gender;
 		this.telecom = telecom;
 		this.phone = phone;
+	}
+
+	public User(String id, String password, String email, String name, String birth, String gender, String telecom,
+				String phone, String profileImage) {
+		super();
+		this.id = id;
+		this.password = password;
+		this.email = email;
+		this.name = name;
+		this.birth = birth;
+		this.gender = gender;
+		this.telecom = telecom;
+		this.phone = phone;
+		this.profileImage = profileImage;
 	}
 
 	public User(int code, String id, String password, String email, String name, String birth, String gender,
@@ -96,6 +111,10 @@ public class User {
 		return phone;
 	}
 
+	public String getProfileImage() {
+		return profileImage;
+	}
+
 	public Timestamp getRegDate() {
 		return regDate;
 	}
@@ -103,6 +122,5 @@ public class User {
 	public Timestamp getModDate() {
 		return modDate;
 	}
-	
-	
+
 }
