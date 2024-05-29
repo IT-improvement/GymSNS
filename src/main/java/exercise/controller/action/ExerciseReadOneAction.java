@@ -21,7 +21,8 @@ public class ExerciseReadOneAction implements Action {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 
-		String exerciseIndexStr = request.getParameter("index");
+		String userCodeStr = request.getHeader("Authorization");
+		String exerciseIndexStr = request.getParameter("exercise_index");
 
 		JSONObject exerciseObj = new JSONObject();
 
@@ -46,7 +47,10 @@ public class ExerciseReadOneAction implements Action {
 			return;
 		}
 
+		boolean isWriter = ParameterValidator.isInteger(userCodeStr) && exercise.getUserCode() == Integer.parseInt(userCodeStr);
+
 		exerciseObj.put("index", exercise.getIndex());
+		exerciseObj.put("isWriter", isWriter);
 		exerciseObj.put("categoryIndex", exercise.getCategoryIndex());
 		exerciseObj.put("categoryName", exercise.getCategoryName());
 		exerciseObj.put("userCode", exercise.getUserCode());
