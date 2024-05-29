@@ -1,6 +1,7 @@
 package foods.controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -43,7 +44,11 @@ public class ServiceServlet extends HttpServlet {
             Action action = af.getAction(command);
 
             if (action != null) {
-                action.execute(request, response);
+                try {
+                    action.execute(request, response);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             } else {
                 response.sendError(404);
             }

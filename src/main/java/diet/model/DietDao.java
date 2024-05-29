@@ -9,6 +9,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+import foods.model.FoodRequestDto;
 import util.DBManager;
 
 public class DietDao {
@@ -112,7 +113,7 @@ public class DietDao {
 	}
 
 
-	public void updateDiet(int dietIndex, DietRequestDto dietRequestDto) throws SQLException {
+	public boolean updateDiet(int dietIndex, DietRequestDto dietRequestDto) throws SQLException {
 		
 		String sql = "UPDATE diets SET user_code = ?, food_index = ?, total_calories = ?, total_protein = ?,  mod_date = ? WHERE diet_index = ?";
 		try {
@@ -124,8 +125,12 @@ public class DietDao {
 			pstmt.setInt(4, dietRequestDto.getTotalProtein());
 			pstmt.setTimestamp(5, Timestamp.from(Instant.now()));
 			pstmt.setInt(6, dietIndex);
-			pstmt.executeUpdate();
-		} finally {
+			int rowsUpdated = pstmt.executeUpdate();
+			return rowsUpdated > 0;
+		} catch(SQLException e){
+			e.printStackTrace();
+			return false;
+		} finally{
 			closeResources();
 		}
 	}
@@ -142,4 +147,40 @@ public class DietDao {
 		}
 	}
 
+	public boolean isDietExists(DietRequestDto dietDto) {
+		try (Connection conn = DBManager.getConnection();
+			 PreparedStatement pstmt = conn.prepareStatement("SELECT COUNT(*) FROM diets WHERE user_code = ? AND food_index = ? AND total_protein = ? AND total_calories = ?")) {
+
+			pstmt.setInt(1, dietDto.getUserCode());
+			pstmt.setInt(2, dietDto.getFoodIndex());
+			pstmt.setInt(3, dietDto.getTotalProtein());
+			pstmt.setInt(4, dietDto.getTotalCalories());
+
+			try (ResultSet rs = pstmt.executeQuery()) {
+				if (rs.next()) {
+					int count = rs.getInt(1);
+					return count > 0;
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	public boolean existsById(int dietIndex) throws SQLException {
+		String sql = "SELECT COUNT(*) FROM diets WHERE diet_index=?";
+		try (Connection conn = DBManager.getConnection();
+		PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			pstmt.setInt(1, dietIndex);
+			try(ResultSet rs = pstmt.executeQuery()) {
+				if(rs.next()) {
+					return rs.getInt(1) > 0;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 }

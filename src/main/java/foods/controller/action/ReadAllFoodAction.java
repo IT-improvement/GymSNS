@@ -24,8 +24,7 @@ public class ReadAllFoodAction implements Action{
 
 		FoodDao dao = FoodDao.getInstance();
 
-		HttpSession session = request.getSession();
-
+//		HttpSession session = request.getSession();
 //		int userCode = session.getAttribute("userCode");
 		int userCode = Integer.parseInt(request.getParameter("userCode"));
 

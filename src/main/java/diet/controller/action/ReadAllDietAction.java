@@ -18,31 +18,31 @@ import user.controller.Action;
 public class ReadAllDietAction implements Action {
 
 	@Override
-	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
 
 		DietDao dao = DietDao.getInstance();
-		
-//		int userCode = session.getAttribute("userCode");
+
 		int userCode = Integer.parseInt(request.getParameter("userCode"));
-		
-		List<DietResponseDto> diet;
-		try {
-			diet = dao.getAllDietsByUserCode(userCode);
-			
-			JSONArray jsonArray = new JSONArray(diet);
-			
-			response.setContentType("application/json");
-			response.setCharacterEncoding("UTF-8");
-			
-			System.out.println(jsonArray);
-			
-			JSONObject jsonResponse = new JSONObject();
-			jsonResponse.put("status", 200);
-			jsonResponse.put("message", "식단 리스트 가져오기 완료");
-			
-			response.getWriter().write(jsonResponse.toString());		
-		} catch (SQLException e) {
-			e.printStackTrace();
+
+		List<DietResponseDto> diets = dao.getAllDietsByUserCode(userCode);
+
+		JSONArray dietJsonArray = new JSONArray();
+
+		for (DietResponseDto diet : diets) {
+			JSONObject dietObj = new JSONObject();
+
+			dietObj.put("dietIndex", diet.getDietIndex());
+			dietObj.put("userCode", diet.getUserCode());
+			dietObj.put("foodIndex", diet.getFoodIndex());
+			dietObj.put("totalCalories", diet.getTotalCalories());
+			dietObj.put("totalProtein", diet.getTotalProtein());
+			dietObj.put("createDate", diet.getCreateDate());
+			dietJsonArray.put(dietObj);
 		}
+
+		System.out.println(dietJsonArray);
+		response.getWriter().write(dietJsonArray.toString());
 	}
 }

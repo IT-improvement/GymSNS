@@ -161,4 +161,44 @@ public class FoodDao {
             closeResources();
         }
     }
+
+    public boolean isFoodExists(FoodRequestDto foodDto) {
+        try (Connection conn = DBManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement("SELECT COUNT(*) FROM foods WHERE user_code = ? AND food_category_index = ? AND food_name = ? AND protein = ? AND calory = ? AND carbs = ? AND size = ?")) {
+
+            pstmt.setInt(1, foodDto.getUserCode());
+            pstmt.setInt(2, foodDto.getFoodCategoryIndex());
+            pstmt.setString(3, foodDto.getFoodName());
+            pstmt.setInt(4, foodDto.getProtein());
+            pstmt.setInt(5, foodDto.getCalory());
+            pstmt.setInt(6, foodDto.getCarbs());
+            pstmt.setInt(7, foodDto.getSize());
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    int count = rs.getInt(1);
+                    return count > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean existsById(int foodIndex) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM foods WHERE food_index = ?";
+        try (Connection conn = DBManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, foodIndex);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
