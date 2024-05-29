@@ -175,69 +175,7 @@
 		<url-pattern>/feed/*</url-pattern>
 	</servlet-mapping>
 
-	<servlet>
-		<servlet-name>FeedCommentAction</servlet-name>
-		<servlet-class>feed.controller.FeedCommentAction</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>FeedCommentAction</servlet-name>
-		<url-pattern>/feed/*/comments</url-pattern>
-	</servlet-mapping>
 
-	<servlet>
-		<servlet-name>FeedReadAction</servlet-name>
-		<servlet-class>feed.controller.FeedReadAction</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>FeedReadAction</servlet-name>
-		<url-pattern>/</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>FeedUpdateAction</servlet-name>
-		<servlet-class>feed.controller.FeedUpdateAction</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>FeedUpdateAction</servlet-name>
-		<url-pattern>/feed/*/update</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>FeedDeleteAction</servlet-name>
-		<servlet-class>feed.controller.FeedDeleteAction</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>FeedDeleteAction</servlet-name>
-		<url-pattern>/feed/*/delete</url-pattern>
-		<url-pattern>/feed</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>FeedCommentCreateAction</servlet-name>
-		<servlet-class>feed.controller.FeedCommentCreateAction</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>FeedCommentCreateAction</servlet-name>
-		<url-pattern>/feed/*/comments/create</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>FeedCommentUpdateAction</servlet-name>
-		<servlet-class>feed.controller.FeedCommentUpdateAction</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>FeedCommentUpdateAction</servlet-name>
-		<url-pattern>/feed/*/comments/update</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>FeedCommentDeleteAction</servlet-name>
-		<servlet-class>feed.controller.FeedCommentDeleteAction</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>FeedCommentDeleteAction</servlet-name>
-		<url-pattern>/feed/*/comments/delete</url-pattern>
-	</servlet-mapping>
 
 	<servlet>
 		<servlet-name>FoodCategoryActionFactory</servlet-name>

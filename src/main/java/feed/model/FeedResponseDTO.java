@@ -1,6 +1,7 @@
 package feed.model;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public class FeedResponseDTO {
 	private String title;
@@ -9,9 +10,10 @@ public class FeedResponseDTO {
 	private int userCode;
 	private Timestamp createDate;
 	private Timestamp modDate;
-	private String comment;
+	private List<String> comments;
 	private int favoriteCount;
-	
+	private String comment;
+
 	public FeedResponseDTO() {
 		
 	}
@@ -76,12 +78,12 @@ public class FeedResponseDTO {
 		this.modDate = modDate;
 	}
 
-	public String getComment() {
-		return comment;
+	public List<String> getComment() {
+		return comments;
 	}
 
-	public void setComment(String comment) {
-		this.comment = comment;
+	public void setComment(List<String> comment) {
+		this.comments = comment;
 	}
 	
 	public int getFavoriteCount() {
@@ -90,5 +92,16 @@ public class FeedResponseDTO {
 
 	public void setFavoriteCount(int favoriteCount) {
 		this.favoriteCount = favoriteCount;
+	}
+	public void setComments(List<String> comments) {
+		this.comments = comments;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public List<String> getComments() {
+		return comments;
 	}
 }

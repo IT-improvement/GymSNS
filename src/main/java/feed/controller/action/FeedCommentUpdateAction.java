@@ -1,5 +1,11 @@
 package feed.controller.action;
 
+import feed.controller.Action;
+import feed.model.FeedDAO;
+import feed.model.FeedRequestDTO;
+import feed.model.FeedResponseDTO;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,12 +16,29 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class FeedCommentUpdateAction
  */
-public class FeedCommentUpdateAction extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+public class FeedCommentUpdateAction implements Action {
        
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
+
+		int commentIndex = Integer.parseInt(request.getParameter("commentIndex"));
+		String comment = request.getParameter("comment");
+
+
+		FeedRequestDTO feedDto = new FeedRequestDTO();
+		feedDto.setCommentIndex(commentIndex);
+		feedDto.setComment(comment);
+		FeedDAO feedDao = FeedDAO.getInstance();
+		FeedResponseDTO feed = feedDao.updateComment(feedDto);
+
+		JSONObject feedObj = new JSONObject();
+		feedObj.put("feedIndex", feed.getFeedIndex());
+		feedObj.put("userCode", feed.getUserCode());
+		feedObj.put("comment", feed.getComment());
+
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().write(feedObj.toString());
 		
 		
 	}
