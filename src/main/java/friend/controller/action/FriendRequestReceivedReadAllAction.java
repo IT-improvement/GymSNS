@@ -21,6 +21,8 @@ public class FriendRequestReadAllAction implements Action {
 		response.setContentType("application/json");
 	    response.setCharacterEncoding("UTF-8");
 
+		String userCodeStr = request.getHeader("Authorization");
+
 		String userCodeOtherStr = request.getParameter("code");
 		FriendRequestDao friendRequestDao = FriendRequestDao.getInstance();
 		//FriendRequestRequestDto friendRequestDto = new FriendRequestRequestDto(user.getCode());
