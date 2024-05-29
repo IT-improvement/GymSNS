@@ -14,6 +14,8 @@ import org.json.JSONObject;
 import friend.model.FriendDao;
 import friend.model.FriendRequestDto;
 import friend.model.FriendResponseDto;
+import util.ApiResponseManager;
+import util.ParameterValidator;
 
 public class FriendReadAllAction implements Action {
 	@Override
@@ -21,10 +23,19 @@ public class FriendReadAllAction implements Action {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 
-		FriendDao friendDao = FriendDao.getInstance();
+		String userCodeStr = request.getHeader("Authorization");
 
-		//FriendRequestDto friendDto = new FriendRequestDto(user.getCode());
-		FriendRequestDto friendDto = new FriendRequestDto(1001);
+		if (!ParameterValidator.isInteger(userCodeStr)) {
+			JSONObject resObj = ApiResponseManager.getStatusObject(400);
+			response.getWriter().write(resObj.toString());
+			return;
+		}
+
+		int userCode = Integer.parseInt(userCodeStr);
+
+		FriendDao friendDao = FriendDao.getInstance();
+		FriendRequestDto friendDto = new FriendRequestDto(userCode);
+
 		List<FriendResponseDto> friends = friendDao.findFriendAll(friendDto);
 		
 		JSONArray friendJsonArr = new JSONArray();

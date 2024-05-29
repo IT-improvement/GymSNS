@@ -12,19 +12,29 @@ import org.json.JSONObject;
 import friend.model.FriendDao;
 import friend.model.FriendRequestDto;
 import friend.model.FriendResponseDto;
+import util.ApiResponseManager;
+import util.ParameterValidator;
 
 public class FriendReadOneAction implements Action {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-		
-		String friendCodeStr = request.getParameter("code");
+
+		String userCodeStr = request.getHeader("Authorization");
+		String userCodeFriendStr = request.getParameter("userCodeFriend");
+
+		if (!ParameterValidator.isInteger(userCodeStr) || !ParameterValidator.isInteger(userCodeFriendStr)) {
+			JSONObject resObj = ApiResponseManager.getStatusObject(400);
+			response.getWriter().write(resObj.toString());
+			return;
+		}
+
+		int userCode = Integer.parseInt(userCodeStr);
+		int userCodeFriend = Integer.parseInt(userCodeFriendStr);
+
 		FriendDao friendDao = FriendDao.getInstance();
-		
-		int friendCode = Integer.parseInt(friendCodeStr);
-		//FriendRequestDto friendDto = new FriendRequestDto(user.getCode(), friendCode);
-		FriendRequestDto friendDto = new FriendRequestDto(1001, friendCode);
+		FriendRequestDto friendDto = new FriendRequestDto(userCode, userCodeFriend);
 		FriendResponseDto friend = friendDao.findFriendByUserCode(friendDto);
 
 		JSONObject friendObj = new JSONObject();

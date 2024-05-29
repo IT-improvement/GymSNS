@@ -20,7 +20,7 @@ public class ExerciseCategoryDao {
 		return instance;
 	}
 
-	public List<ExerciseCategoryResponseDto> findExerciseCategoryAll(ExerciseCategoryRequestDto exerciseCategoryDto) {
+	public List<ExerciseCategoryResponseDto> findExerciseCategoryAll() {
 		List<ExerciseCategoryResponseDto> exerciseCategories = new ArrayList<>();
 		String sql = "SELECT exercise_category_index, name "
 					+ "FROM exercise_categories ";

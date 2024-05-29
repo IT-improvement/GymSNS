@@ -100,8 +100,9 @@ public class FeedDAO {
 			conn = DBManager.getConnection();
 			String sql = "SELECT DISTINCT f.feed_index, f.user_code, title, content, f.create_date, mod_date, " +
 					"(SELECT COUNT(*) FROM favorites WHERE f.feed_index = favorites.feed_index) AS favorite_count " +
-					"FROM feeds AS f ";
-
+					"FROM feeds AS f " +
+					"JOIN favorites AS fav ON fav.feed_index = f.feed_index " +
+					"ORDER BY create_date DESC";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 

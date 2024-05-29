@@ -12,14 +12,26 @@ import org.json.JSONObject;
 import exercise.model.ExerciseDao;
 import exercise.model.ExerciseRequestDto;
 import exercise.model.ExerciseResponseDto;
+import util.ApiResponseManager;
+import util.ParameterValidator;
 
 public class ExerciseReadOneAction implements Action {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-		
-		String exerciseIndexStr = request.getParameter("index");
+
+		String userCodeStr = request.getHeader("Authorization");
+		String exerciseIndexStr = request.getParameter("exercise_index");
+
+		JSONObject exerciseObj = new JSONObject();
+
+		if (!ParameterValidator.isInteger(exerciseIndexStr)) {
+			exerciseObj = ApiResponseManager.getStatusObject(404);
+			response.getWriter().write(exerciseObj.toString());
+			return;
+		}
+
 		int exerciseIndex = Integer.parseInt(exerciseIndexStr);
 
 		ExerciseDao exerciseDao = ExerciseDao.getInstance();
@@ -29,9 +41,16 @@ public class ExerciseReadOneAction implements Action {
 		
 		ExerciseResponseDto exercise = exerciseDao.findExerciseOneByIndex(exerciseDto);
 
-		JSONObject exerciseObj = new JSONObject();
+		if (exercise == null) {
+			exerciseObj = ApiResponseManager.getStatusObject(400);
+			response.getWriter().write(exerciseObj.toString());
+			return;
+		}
+
+		boolean isWriter = ParameterValidator.isInteger(userCodeStr) && exercise.getUserCode() == Integer.parseInt(userCodeStr);
 
 		exerciseObj.put("index", exercise.getIndex());
+		exerciseObj.put("isWriter", isWriter);
 		exerciseObj.put("categoryIndex", exercise.getCategoryIndex());
 		exerciseObj.put("categoryName", exercise.getCategoryName());
 		exerciseObj.put("userCode", exercise.getUserCode());

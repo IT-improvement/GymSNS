@@ -15,7 +15,7 @@ public class ActionFactory {
 		Action action = null;
 		
 		switch (command) {
-			// friend
+			// friend CRUD
 			case "read_all":
 				action = new FriendReadAllAction();
 				break;
@@ -29,9 +29,15 @@ public class ActionFactory {
 				action = new FriendDeleteAction();
 				break;
 				
-			// friend request
-			case "read_all_friend_request":
-				action = new FriendRequestReadAllAction();
+			// friend request CRUD
+			case "read_all_friend_request_received":
+				action = new FriendRequestReceivedReadAllAction();
+				break;
+			case "read_one_friend_request_sent":
+				action = new FriendRequestSentReadAction();
+				break;
+			case "accept_friend_request":
+				action = new FriendRequestAcceptAction();
 				break;
 			case "create_friend_request":
 				action = new FriendRequestCreateAction();
