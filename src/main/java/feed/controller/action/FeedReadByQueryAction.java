@@ -24,22 +24,22 @@ public class FeedReadByQueryAction implements Action{
 
 		FeedDAO feedDao = new FeedDAO();
 
-		ArrayList<Feed> list = feedDao.getAllFeedByQuery(query);
+//		ArrayList<Feed> list = feedDao.getAllFeedByQuery(query);
 
 		JSONArray feedJsonArr = new JSONArray();
 				
-		for (Feed feed : list) {
-			JSONObject feedObj = new JSONObject();
-
-			feedObj.put("feedIndex", feed.getFeedIndex());
-			feedObj.put("title", feed.getTitle());
-			feedObj.put("content", feed.getContent());
-			feedObj.put("userCode", feed.getUserCode());
-			feedObj.put("createDate", feed.getCreateDate());
-			feedObj.put("comments", feed.getComments());
-					
-			feedJsonArr.put(feedObj);
-		}
+//		for (Feed feed : list) {
+//			JSONObject feedObj = new JSONObject();
+//
+//			feedObj.put("feedIndex", feed.getFeedIndex());
+//			feedObj.put("title", feed.getTitle());
+//			feedObj.put("content", feed.getContent());
+//			feedObj.put("userCode", feed.getUserCode());
+//			feedObj.put("createDate", feed.getCreateDate());
+//			feedObj.put("comments", feed.getComments());
+//					
+//			feedJsonArr.put(feedObj);
+//		}
 
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
