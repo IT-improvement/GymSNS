@@ -88,8 +88,6 @@ public class UpdateAction extends HttpServlet implements Action {
 				userDto.setPassword(password);
 				userDao.updateUserPassword(userDto, password);
 				user.setPassword(password);
-//				user = userDao.updateUserPassword(userDto, newPassword);
-				//session.setAttribute("user", user);
 				System.out.println("password update 성공!");
 			}
 
@@ -97,8 +95,6 @@ public class UpdateAction extends HttpServlet implements Action {
 				userDto.setName(name);
 				userDao.updateUserName(userDto);
 				user.setName(name);
-//				user = userDao.updateUserName(userDto);
-				//session.setAttribute("user", user);
 				System.out.println("이름 업데이트 완료: " + name);
 			}
 
@@ -106,20 +102,19 @@ public class UpdateAction extends HttpServlet implements Action {
 				userDto.setEmail(email);
 				userDao.updateUserEmail(userDto);
 				user.setEmail(email);
-//				user = userDao.updateUserEmail(userDto);
-				//session.setAttribute("user", user);
 				System.out.println("이메일 업데이트 완료: " + email);
 			}
 
-			if (telecom != null && !telecom.equals("") && phone != null && !phone.equals("") && (!telecom.equals(user.getTelecom()) || !phone.equals(user.getPhone()))) {
+			if (telecom != null && !telecom.equals("") && !telecom.equals(user.getTelecom())) {
 				userDto.setTelecom(telecom);
+				userDao.updateUserTelecom(userDto);
+				user.setTelecom(telecom);
+				System.out.println("통신사 업데이트 완료: " + telecom);
+			}
+			if (phone != null && !phone.equals("") && !phone.equals(user.getPhone())) {
 				userDto.setPhone(phone);
 				userDao.updateUserPhone(userDto);
-				user.setTelecom(telecom);
 				user.setPhone(phone);
-//				user = userDao.updateUserPhone(userDto);
-				//session.setAttribute("user", user);
-				System.out.println("통신사 업데이트 완료: " + telecom);
 				System.out.println("휴대폰 번호 업데이트 완료: " + phone);
 			}
 
@@ -127,8 +122,6 @@ public class UpdateAction extends HttpServlet implements Action {
 				userDto.setProfileImage(profileImage);
 				userDao.updateUserEmail(userDto);
 				user.setProfileImage(profileImage);
-//				user = userDao.updateUserEmail(userDto);
-				//session.setAttribute("user", user);
 				System.out.println("이메일 업데이트 완료: " + email);
 			}
 
