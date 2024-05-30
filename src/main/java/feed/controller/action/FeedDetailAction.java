@@ -57,6 +57,8 @@ public class FeedDetailAction implements Action {
 		feedObj.put("feedIndex", feed.getFeedIndex());
 		feedObj.put("userCode", feed.getUserCode());
 		feedObj.put("comment", feed.getComments());
+		feedObj.put("favoriteCount", feed.getFavoriteCount());
+		feedObj.put("isFavorite", feed.getIsFavorite());
 
 
 

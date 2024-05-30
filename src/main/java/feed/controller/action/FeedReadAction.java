@@ -46,6 +46,7 @@ public class FeedReadAction implements Action{
 					
 			feedJsonArr.put(feedObj);
 		}
+		System.out.println(list.size());
 
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");

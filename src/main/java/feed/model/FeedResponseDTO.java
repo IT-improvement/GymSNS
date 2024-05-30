@@ -15,6 +15,9 @@ public class FeedResponseDTO {
 	private List<FeedCommentsObject> comments;
 	private int favoriteCount;
 	private String comment;
+	private boolean isFavorite;
+
+
 
 	public FeedResponseDTO() {
 
@@ -99,5 +102,16 @@ public class FeedResponseDTO {
 
 	public List<FeedCommentsObject> getComments() {
 		return comments;
+	}
+	public void setisFavorite(boolean favorite) {
+		isFavorite = favorite;
+	}
+
+	public boolean getisFavorite() {
+		return isFavorite;
+	}
+
+	public String getComment() {
+		return comment;
 	}
 }

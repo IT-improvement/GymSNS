@@ -25,9 +25,8 @@ private ActionFactory() {
 			action = new FeedDeleteAction();
 		}else if (command.equals("feedDetail")) {
 			action = new FeedDetailAction();
-		}else if (command.equals("feedCountFavorite")) {
-			action = new FeedFavoriteReadAction();
-		}else if (command.equals("feedFavoritePlus")) {
+		}
+		else if (command.equals("feedFavoritePlus")) {
 			action = new FeedFavoriteCreateAction();
 		}else if (command.equals("feedFavoriteCheck")) {
 			action = new FeedFavoriteCheckAction();

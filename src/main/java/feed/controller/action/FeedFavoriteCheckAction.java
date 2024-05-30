@@ -36,7 +36,9 @@ public class FeedFavoriteCheckAction implements Action {
         int userCode = Integer.parseInt(userCodeStr);
         int feedIndex = Integer.parseInt(url[1]);
 
+        System.out.println(userCode);
         System.out.println(feedIndex);
+
 
         FeedRequestDTO feedDto = new FeedRequestDTO(feedIndex, userCode);
         FeedDAO feedDao = FeedDAO.getInstance();
@@ -45,11 +47,13 @@ public class FeedFavoriteCheckAction implements Action {
 
         JSONObject resObj = new JSONObject();
 
-        if (feed != null) {
-            resObj = ApiResponseManager.getStatusObject(200);
-        } else {
-            resObj = ApiResponseManager.getStatusObject(400);
+        if (userCode == feed.getUserCode()) {
+            feed.setisFavorite(true);
         }
+
+        resObj.put("feedIndex", feed.getFeedIndex());
+        resObj.put("userCode", feed.getUserCode());
+        resObj.put("isFavorite", feed.getisFavorite());
 
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=utf-8");

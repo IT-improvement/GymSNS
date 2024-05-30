@@ -105,12 +105,13 @@ public class FeedDAO {
 	}
 
 	private Feed addCommentToFeedDetail(Feed feed) {
-		String sql = "SELECT feed_comment_index, comment "
-				+ "FROM feed_comments "
-				+ "WHERE feed_index = ?";
+
 		List<FeedCommentsObject> comments = new ArrayList<>() {
 		};
 		try {
+			String sql = "SELECT feed_comment_index, comment "
+					+ "FROM feed_comments "
+					+ "WHERE feed_index = ?";
 			conn = DBManager.getConnection();
 
 
@@ -195,11 +196,12 @@ public class FeedDAO {
 			DBManager.close(conn, pstmt);
 		}
 		addCommentToFeedDetail(feed);
+		readFeedFavoriteInfo(feed);
 		if(userCodeViewer != null) {
 			FeedRequestDTO feedDto = new FeedRequestDTO();
 			feedDto.setFeedIndex(feedIndex);
 			feedDto.setUserCode(Integer.parseInt(userCodeViewer));
-			if(checkFeedFavorite(feedDto) != null) {
+			if(checkFeedFavorite(feedDto).getFeedIndex() == feedIndex && checkFeedFavorite(feedDto).getUserCode() == Integer.parseInt(userCodeViewer)) {
 				feed.setFavorite(true);
 			}
 		}
@@ -312,7 +314,7 @@ public class FeedDAO {
 	}
 
 	public FeedResponseDTO checkFeedFavorite(FeedRequestDTO feedDto) {
-		FeedResponseDTO feed = null;
+		FeedResponseDTO feed = new FeedResponseDTO();
 
 		try {
 			conn = DBManager.getConnection();
@@ -327,6 +329,8 @@ public class FeedDAO {
 				feed.setFeedIndex(rs.getInt(1));
 				feed.setUserCode(rs.getInt(2));
 			}
+			System.out.println(feed.getFeedIndex());
+			System.out.println(feed.getUserCode());
 
 		} catch (Exception e) {
 			e.printStackTrace();

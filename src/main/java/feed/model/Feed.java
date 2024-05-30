@@ -102,7 +102,7 @@ public class Feed {
 		this.favoriteCount = favoriteCount;
 	}
 
-	public boolean isFavorite() {
+	public boolean setIsFavorite() {
 		return isFavorite;
 	}
 
