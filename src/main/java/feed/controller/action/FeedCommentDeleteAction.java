@@ -6,6 +6,7 @@ import feed.model.FeedRequestDTO;
 import feed.model.FeedResponseDTO;
 import org.json.JSONObject;
 import util.ApiResponseManager;
+import util.ParameterValidator;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -21,7 +22,20 @@ public class FeedCommentDeleteAction implements Action {
 
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+
+		String userCodeStr = request.getHeader("Authorization");
+		String url[] = request.getPathInfo().split("/");
+
+
+		if (!ParameterValidator.isInteger(userCodeStr) || !ParameterValidator.isInteger(request.getParameter("commentIndex"))) {
+			JSONObject resObj = ApiResponseManager.getStatusObject(400);
+			response.getWriter().write(resObj.toString());
+			return;
+		}
+
+		int userCode = Integer.parseInt(userCodeStr);
 		int commentIndex = Integer.parseInt(request.getParameter("commentIndex"));
+
 		FeedRequestDTO feedDto = new FeedRequestDTO();
 		feedDto.setCommentIndex(commentIndex);
 		FeedDAO feedDao = FeedDAO.getInstance();

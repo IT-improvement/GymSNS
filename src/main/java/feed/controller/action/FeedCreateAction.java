@@ -20,37 +20,32 @@ import feed.model.FeedRequestDTO;
 import feed.model.FeedResponseDTO;
 import user.model.User;
 import user.model.UserResponseDto;
+import util.ApiResponseManager;
+import util.ParameterValidator;
 
 /**
  * Servlet implementation class FeedAction
  */
 public class FeedCreateAction implements Action {
 	private static final long serialVersionUID = 1L;
-       
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		request.setCharacterEncoding("UTF-8");
-		
-		User user = new User();
-		//user.setCode(1004);
-		
-		HttpSession session = request.getSession();
-		session.setAttribute("user", user);
-		
-		User userDto = (User)session.getAttribute("user");
-		
-		if (userDto == null) {
-			response.sendRedirect("/login");
+
+
+		String userCodeStr = request.getHeader("Authorization");
+		if (!ParameterValidator.isInteger(userCodeStr)) {
+			JSONObject resObj = ApiResponseManager.getStatusObject(400);
+			response.getWriter().write(resObj.toString());
+			return;
 		}
-		
-		int userCode = userDto.getCode();
+
+		int userCode = Integer.parseInt(userCodeStr);
 		String title = request.getParameter("title");
 		String content = request.getParameter("content");
 		String feedImage = request.getParameter("feedImage");
+
 		
 		System.out.println(title);
 		System.out.println(content);

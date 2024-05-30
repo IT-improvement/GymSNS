@@ -7,6 +7,8 @@ import feed.model.FeedRequestDTO;
 import feed.model.FeedResponseDTO;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import util.ApiResponseManager;
+import util.ParameterValidator;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,10 +26,21 @@ public class FeedCommentCreateAction implements Action {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+
+		String userCodeStr = request.getHeader("Authorization");
 		String url[] = request.getPathInfo().split("/");
+
+
+		if (!ParameterValidator.isInteger(userCodeStr) || !ParameterValidator.isInteger(url[1])) {
+			JSONObject resObj = ApiResponseManager.getStatusObject(400);
+			response.getWriter().write(resObj.toString());
+			return;
+		}
+
+		int userCode = Integer.parseInt(userCodeStr);
 		int feedIndex = Integer.parseInt(url[1]);
+
 		String comment = request.getParameter("comment");
-		int userCode = 1002;
 
 		FeedRequestDTO feedDto = new FeedRequestDTO(feedIndex, userCode, comment);
 		FeedDAO feedDao = FeedDAO.getInstance();
@@ -36,7 +49,7 @@ public class FeedCommentCreateAction implements Action {
 		JSONObject feedObj = new JSONObject();
 		feedObj.put("feedIndex", feed.getFeedIndex());
 		feedObj.put("userCode", feed.getUserCode());
-		feedObj.put("comment", feed.getComment());
+		feedObj.put("comment", feed.getComments());
 
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");

@@ -2,6 +2,7 @@ package feed.controller.action;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,45 +18,56 @@ import feed.model.Feed;
 import feed.model.FeedDAO;
 import feed.model.FeedRequestDTO;
 import feed.model.FeedResponseDTO;
+import util.ApiResponseManager;
+import util.ParameterValidator;
 
 
 public class FeedDetailAction implements Action {
-       
+
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		System.out.println("Hello" + request.getPathInfo());
+		String userCodeStr = request.getHeader("Authorization");
 		String url[] = request.getPathInfo().split("/");
+
+
+		if (!ParameterValidator.isInteger(userCodeStr) || !ParameterValidator.isInteger(url[1])) {
+			JSONObject resObj = ApiResponseManager.getStatusObject(400);
+			response.getWriter().write(resObj.toString());
+			return;
+		}
+
 		int feedIndex = Integer.parseInt(url[1]);
 		System.out.println(feedIndex);
-		
+
 		FeedDAO feedDao = new FeedDAO();
-		FeedResponseDTO feedDto = feedDao.getFeedByFeedIndex(feedIndex);
-		
+		Feed feed = feedDao.getFeedByFeedIndex(feedIndex, userCodeStr);
+
 		JSONObject feedObj = new JSONObject();
-				
-		
-		System.out.println(feedDto.getTitle());
-		System.out.println(feedDto.getContent());
-		System.out.println(feedDto.getFeedIndex());
-		System.out.println(feedDto.getUserCode());
-		
-		feedObj.put("title", feedDto.getTitle());
-		feedObj.put("content", feedDto.getContent());
-		feedObj.put("feedIndex", feedDto.getFeedIndex());
-		feedObj.put("userCode", feedDto.getUserCode());
-		feedObj.put("comment", feedDto.getComment());
-			
-	
+
+
+		System.out.println(feed.getTitle());
+		System.out.println(feed.getContent());
+		System.out.println(feed.getFeedIndex());
+		System.out.println(feed.getUserCode());
+
+
+		feedObj.put("title", feed.getTitle());
+		feedObj.put("content", feed.getContent());
+		feedObj.put("feedIndex", feed.getFeedIndex());
+		feedObj.put("userCode", feed.getUserCode());
+		feedObj.put("comment", feed.getComments());
+
+
 
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().write(feedObj.toString());
 	}
-	
 
 
-	
+
+
 
 
 }

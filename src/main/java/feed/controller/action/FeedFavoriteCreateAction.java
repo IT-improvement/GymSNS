@@ -12,7 +12,10 @@ import feed.controller.Action;
 import feed.model.FeedDAO;
 import feed.model.FeedRequestDTO;
 import feed.model.FeedResponseDTO;
+import org.json.JSONObject;
 import user.model.User;
+import util.ApiResponseManager;
+import util.ParameterValidator;
 
 /**
  * Servlet implementation class FeedFavoriteCreateAction
@@ -20,20 +23,18 @@ import user.model.User;
 public class FeedFavoriteCreateAction implements Action {
 	
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
-		User user = new User();
-		session.setAttribute("user", user);
-		
-		User userDto = (User)session.getAttribute("user");
-		
-		if (userDto == null) {
-			response.sendRedirect("/login");
+		String userCodeStr = request.getHeader("Authorization");
+		String url[] = request.getPathInfo().split("/");
+
+
+		if (!ParameterValidator.isInteger(userCodeStr) || !ParameterValidator.isInteger(url[1])) {
+			JSONObject resObj = ApiResponseManager.getStatusObject(400);
+			response.getWriter().write(resObj.toString());
+			return;
 		}
 
-		String url[] = request.getPathInfo().split("/");
+		int userCode = Integer.parseInt(userCodeStr);
 		int feedIndex = Integer.parseInt(url[1]);
-
-		 int userCode = userDto.getCode();
 
 		
 		FeedRequestDTO feedDto = new FeedRequestDTO(feedIndex, userCode);

@@ -22,7 +22,14 @@ public class ServiceServlet extends HttpServlet {
 			Action action = af.getAction(command);
 			
 			if(action!=null) {
-				action.execute(request, response);
+				try {
+					action.execute(request, response);
+
+				}catch (Exception e) {
+					e.printStackTrace();
+				}
+
+
 			} else {
 				response.sendError(404);
 			}

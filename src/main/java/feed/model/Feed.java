@@ -1,5 +1,7 @@
 package feed.model;
 
+import feed.controller.action.FeedCommentsObject;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,21 +14,25 @@ public class Feed {
 	private int userCode;
 	private Timestamp createDate;
 	private Timestamp modDate;
-	private List<String> comments = new ArrayList<>();
-	
+	private List<FeedCommentsObject> comments = new ArrayList<>();
+	private boolean isFavorite;
+
+
+
 	public Feed() {
 		
 	}
 
-	public Feed(String title, String content, int feedIndex, int userCode) {
+	public Feed(String title, String content, int feedIndex, int userCode, Timestamp createDate) {
 		super();
 		this.title = title;
 		this.content = content;
 		this.feedIndex = feedIndex;
 		this.userCode = userCode;
+		this.createDate = createDate;
 	}
 	
-	public Feed(String title, String content, int feedIndex, int userCode, List<String> comments) {
+	public Feed(String title, String content, int feedIndex, int userCode, List<FeedCommentsObject> comments) {
 		super();
 		this.title = title;
 		this.content = content;
@@ -72,18 +78,25 @@ public class Feed {
 		this.modDate = modDate;
 	}
 
-	public List<String> getComments() {
+	public List<FeedCommentsObject> getComments() {
 		return comments;
 	}
 
-	public void setComments(List<String> comments) {
+	public void setComments(List<FeedCommentsObject> comments) {
 		this.comments = comments;
 	}
 
-	public void addComment(String comment) {
-		this.comments.add(comment);
-	}
-	public void setComment(String comment) {this.comment = comment;}
 
 	public String getComment() {return comment;}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+	public void setFavorite(boolean favorite) {
+		isFavorite = favorite;
+	}
+
+	public boolean getIsFavorite() {
+		return isFavorite;
+	}
 }

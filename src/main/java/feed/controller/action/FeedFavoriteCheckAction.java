@@ -15,6 +15,7 @@ import feed.model.FeedResponseDTO;
 import org.json.JSONObject;
 import user.model.User;
 import util.ApiResponseManager;
+import util.ParameterValidator;
 
 /**
  * Servlet implementation class FeedFavoriteCreateAction
@@ -22,14 +23,20 @@ import util.ApiResponseManager;
 public class FeedFavoriteCheckAction implements Action {
 
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        User user = (User) request.getSession().getAttribute("user");
-        System.out.println(request.getAttribute("User-Agent"));
-
+        String userCodeStr = request.getHeader("Authorization");
         String url[] = request.getPathInfo().split("/");
+
+
+        if (!ParameterValidator.isInteger(userCodeStr) || !ParameterValidator.isInteger(url[1])) {
+            JSONObject resObj = ApiResponseManager.getStatusObject(400);
+            response.getWriter().write(resObj.toString());
+            return;
+        }
+
+        int userCode = Integer.parseInt(userCodeStr);
         int feedIndex = Integer.parseInt(url[1]);
 
         System.out.println(feedIndex);
-        int userCode = 1002;
 
         FeedRequestDTO feedDto = new FeedRequestDTO(feedIndex, userCode);
         FeedDAO feedDao = FeedDAO.getInstance();

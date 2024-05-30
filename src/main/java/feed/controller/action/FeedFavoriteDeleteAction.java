@@ -6,6 +6,7 @@ import feed.model.FeedRequestDTO;
 import feed.model.FeedResponseDTO;
 import org.json.JSONObject;
 import util.ApiResponseManager;
+import util.ParameterValidator;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -15,11 +16,18 @@ import java.io.IOException;
 public class FeedFavoriteDeleteAction implements Action {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String userCodeStr = request.getHeader("Authorization");
         String url[] = request.getPathInfo().split("/");
-        int feedIndex = Integer.parseInt(url[1]);
 
-        System.out.println(feedIndex);
-        int userCode = 1002;
+
+        if (!ParameterValidator.isInteger(userCodeStr) || !ParameterValidator.isInteger(url[1])) {
+            JSONObject resObj = ApiResponseManager.getStatusObject(400);
+            response.getWriter().write(resObj.toString());
+            return;
+        }
+
+        int userCode = Integer.parseInt(userCodeStr);
+        int feedIndex = Integer.parseInt(url[1]);
 
         FeedRequestDTO feedDto = new FeedRequestDTO(feedIndex, userCode);
         FeedDAO feedDao = FeedDAO.getInstance();

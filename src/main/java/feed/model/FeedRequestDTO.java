@@ -22,10 +22,11 @@ public class FeedRequestDTO {
 		this.content = content;
 	}
 	
-	public FeedRequestDTO(String title, String content, int feedIndex ) {
+	public FeedRequestDTO(String title, String content, int feedIndex, int userCode ) {
 		this.feedIndex = feedIndex;
 		this.title = title;
 		this.content = content;
+		this.userCode = userCode;
 	}
 	
 	public FeedRequestDTO(int feedIndex) {

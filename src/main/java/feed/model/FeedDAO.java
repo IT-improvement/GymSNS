@@ -5,17 +5,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import feed.controller.action.FeedCommentsObject;
 import util.DBManager;
 
 public class FeedDAO {
 	private Connection conn;
 	private PreparedStatement pstmt;
 	private ResultSet rs;
-	
+
 	private static FeedDAO instance = new FeedDAO();
-	
+
 	public static FeedDAO getInstance() {
 		return instance;
 	}
@@ -40,7 +42,7 @@ public class FeedDAO {
 		}
 		return feed;
 	}
-	
+
 	public FeedResponseDTO searchCommentByFeedIndexAndUserCode(FeedRequestDTO feedDto) {
 		FeedResponseDTO feed = null;
 
@@ -67,9 +69,10 @@ public class FeedDAO {
 
 
 	private List<Feed> addCommentToFeed(List<Feed> feeds) {
-		String sql = "SELECT comment "
-					+ "FROM feed_comments "
-					+ "WHERE feed_index = ?";
+		String sql = "SELECT feed_comment_index, comment "
+				+ "FROM feed_comments "
+				+ "WHERE feed_index = ?";
+		List<FeedCommentsObject> comments = new ArrayList<>();
 
 		try {
 			conn = DBManager.getConnection();
@@ -82,8 +85,12 @@ public class FeedDAO {
 				rs = pstmt.executeQuery();
 
 				while (rs.next()) {
-					feed.addComment(rs.getString(1));
+					comments.add(new FeedCommentsObject(
+							rs.getInt(1), rs.getString(2)
+					));
 				}
+
+				feed.setComments(comments);
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -91,7 +98,42 @@ public class FeedDAO {
 		}finally {
 			DBManager.close(conn, pstmt);
 		}
+
+
+
 		return feeds;
+	}
+
+	private Feed addCommentToFeedDetail(Feed feed) {
+		String sql = "SELECT feed_comment_index, comment "
+				+ "FROM feed_comments "
+				+ "WHERE feed_index = ?";
+		List<FeedCommentsObject> comments = new ArrayList<>() {
+		};
+		try {
+			conn = DBManager.getConnection();
+
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, feed.getFeedIndex());
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				FeedCommentsObject feedCommentsObject = new FeedCommentsObject();
+				feedCommentsObject.setFeedCommentsIndex(rs.getInt(1));
+				feedCommentsObject.setComment(rs.getString(2));
+				comments.add(feedCommentsObject);
+			}
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt);
+		}
+
+		feed.setComments(comments);
+		return feed;
 	}
 
 	public ArrayList<Feed> getAllFeed() {
@@ -100,9 +142,8 @@ public class FeedDAO {
 			conn = DBManager.getConnection();
 			String sql = "SELECT DISTINCT f.feed_index, f.user_code, title, content, f.create_date, mod_date, " +
 					"(SELECT COUNT(*) FROM favorites WHERE f.feed_index = favorites.feed_index) AS favorite_count " +
-					"FROM feeds AS f " +
-					"JOIN favorites AS fav ON fav.feed_index = f.feed_index " +
-					"ORDER BY create_date DESC";
+					"FROM feeds AS f ";
+
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 
@@ -117,22 +158,22 @@ public class FeedDAO {
 
 				list.add(feed);
 			}
-			
+
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 		}finally {
-            DBManager.close(conn, pstmt);
-        }
+			DBManager.close(conn, pstmt);
+		}
 		System.out.println(list.size());
 
 		addCommentToFeed(list);
 
 		return list;
 	}
-	
-	public FeedResponseDTO getFeedByFeedIndex(int feedIndex) {
-		FeedResponseDTO feedDto = null;
+
+	public Feed getFeedByFeedIndex(int feedIndex, String userCodeViewer) {
+		Feed feed = null;
 		try {
 			conn = DBManager.getConnection();
 			String sql = "SELECT title, content, user_code, create_date FROM feeds WHERE feed_index = ?;";
@@ -144,21 +185,33 @@ public class FeedDAO {
 				String content = rs.getString(2);
 				int userCode = rs.getInt(3);
 				Timestamp createDate = rs.getTimestamp(4);
-				
-				feedDto = new FeedResponseDTO(title, content, userCode, createDate);
+
+
+				feed = new Feed(title, content, feedIndex, userCode, createDate);
+
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 		}finally {
-            DBManager.close(conn, pstmt);
-        }
-		return feedDto;
+			DBManager.close(conn, pstmt);
+		}
+		addCommentToFeedDetail(feed);
+		if(userCodeViewer != null) {
+			FeedRequestDTO feedDto = new FeedRequestDTO();
+			feedDto.setFeedIndex(feedIndex);
+			feedDto.setFeedIndex(feedIndex);
+			if(checkFeedFavorite(feedDto) != null) {
+				feed.setFavorite(true);
+			}
+		}
+		return feed;
 	}
-	
+
+
 	public FeedResponseDTO createFeed(FeedRequestDTO feedDto) {
 		FeedResponseDTO feed = null;
-		
+
 		try {
 			conn = DBManager.getConnection();
 			String sql = "INSERT INTO feeds(user_code, title, content) VALUES(?,?,?);";
@@ -167,20 +220,20 @@ public class FeedDAO {
 			pstmt.setString(2, feedDto.getTitle());
 			pstmt.setString(3, feedDto.getContent());
 			pstmt.execute();
-			
+
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 		}finally {
-            DBManager.close(conn, pstmt);
-        }
-		
+			DBManager.close(conn, pstmt);
+		}
+
 		return feed;
 	}
-	
-	public FeedResponseDTO updateFeed(FeedRequestDTO feedDto) {
-		FeedResponseDTO feed = null;		
-		
+
+	public Feed updateFeed(FeedRequestDTO feedDto) {
+		Feed feed = null;
+
 		try {
 			conn = DBManager.getConnection();
 			String sql = "UPDATE feeds SET title=?, content=? WHERE feed_index = ?";
@@ -189,18 +242,18 @@ public class FeedDAO {
 			pstmt.setString(2, feedDto.getContent());
 			pstmt.setInt(3, feedDto.getFeedIndex());
 			pstmt.execute();
-			feed = getFeedByFeedIndex(feedDto.getFeedIndex());
-			
+			feed = getFeedByFeedIndex(feedDto.getFeedIndex(), String.valueOf(feedDto.getUserCode()));
+
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 		}finally {
-            DBManager.close(conn, pstmt);
-        }
-		
+			DBManager.close(conn, pstmt);
+		}
+
 		return feed;
 	}
-	
+
 	public void deleteFeed(FeedRequestDTO feedDto) {
 		try {
 			conn = DBManager.getConnection();
@@ -214,13 +267,13 @@ public class FeedDAO {
 			// TODO: handle exception
 			e.printStackTrace();
 		}finally {
-            DBManager.close(conn, pstmt);
-        }
+			DBManager.close(conn, pstmt);
+		}
 	}
-	
+
 	public FeedResponseDTO readFeedFavoriteInfo(FeedRequestDTO feedDto) {
 		FeedResponseDTO feed = new FeedResponseDTO();
-		
+
 		try {
 			conn = DBManager.getConnection();
 			String sql = "SELECT COUNT(*) FROM favorites WHERE feed_index = ?;";
@@ -228,7 +281,7 @@ public class FeedDAO {
 			pstmt.setInt(1, feedDto.getFeedIndex());
 			pstmt.execute();
 			rs = pstmt.executeQuery();
-			
+
 			if (rs.next()) {
 				feed.setFavoriteCount(rs.getInt(1));
 			}
@@ -236,11 +289,11 @@ public class FeedDAO {
 			// TODO: handle exception
 			e.printStackTrace();
 		}finally {
-            DBManager.close(conn, pstmt);
-        }
+			DBManager.close(conn, pstmt);
+		}
 		return feed;
 	}
-	
+
 	public FeedResponseDTO createFeedFavorate(FeedRequestDTO feedDto) {
 		FeedResponseDTO feed = new FeedResponseDTO();
 		try {
@@ -256,9 +309,9 @@ public class FeedDAO {
 			// TODO: handle exception
 			e.printStackTrace();
 		}finally {
-            DBManager.close(conn, pstmt);
-        }
-		
+			DBManager.close(conn, pstmt);
+		}
+
 		return feed;
 	}
 
