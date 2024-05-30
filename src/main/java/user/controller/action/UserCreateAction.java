@@ -148,6 +148,15 @@ public class UserCreateAction extends HttpServlet implements Action {
 		} else {
 			try {
 				dao.createUser(userDto);
+				JSONObject userObj = new JSONObject();
+				userObj.put("id", id);
+				userObj.put("password", password);
+				userObj.put("email", email);
+				userObj.put("name", name);
+				userObj.put("birth", birth);
+				userObj.put("gender", gender);
+				userObj.put("telecom", telecom);
+				userObj.put("phone", phone);
 				System.out.println("유저 생성 완료");
 				jsonResponse.put("status", 200);
 				jsonResponse.put("message", "회원가입 완료");
