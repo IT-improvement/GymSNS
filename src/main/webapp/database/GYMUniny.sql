@@ -44,18 +44,18 @@ CREATE TABLE feeds
 
 CREATE TABLE users
 (
-  `code`          INT           AUTO_INCREMENT PRIMARY KEY COMMENT '고유번호',
-  `id`            VARCHAR(20)   NOT NULL COMMENT '아이디',
-  `password`      VARCHAR(255)  NOT NULL COMMENT '비밀번호',
-  `email`         VARCHAR(100)   COMMENT '이메일',
-  `name`          VARCHAR(40)   NOT NULL COMMENT '이름',
-  `birth`         VARCHAR(8)    NOT NULL COMMENT '생일',
-  `gender`        ENUM('M','F') NOT NULL COMMENT '성별',
-  `telecom`       VARCHAR(3)    NOT NULL COMMENT '통신사',
-  `phone`         VARCHAR(13)   NOT NULL COMMENT '핸드폰번호',
-  `profile_image` VARCHAR(1000)  NULL     COMMENT '프로필 이미지 링크',
-  `reg_date`      TIMESTAMP     NOT NULL DEFAULT(NOW()) COMMENT '가입일자',
-  `mod_date`      TIMESTAMP     DEFAULT(NOW()) ON UPDATE NOW() COMMENT '수정일자'
+    code          INT           AUTO_INCREMENT PRIMARY KEY COMMENT '고유번호',
+    id            VARCHAR(20)   NOT NULL COMMENT '아이디',
+    password      VARCHAR(255)  NOT NULL COMMENT '비밀번호',
+    email         VARCHAR(100)  CHECK (email LIKE '%@%') COMMENT '이메일',
+    name          VARCHAR(40)   NOT NULL COMMENT '이름',
+    birth         VARCHAR(8)    NOT NULL COMMENT '생일',
+    gender        ENUM('M','F') NOT NULL COMMENT '성별',
+    telecom       VARCHAR(3)    NOT NULL CHECK(`telecom` IN ('skt', 'kt', 'lgt')) COMMENT '통신사',
+    phone         VARCHAR(13)   NOT NULL CHECK(`phone` REGEXP '^[0-9]{3}-[0-9]{4}-[0-9]{4}$') COMMENT '핸드폰번호',
+    profile_image VARCHAR(1000) NULL     COMMENT '프로필 이미지 링크',
+    reg_date      TIMESTAMP     NOT NULL DEFAULT(NOW()) COMMENT '가입일자',
+    mod_date      TIMESTAMP     DEFAULT(NOW()) ON UPDATE NOW() COMMENT '수정일자'
 ) AUTO_INCREMENT=1001 COMMENT '유저';
 
 
