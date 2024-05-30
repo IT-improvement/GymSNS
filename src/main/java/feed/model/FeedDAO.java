@@ -185,8 +185,6 @@ public class FeedDAO {
 				String content = rs.getString(2);
 				int userCode = rs.getInt(3);
 				Timestamp createDate = rs.getTimestamp(4);
-
-
 				feed = new Feed(title, content, feedIndex, userCode, createDate);
 
 			}
@@ -200,7 +198,7 @@ public class FeedDAO {
 		if(userCodeViewer != null) {
 			FeedRequestDTO feedDto = new FeedRequestDTO();
 			feedDto.setFeedIndex(feedIndex);
-			feedDto.setFeedIndex(feedIndex);
+			feedDto.setUserCode(Integer.parseInt(userCodeViewer));
 			if(checkFeedFavorite(feedDto) != null) {
 				feed.setFavorite(true);
 			}
@@ -271,14 +269,12 @@ public class FeedDAO {
 		}
 	}
 
-	public FeedResponseDTO readFeedFavoriteInfo(FeedRequestDTO feedDto) {
-		FeedResponseDTO feed = new FeedResponseDTO();
-
+	public Feed readFeedFavoriteInfo(Feed feed) {
 		try {
 			conn = DBManager.getConnection();
 			String sql = "SELECT COUNT(*) FROM favorites WHERE feed_index = ?;";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, feedDto.getFeedIndex());
+			pstmt.setInt(1, feed.getFeedIndex());
 			pstmt.execute();
 			rs = pstmt.executeQuery();
 

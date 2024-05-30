@@ -16,8 +16,7 @@ public class Feed {
 	private Timestamp modDate;
 	private List<FeedCommentsObject> comments = new ArrayList<>();
 	private boolean isFavorite;
-
-
+	private int favoriteCount;
 
 	public Feed() {
 		
@@ -99,4 +98,16 @@ public class Feed {
 	public boolean getIsFavorite() {
 		return isFavorite;
 	}
+	public void setFavoriteCount(int favoriteCount) {
+		this.favoriteCount = favoriteCount;
+	}
+
+	public boolean isFavorite() {
+		return isFavorite;
+	}
+
+	public int getFavoriteCount() {
+		return favoriteCount;
+	}
+
 }
