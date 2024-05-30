@@ -2,10 +2,13 @@ package diary.controller.action;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import diary.controller.Action;
@@ -23,12 +26,20 @@ public class DiaryReadAction implements Action {
         Timestamp date = Timestamp.valueOf(request.getParameter("date"));
         System.out.println("date: "+date);
         DiaryDAO dao = DiaryDAO.getInstance();
-        DiaryResponseDTO dto =  dao.readDiaryDate(userCode, date);
+        
+        List<DiaryResponseDTO> list =  dao.readDiaryDate(userCode, date);
+        JSONArray array = new JSONArray();
+        
+        for(DiaryResponseDTO dto : list) {
         JSONObject object = new JSONObject();
         object.put("diary_index", dto.getDairyIndex());
     	object.put("user_cod", dto.getUserCode());
     	object.put("content", dto.getContent());
     	object.put("diary_date", dto.getDiaryDate());
-        response.getWriter().write(object.toString());
+    	array.put(object);
+        }
+        System.out.println(list);
+        System.out.println(array.toString());
+        response.getWriter().write(array.toString());
     }
 }
