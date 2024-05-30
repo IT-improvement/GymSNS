@@ -288,7 +288,7 @@ public class UserDao {
 			pstmt.execute();
 			
 			user = findUserByIdAndPassword(userDto.getId(), userDto.getPassword());
-//			user = findUserById(userDto.getId());
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -314,7 +314,7 @@ public class UserDao {
 			pstmt.execute();
 
 			user = findUserByIdAndPassword(userDto.getId(), userDto.getPassword());
-//			user = findUserById(userDto.getId());
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -340,7 +340,34 @@ public class UserDao {
 			pstmt.execute();
 
 			user = findUserByIdAndPassword(userDto.getId(), userDto.getPassword());
-//			user = findUserById(userDto.getId());
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt);
+		}
+//		return user;
+	}
+
+	public void updateUserTelecom(UserRequestDto userDto) {
+		UserResponseDto user = null;
+
+//		if (!userExists(userDto)) {
+//			return user;
+//		}
+
+		try {
+			conn = DBManager.getConnection();
+
+			String sql = "UPDATE users SET telecom=? WHERE id=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userDto.getTelecom());
+			pstmt.setString(2, userDto.getId());
+
+			pstmt.execute();
+
+			user = findUserByIdAndPassword(userDto.getId(), userDto.getPassword());
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -351,24 +378,19 @@ public class UserDao {
 	
 	public void updateUserPhone(UserRequestDto userDto) {
 		UserResponseDto user = null;
-		
-//		if (!userExists(userDto)) {
-//			return user;
-//		}
-		
+
 		try {
 			conn = DBManager.getConnection();
 			
-			String sql = "UPDATE users SET telecom=?, phone=? WHERE id=?";
+			String sql = "UPDATE users SET phone=? WHERE id=?";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, userDto.getTelecom());
-			pstmt.setString(2, userDto.getPhone());
-			pstmt.setString(3, userDto.getId());
+			pstmt.setString(1, userDto.getPhone());
+			pstmt.setString(2, userDto.getId());
 
 			pstmt.execute();
 
 			user = findUserByIdAndPassword(userDto.getId(), userDto.getPassword());
-//			user = findUserById(userDto.getId());
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
