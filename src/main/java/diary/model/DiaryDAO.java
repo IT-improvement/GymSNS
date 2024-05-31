@@ -42,8 +42,8 @@ public class DiaryDAO {
 		}
 	}
 	
-	public DiaryResponseDTO readDiaryDate(int userCode, Timestamp date){
-		DiaryResponseDTO dto = new DiaryResponseDTO();
+	public List<DiaryResponseDTO> readDiaryDate(int userCode, Timestamp date){
+		List<DiaryResponseDTO> list = new ArrayList<DiaryResponseDTO>();
 		conn = DBManager.getConnection();
 		System.out.println(date);
 		try {
@@ -52,18 +52,20 @@ public class DiaryDAO {
 			pstmt.setInt(1, userCode);
 			pstmt.setTimestamp(2, date);
 			rs = pstmt.executeQuery();
-			if(rs.next()) {
+			while(rs.next()) {
+				DiaryResponseDTO dto = new DiaryResponseDTO();
 				dto.setDairyIndex(rs.getInt("diary_index"));
 				dto.setUserCode(rs.getInt("user_code"));
 				dto.setContent(rs.getString("content"));
 				dto.setDiaryDate(rs.getTimestamp("diary_date"));
+				list.add(dto);
 			}
 			DBManager.close(conn, pstmt, rs);
 		} catch (Exception e) {
 			System.out.println("다이어리 읽기(날짜) 오류");
 			e.printStackTrace();
 		}
-		return dto;
+		return list;
 	}
 	
 	public List<Diary> readDiaryMonth(int userCode, Timestamp startMonth, Timestamp endMonth){

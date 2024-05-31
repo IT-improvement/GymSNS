@@ -225,4 +225,33 @@ public class ExerciseDao {
 		
 		return isUpdated;
 	}
+	
+	public List<ExerciseResponseDto> readByUserCode(int code) {
+		List<ExerciseResponseDto> list = new ArrayList<ExerciseResponseDto>();
+		
+		try {
+			conn = DBManager.getConnection();
+			String sql = "SELECT exercise_index, exercise_category_index, name FROM exercises WHERE user_Code=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, code);
+			
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				int index = rs.getInt(1);
+				int categoryIndex = rs.getInt(2);
+				String name = rs.getString(3);
+				ExerciseResponseDto dto = new ExerciseResponseDto();
+				dto.setIndex(index);
+				dto.setCategoryIndex(categoryIndex);
+				dto.setName(name);
+				list.add(dto);
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			DBManager.close(conn, pstmt, rs);
+		}
+		return list;
+	}
 }

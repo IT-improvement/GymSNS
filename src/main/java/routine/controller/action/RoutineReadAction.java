@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import diary.controller.Action;
 import diary.model.Diary;
+import routine.controller.Action;
 import routine.model.RoutineDAO;
 import routine.model.RoutineResponseDTO;
 

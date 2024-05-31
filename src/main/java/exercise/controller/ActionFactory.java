@@ -33,6 +33,9 @@ public class ActionFactory {
 			case "update":
 				action = new ExerciseUpdateAction();
 				break;
+			case "read_userCode":
+				action = new ExserciseReadByUserCode();
+				break;
 		}
 
 		return action;

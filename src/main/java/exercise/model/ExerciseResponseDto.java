@@ -13,7 +13,11 @@ public class ExerciseResponseDto {
 	private String content;
 	private Timestamp createDate;
 	private Timestamp modDate;
-
+	
+	public ExerciseResponseDto() {
+		
+	}
+	
 	public ExerciseResponseDto(int index, int categoryIndex, String categoryName, int userCode, String userId, String userName, String name, String content, Timestamp createDate, Timestamp modDate) {
 		this.index = index;
 		this.categoryIndex = categoryIndex;
