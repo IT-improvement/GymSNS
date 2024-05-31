@@ -79,7 +79,8 @@ public class RoutineDAO {
 			if(rs.next())
 				temp.setRoutineIndex(rs.getInt(1));
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
+			System.out.println("루틴인덱스 찾기 실패");
 		}
 		return temp;
 	}
