@@ -1,5 +1,8 @@
 package routine.controller;
 
+import routine.controller.action.RoutineCreateAction;
+import routine.controller.action.RoutineReadAction;
+
 public class ActionFactory {
 
 	private ActionFactory() {
@@ -16,7 +19,9 @@ public class ActionFactory {
 		Action action = null;
 
 		if (command.equals("read")) {
+			action = new RoutineReadAction();
 		} else if (command.equals("write")) {
+			action = new RoutineCreateAction();
 		} else if (command.equals("update")) {
 		} else if (command.equals("delete")) {
 		}
