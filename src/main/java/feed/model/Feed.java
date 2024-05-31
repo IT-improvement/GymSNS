@@ -17,6 +17,28 @@ public class Feed {
 	private List<FeedCommentsObject> comments = new ArrayList<>();
 	private boolean isFavorite;
 	private int favoriteCount;
+	private String userId;
+	private String userName;
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public boolean isFavorite() {
+		return isFavorite;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
 
 	public Feed() {
 		
@@ -102,8 +124,8 @@ public class Feed {
 		this.favoriteCount = favoriteCount;
 	}
 
-	public boolean setIsFavorite() {
-		return isFavorite;
+	public void setIsFavorite(boolean isFavorite) {
+		this.isFavorite = isFavorite;
 	}
 
 	public int getFavoriteCount() {
