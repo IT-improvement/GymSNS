@@ -62,7 +62,7 @@ public class RoutineDAO {
 			e.printStackTrace();
 			System.out.println("루틴 읽기 실패");
 		}finally {
-			DBManager.close(conn, pstmt);
+			DBManager.close(conn, pstmt,rs);
 		}
 		
 		return list;
@@ -85,7 +85,7 @@ public class RoutineDAO {
 			e.printStackTrace();
 			System.out.println("루틴인덱스 찾기 실패");
 		}finally {
-			DBManager.close(conn, pstmt);
+			DBManager.close(conn, pstmt,rs);
 		}
 		return temp;
 	}
@@ -107,7 +107,7 @@ public class RoutineDAO {
 			e.printStackTrace();
 			System.out.println("루틴 생성 실패");
 		}finally {
-			DBManager.close(conn, pstmt);
+			DBManager.close(conn, pstmt,rs);
 		}
 	}
 	
@@ -125,8 +125,8 @@ public class RoutineDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("루틴 삭제 오류");
-		} finally {
-			DBManager.close(conn, pstmt);
+		}finally {
+			DBManager.close(conn, pstmt,rs);
 		}
 	}
 }

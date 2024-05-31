@@ -30,9 +30,9 @@ public class DBManager {
 
 	public static void close(Connection conn, PreparedStatement pstmt, ResultSet rs) {
 		try {
-			conn.close();
-			pstmt.close();
-			rs.close();
+			if(conn !=null) conn.close();
+			if(pstmt !=null )pstmt.close();
+			if(rs !=null) rs.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.err.println("DB 종료 오류");

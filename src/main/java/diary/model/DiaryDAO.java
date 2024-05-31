@@ -39,6 +39,8 @@ public class DiaryDAO {
 		} catch (Exception e) {
 			System.out.println("다이어리 생성 오류");
 			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt,rs);
 		}
 	}
 	
@@ -64,6 +66,8 @@ public class DiaryDAO {
 		} catch (Exception e) {
 			System.out.println("다이어리 읽기(날짜) 오류");
 			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt,rs);
 		}
 		return list;
 	}
@@ -90,6 +94,8 @@ public class DiaryDAO {
 		} catch (Exception e) {
 			System.out.println("다이어리 읽기(달) 오류");
 			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt,rs);
 		}
 		return diaryListItem;
 	}
@@ -106,6 +112,8 @@ public class DiaryDAO {
 		} catch (Exception e) {
 			System.out.println("다이어리 수정 오류");
 			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt,rs);
 		}
 	}
 	
@@ -120,6 +128,8 @@ public class DiaryDAO {
 		} catch (Exception e) {
 			System.out.println("다이어리 삭제 오류");
 			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt,rs);
 		}
 	}
 
