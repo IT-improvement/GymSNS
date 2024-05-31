@@ -104,4 +104,20 @@ public class RoutineDAO {
 		}
 	}
 	
+	public void deleteRoutine(RoutineRequestDTO dto) {
+		RoutineRequestDTO requestDTO = findRoutineIndex(dto);
+		
+		conn = DBManager.getConnection();
+		try {
+			String sql = "DLETE FROM routine_index WHERE routine_index=? and exercise_index";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, requestDTO.getRoutineIndex());
+			pstmt.setInt(2, requestDTO.getExerciseIndex());
+			
+			pstmt.execute();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("루틴 삭제 오류");
+		}
+	}
 }
