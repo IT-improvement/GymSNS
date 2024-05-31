@@ -16,7 +16,7 @@ public class RoutineCreateAction implements Action{
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int userCode = 123;
 		String day = request.getParameter("day");
-		int exerciseIndex =Integer.parseInt(request.getParameter("exerciseIndex"));
+		int exerciseIndex =Integer.parseInt(request.getParameter("exercise"));
 		
 		RoutineRequestDTO dto = new RoutineRequestDTO();
 		dto.setDay(day);
