@@ -254,4 +254,29 @@ public class ExerciseDao {
 		}
 		return list;
 	}
+
+	public boolean isExerciseWriter(ExerciseRequestDto exerciseDto) {
+		boolean isWriter = false;
+
+		String sql = "SELECT * FROM exercises "
+					+ "WHERE user_code = ?";
+
+		try {
+			conn = DBManager.getConnection();
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setInt(1, exerciseDto.getUserCode());
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next())
+				isWriter = true;
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			DBManager.close(conn, pstmt, rs);
+		}
+
+		return isWriter;
+	}
 }

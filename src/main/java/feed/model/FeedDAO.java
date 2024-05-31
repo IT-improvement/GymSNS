@@ -3,7 +3,6 @@ package feed.model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -176,6 +175,54 @@ public class FeedDAO {
 
 		addCommentToFeed(list);
 		readFeedFavoriteInfoAll(list);
+		if (userCode != null) {
+			checkFeedFavoriteAll(list, userCode);
+		}
+
+		return list;
+	}
+
+	public ArrayList<Feed> getAllFeedByQuery(Integer userCode, String query) {
+		ArrayList<Feed> list = new ArrayList<Feed>();
+
+		try {
+			conn = DBManager.getConnection();
+
+			String sql =
+					"SELECT feed_index, user_code, title, content, create_date, feeds.mod_date, " +
+							"(SELECT COUNT(*) FROM favorites WHERE feeds.feed_index = favorites.feed_index) AS favorite_count " +
+							"FROM feeds " +
+							"JOIN users ON users.code = feeds.user_code " +
+							"WHERE title LIKE ?" +
+							"OR content LIKE ?";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, "%" + query + "%");
+			pstmt.setString(2, "%" + query + "%");
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				Feed feed = new Feed();
+				feed.setFeedIndex(rs.getInt(1));
+				feed.setUserCode(rs.getInt(2));
+				feed.setTitle(rs.getString(3));
+				feed.setContent(rs.getString(4));
+				feed.setCreateDate(rs.getTimestamp(5));
+				feed.setModDate(rs.getTimestamp(6));
+
+				list.add(feed);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt);
+		}
+
+		addCommentToFeed(list);
+		readFeedFavoriteInfoAll(list);
+
 		if (userCode != null) {
 			checkFeedFavoriteAll(list, userCode);
 		}

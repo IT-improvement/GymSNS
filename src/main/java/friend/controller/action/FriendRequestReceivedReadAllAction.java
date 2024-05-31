@@ -27,8 +27,7 @@ public class FriendRequestReceivedReadAllAction implements Action {
 		String userCodeStr = request.getHeader("Authorization");
 
 		if (!ParameterValidator.isInteger(userCodeStr)) {
-			JSONObject resObj = ApiResponseManager.getStatusObject(400);
-			response.getWriter().write(resObj.toString());
+			response.sendError(400, "Bad Request");
 			return;
 		}
 

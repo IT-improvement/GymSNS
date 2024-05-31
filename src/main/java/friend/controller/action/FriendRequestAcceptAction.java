@@ -26,8 +26,7 @@ public class FriendRequestAcceptAction implements Action {
 		JSONObject resObj = new JSONObject();
 
 		if (!ParameterValidator.isInteger(userCodeStr) || !ParameterValidator.isInteger(userCodeOtherStr)) {
-			resObj = ApiResponseManager.getStatusObject(400);
-			response.getWriter().write(resObj.toString());
+			response.sendError(400, "Bad Request");
 			return;
 		}
 
@@ -44,10 +43,9 @@ public class FriendRequestAcceptAction implements Action {
 				friendRequestDao.deleteFriendRequest(friendRequestDto) &&
 				friendDao.createFriend(friendDto)) {
 			resObj = ApiResponseManager.getStatusObject(200, "Friend Request Accept is finished successfully");
+			response.getWriter().write(resObj.toString());
 		} else {
-			resObj = ApiResponseManager.getStatusObject(500);
+			response.sendError(400, "Bad Request");
 		}
-
-		response.getWriter().write(resObj.toString());
 	}
 }

@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -15,7 +13,6 @@ import org.json.JSONObject;
 import feed.controller.Action;
 import feed.model.Feed;
 import feed.model.FeedDAO;
-import util.ApiResponseManager;
 import util.ParameterValidator;
 
 /**
@@ -72,6 +69,4 @@ public class FeedReadAction implements Action{
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().write(feedJsonArr.toString());
 	}
-
-
 }

@@ -17,6 +17,8 @@ private ActionFactory() {
 		System.out.println(command);
 		if(command.equals("feedRead")) {
 			action = new FeedReadAction();
+		}else if (command.equals("feedReadByQuery")) {
+			action = new FeedReadByQueryAction();
 		}else if (command.equals("feedCreate")) {
 			action = new FeedCreateAction();
 		}else if (command.equals("feedUpdate")) {

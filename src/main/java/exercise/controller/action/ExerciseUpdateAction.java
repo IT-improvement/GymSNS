@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import exercise.controller.Action;
+import exerciseCategory.model.ExerciseCategoryDao;
+import exerciseCategory.model.ExerciseCategoryRequestDto;
 import org.json.JSONObject;
 
 import exercise.model.ExerciseDao;
@@ -33,8 +35,7 @@ public class ExerciseUpdateAction implements Action {
 				!ParameterValidator.isInteger(categoryIndexStr) ||
 				name == null || name.isEmpty() ||
 				content == null || content.isEmpty()) {
-			resObj = ApiResponseManager.getStatusObject(400);
-			response.getWriter().write(resObj.toString());
+			response.sendError(400, "Bad Request");
 			return;
 		}
 
@@ -43,14 +44,20 @@ public class ExerciseUpdateAction implements Action {
 		int categoryIndex = Integer.parseInt(categoryIndexStr);
 
 		ExerciseDao exerciseDao = ExerciseDao.getInstance();
+		ExerciseCategoryDao exerciseCategoryDao = ExerciseCategoryDao.getInstance();
+
 		ExerciseRequestDto exerciseDto = new ExerciseRequestDto(exerciseIndex, categoryIndex, userCode, name, content);
+		ExerciseCategoryRequestDto exerciseCategoryDto = new ExerciseCategoryRequestDto(categoryIndex);
 
-		if (exerciseDao.updateExercise(exerciseDto)) {
+		if (!exerciseCategoryDao.doesCategoryExist(exerciseCategoryDto)) {
+			response.sendError(400, "Bad Request");
+		} else if (!exerciseDao.isExerciseWriter(exerciseDto)) {
+			response.sendError(400, "Bad Request");
+		} else if (exerciseDao.updateExercise(exerciseDto)) {
 			resObj = ApiResponseManager.getStatusObject(200, "Exercise Update is finished successfully");
+			response.getWriter().write(resObj.toString());
 		} else {
-			resObj = ApiResponseManager.getStatusObject(500);
+			response.sendError(500, "Server Error");
 		}
-
-		response.getWriter().write(resObj.toString());
 	}
 }

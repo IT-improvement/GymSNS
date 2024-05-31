@@ -26,8 +26,7 @@ public class FriendCreateAction implements Action {
 		JSONObject resObj = new JSONObject();
 
 		if (!ParameterValidator.isInteger(userCodeStr) || !ParameterValidator.isInteger(newFriendCodeStr)) {
-			resObj = ApiResponseManager.getStatusObject(400);
-			response.getWriter().write(resObj.toString());
+			response.sendError(400, "Bad Request");
 			return;
 		}
 
@@ -38,13 +37,12 @@ public class FriendCreateAction implements Action {
 		FriendRequestDto friendDto = new FriendRequestDto(userCode, newFriendCode);
 
 		if (friendDao.isFriend(friendDto)) {
-			resObj = ApiResponseManager.getStatusObject(400);
+			response.sendError(400, "Bad Request");
 		} else if (friendDao.createFriend(friendDto)) {
 			resObj = ApiResponseManager.getStatusObject(200, "Friend Create is finished successfully");
+			response.getWriter().write(resObj.toString());
 		} else {
-			resObj = ApiResponseManager.getStatusObject(500);
+			response.sendError(500, "Server Error");
 		}
-		
-		response.getWriter().write(resObj.toString());
 	}
 }

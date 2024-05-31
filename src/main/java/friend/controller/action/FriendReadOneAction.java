@@ -25,8 +25,7 @@ public class FriendReadOneAction implements Action {
 		String userCodeFriendStr = request.getParameter("userCodeFriend");
 
 		if (!ParameterValidator.isInteger(userCodeStr) || !ParameterValidator.isInteger(userCodeFriendStr)) {
-			JSONObject resObj = ApiResponseManager.getStatusObject(400);
-			response.getWriter().write(resObj.toString());
+			response.sendError(400, "Bad Request");
 			return;
 		}
 

@@ -107,7 +107,6 @@ public class Feed {
 		this.comments = comments;
 	}
 
-
 	public String getComment() {return comment;}
 
 	public void setComment(String comment) {

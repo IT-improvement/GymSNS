@@ -22,6 +22,9 @@ public class ActionFactory {
 			case "read_one":
 				action = new FriendReadOneAction();
 				break;
+			case "read_relationship_status":
+				action = new FriendRelationshipStatusAction();
+				break;
 			case "create":
 				action = new FriendCreateAction();
 				break;

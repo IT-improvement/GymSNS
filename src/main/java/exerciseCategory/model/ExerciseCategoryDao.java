@@ -104,7 +104,7 @@ public class ExerciseCategoryDao {
 
 			pstmt.setString(1, exerciseCategoryDto.getName());
 			pstmt.setInt(2, exerciseCategoryDto.getIndex());
-			//pstmt.setInt(3, exerciseCategoryDto.getUserCode());
+			//pstmt.setInt(2, exerciseCategoryDto.getUserCode());
 
 			pstmt.execute();
 		} catch (Exception e) {
@@ -115,5 +115,29 @@ public class ExerciseCategoryDao {
 		}
 
 		return isUpdated;
+	}
+
+	public boolean doesCategoryExist(ExerciseCategoryRequestDto exerciseCategoryDto) {
+		boolean doesCategoryExist = false;
+		String sql = "SELECT * FROM exercise_categories "
+				+ "WHERE exercise_category_index = ?";
+
+		try {
+			conn = DBManager.getConnection();
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setInt(1, exerciseCategoryDto.getIndex());
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next())
+				doesCategoryExist = true;
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			DBManager.close(conn, pstmt);
+		}
+
+		return doesCategoryExist;
 	}
 }

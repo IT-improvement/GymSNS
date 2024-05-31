@@ -26,8 +26,7 @@ public class FriendDeleteAction implements Action {
 		JSONObject resObj = new JSONObject();
 
 		if (!ParameterValidator.isInteger(userCodeStr) || !ParameterValidator.isInteger(userCodeFriendStr)) {
-			resObj = ApiResponseManager.getStatusObject(400);
-			response.getWriter().write(resObj.toString());
+			response.sendError(400, "Bad Request");
 			return;
 		}
 
@@ -39,10 +38,9 @@ public class FriendDeleteAction implements Action {
 		
 		if (friendDao.deleteFriendById(friendDto)) {
 			ApiResponseManager.getStatusObject(200, "Friend Delete is finished successfully");
+			response.getWriter().write(resObj.toString());
 		} else {
-			ApiResponseManager.getStatusObject(500);
+			response.sendError(500, "Server Error");
 		}
-		
-		response.getWriter().write(resObj.toString());
 	}
 }
