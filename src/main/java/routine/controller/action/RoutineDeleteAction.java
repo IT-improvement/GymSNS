@@ -7,12 +7,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import routine.controller.Action;
+import routine.model.RoutineDAO;
+import routine.model.RoutineRequestDTO;
 
 public class RoutineDeleteAction implements Action{
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int userCode =123;
+		int exerciseIndex = Integer.parseInt(request.getParameter("exerciseIndex"));
+		String day = request.getParameter("day");
 		
+		RoutineRequestDTO dto = new RoutineRequestDTO();
+		dto.setDay(day);
+		dto.setExerciseIndex(exerciseIndex);
+		dto.setUserCode(userCode);
+		
+		RoutineDAO dao = RoutineDAO.getInstance();
+		dao.deleteRoutine(dto);
 	}
-
 }
