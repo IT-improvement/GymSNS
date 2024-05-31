@@ -61,6 +61,8 @@ public class RoutineDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("루틴 읽기 실패");
+		}finally {
+			DBManager.close(conn, pstmt);
 		}
 		
 		return list;
@@ -82,6 +84,8 @@ public class RoutineDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("루틴인덱스 찾기 실패");
+		}finally {
+			DBManager.close(conn, pstmt);
 		}
 		return temp;
 	}
@@ -102,6 +106,8 @@ public class RoutineDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("루틴 생성 실패");
+		}finally {
+			DBManager.close(conn, pstmt);
 		}
 	}
 	
@@ -110,7 +116,7 @@ public class RoutineDAO {
 		
 		conn = DBManager.getConnection();
 		try {
-			String sql = "DLETE FROM routine_index WHERE routine_index=? and exercise_index";
+			String sql = "DELETE FROM routine_details WHERE routine_index=? and exercise_index=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, requestDTO.getRoutineIndex());
 			pstmt.setInt(2, requestDTO.getExerciseIndex());
@@ -119,6 +125,8 @@ public class RoutineDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("루틴 삭제 오류");
+		} finally {
+			DBManager.close(conn, pstmt);
 		}
 	}
 }
