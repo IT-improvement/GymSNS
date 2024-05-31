@@ -1,6 +1,7 @@
 package routine.controller;
 
 import routine.controller.action.RoutineCreateAction;
+import routine.controller.action.RoutineDeleteAction;
 import routine.controller.action.RoutineReadAction;
 
 public class ActionFactory {
@@ -24,6 +25,7 @@ public class ActionFactory {
 			action = new RoutineCreateAction();
 		} else if (command.equals("update")) {
 		} else if (command.equals("delete")) {
+			action = new RoutineDeleteAction();
 		}
 
 		return action;
