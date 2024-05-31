@@ -65,4 +65,42 @@ public class RoutineDAO {
 		return list;
 	}
 	
+	private RoutineRequestDTO findRoutineIndex(RoutineRequestDTO dto) {
+		RoutineRequestDTO temp = dto;
+		
+		conn = DBManager.getConnection();
+		try {
+			String sql="SELECT routine_index FROM routines WHERE user_code=? and day=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, dto.getUserCode());
+			pstmt.setString(2, dto.getDay());
+			
+			rs = pstmt.executeQuery();
+			if(rs.next())
+				temp.setRoutineIndex(rs.getInt(1));
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return temp;
+	}
+	
+	public void inesrtRoutine(RoutineRequestDTO dto) {
+		RoutineRequestDTO requestDTO = findRoutineIndex(dto);
+		
+		conn = DBManager.getConnection();
+		try {
+			String sql = "INSERT INTO routine_details(routine_index, exercise_index, create_date)"
+					+ " VALUES(?, ?, ?)";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, requestDTO.getRoutineIndex());
+			pstmt.setInt(2, requestDTO.getExerciseIndex());
+			pstmt.setTimestamp(3, requestDTO.getDate());
+			
+			pstmt.execute();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("루틴 생성 실패");
+		}
+	}
+	
 }
