@@ -133,6 +133,41 @@ public class UserDao {
 		return user;
 	}
 
+	public UserResponseDto findUserByCode(int code) {
+		UserResponseDto user = null;
+
+		try {
+			conn = DBManager.getConnection();
+
+			String sql = "SELECT id, email, name, birth, gender, telecom, phone, reg_date, mod_date FROM users WHERE code=?";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, code);
+
+			rs = pstmt.executeQuery();
+
+			if(rs.next()) {
+				String id = rs.getString(1);
+				String email = rs.getString(2);
+				String name = rs.getString(3);
+				String birth = rs.getString(4);
+				String gender = rs.getString(5);
+				String telecom = rs.getString(6);
+				String phone = rs.getString(7);
+				Timestamp regDate = rs.getTimestamp(8);
+				Timestamp modDate = rs.getTimestamp(9);
+
+				user = new UserResponseDto(id, email, name, birth, gender, telecom, phone);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt, rs);
+		}
+		return user;
+	}
+
 	public List<UserResponseDto> findUserAllByIdOrName(String query) {
 		List<UserResponseDto> list = new ArrayList<UserResponseDto>();
 		String sql = "SELECT code, id, email, name, birth, gender, telecom, phone "

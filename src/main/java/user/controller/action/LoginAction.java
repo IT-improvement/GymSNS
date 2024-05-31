@@ -28,6 +28,9 @@ public class LoginAction extends HttpServlet implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
 		HttpSession session = request.getSession();
 		System.out.println("Login Page");
 		if (session.getAttribute("id") != null) {
@@ -73,23 +76,27 @@ public class LoginAction extends HttpServlet implements Action {
 				 session.setAttribute("code", user.getCode());
 				 session.setAttribute("id", user.getId());
 
-				 JSONObject userObj = new JSONObject();
-				 userObj.put("id", id);
-				 userObj.put("password", password);
+//				 JSONObject userObj = new JSONObject();
+                 jsonResponse.put("code", user.getCode());
+                 jsonResponse.put("id", id);
+                 jsonResponse.put("password", password);
 
 				 jsonResponse.put("status", 200);
 				 jsonResponse.put("message", "로그인 성공");
 			 } else {
-				 jsonResponse.put("status", 401);
-				 jsonResponse.put("message", "로그인 실패1");
+//				 jsonResponse.put("status", 401);
+//				 jsonResponse.put("message", "로그인 실패1");
+                 response.sendError(401, "로그인 실패1");
+                 return;
 			 }
 		 } else {
-			 jsonResponse.put("status", 401);
-			 jsonResponse.put("message", "로그인 실패2");
+//			 jsonResponse.put("status", 401);
+//			 jsonResponse.put("message", "로그인 실패2");
+             response.sendError(401, "로그인 실패2");
+             return;
 		 }
 		 
-		 response.setContentType("application/json");
-		 response.setCharacterEncoding("UTF-8");
+
 		 response.getWriter().write(jsonResponse.toString());
 		 
 	}

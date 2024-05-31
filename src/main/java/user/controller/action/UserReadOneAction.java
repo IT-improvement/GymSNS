@@ -21,36 +21,43 @@ public class UserReadOneAction extends HttpServlet implements Action {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         //HttpSession session = request.getSession();
+        String codeString = request.getParameter("code");
+        int code = Integer.parseInt(codeString);
+        System.out.println(code + "1234");
 
-        StringBuilder sb = new StringBuilder();
-        BufferedReader reader = request.getReader();
-
-        String line = "";
-        while ((line = reader.readLine()) != null) {
-            sb.append(line);
-        }
+//        StringBuilder sb = new StringBuilder();
+//        BufferedReader reader = request.getReader();
+//
+//        String line = "";
+//        while ((line = reader.readLine()) != null) {
+//            sb.append(line);
+//        }
 
         UserDao userDao = UserDao.getInstance();
-        JSONObject jsonRequest = new JSONObject(sb.toString());
+//        JSONObject jsonRequest = new JSONObject(sb.toString());
+        JSONObject jsonRequest = new JSONObject();
 
-        String id = jsonRequest.getString("id");
-        System.out.println("id) " + id);
-        User user = userDao.findUserById(id);
+        System.out.println("1");
+//        String id = jsonRequest.getString("id");
+//        System.out.println("id) " + id);
+        User user = userDao.findUserByCode(code);
+        System.out.println("2");
+        System.out.println(user);
 
         JSONObject jsonResponse = new JSONObject();
 
         if (user != null) {
-            JSONObject userObj = new JSONObject();
-            userObj.put("code", user.getCode());
-            userObj.put("id", user.getId());
-            userObj.put("password", user.getPassword());
-            userObj.put("email", user.getEmail());
-            userObj.put("name", user.getName());
-            userObj.put("birth", user.getBirth());
-            userObj.put("gender", user.getGender());
-            userObj.put("telecom", user.getTelecom());
-            userObj.put("phone", user.getPhone());
-            userObj.put("profile_image", user.getProfileImage());
+//            JSONObject userObj = new JSONObject();
+            jsonResponse.put("code", code);
+            jsonResponse.put("id", user.getId());
+            jsonResponse.put("password", user.getPassword());
+            jsonResponse.put("email", user.getEmail());
+            jsonResponse.put("name", user.getName());
+            jsonResponse.put("birth", user.getBirth());
+            jsonResponse.put("gender", user.getGender());
+            jsonResponse.put("telecom", user.getTelecom());
+            jsonResponse.put("phone", user.getPhone());
+            jsonResponse.put("profile_image", user.getProfileImage());
 
             System.out.println("id : " + user.getId());
             System.out.println("name : " + user.getName());
