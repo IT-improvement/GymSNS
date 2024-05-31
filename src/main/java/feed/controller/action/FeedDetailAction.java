@@ -64,7 +64,7 @@ public class FeedDetailAction implements Action {
 		feedObj.put("content", feed.getContent());
 		feedObj.put("userCode", feed.getUserCode());
 		feedObj.put("createDate", feed.getCreateDate());
-		feedObj.put("comments", feed.getComments());
+		//feedObj.put("comments", feed.getComments());
 		if(feed.getModDate() == null) {
 			feedObj.put("modDate", "");
 		}else {

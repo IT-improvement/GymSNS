@@ -31,14 +31,19 @@ public class FeedDeleteAction implements Action {
 			response.getWriter().write(resObj.toString());
 			return;
 		}
-
+		JSONObject resObj = new JSONObject();
 		int feedIndex = Integer.parseInt(url[1]);
 		
 		System.out.println(feedIndex);
 		
 		FeedRequestDTO feedDto = new FeedRequestDTO(feedIndex);
 		FeedDAO feedDao = FeedDAO.getInstance();
-		feedDao.deleteFeed(feedDto);
+		if (feedDao.deleteFeed(feedDto)) {
+			resObj = ApiResponseManager.getStatusObject(200, "Exercise Delete is finished successfully");
+		} else {
+			resObj = ApiResponseManager.getStatusObject(500);
+		}
+		response.getWriter().write(resObj.toString());
 	}
 
 }

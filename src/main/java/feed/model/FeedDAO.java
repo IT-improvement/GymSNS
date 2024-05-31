@@ -316,7 +316,8 @@ public class FeedDAO {
 		return feed;
 	}
 
-	public void deleteFeed(FeedRequestDTO feedDto) {
+	public boolean deleteFeed(FeedRequestDTO feedDto) {
+		boolean isDeleted = true;
 		try {
 			conn = DBManager.getConnection();
 			System.out.println(feedDto.getFeedIndex());
@@ -328,9 +329,11 @@ public class FeedDAO {
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
+			isDeleted = false;
 		}finally {
 			DBManager.close(conn, pstmt);
 		}
+		return isDeleted;
 	}
 
 	public ArrayList<Feed> readFeedFavoriteInfoAll(ArrayList<Feed> list) {
