@@ -227,11 +227,11 @@ public class ExerciseDao {
 	}
 	
 	public List<ExerciseResponseDto> readByUserCode(int code) {
-		List<ExerciseResponseDto> dto = new ArrayList<ExerciseResponseDto>();
+		List<ExerciseResponseDto> list = new ArrayList<ExerciseResponseDto>();
 		
 		try {
 			conn = DBManager.getConnection();
-			String sql = "SELECT * FROM exercises WHERE userCode=?";
+			String sql = "SELECT exercise_index, exercise_category_index, name FROM exercises WHERE user_Code=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, code);
 			
@@ -240,24 +240,18 @@ public class ExerciseDao {
 			while (rs.next()) {
 				int index = rs.getInt(1);
 				int categoryIndex = rs.getInt(2);
-				String categoryName = rs.getString(3);
-
-				int userCode = rs.getInt(4);
-				String userId = rs.getString(5);
-				String userName = rs.getString(6);
-
-				String name = rs.getString(7);
-				String content = rs.getString(8);
-				Timestamp createDate = rs.getTimestamp(9);
-				Timestamp modDate = rs.getTimestamp(10);
-				
-				dto.add(new ExerciseResponseDto(index, categoryIndex, categoryName, userCode, userId, userName, name, content, createDate, modDate));
+				String name = rs.getString(3);
+				ExerciseResponseDto dto = new ExerciseResponseDto();
+				dto.setIndex(index);
+				dto.setCategoryIndex(categoryIndex);
+				dto.setName(name);
+				list.add(dto);
 			}
 		} catch (Exception e) {
 			System.out.println(e);
 		} finally {
 			DBManager.close(conn, pstmt, rs);
 		}
-		return dto;
+		return list;
 	}
 }
