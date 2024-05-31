@@ -59,8 +59,8 @@ public class UpdateAction extends HttpServlet implements Action {
 		JSONObject jsonRequest = new JSONObject(jsonString);
 
 		String password = jsonRequest.optString("password", null);
-		String name = jsonRequest.optString("name", null);
 		String email = jsonRequest.optString("email", null);
+		String name = jsonRequest.optString("name", null);
 		String telecom = jsonRequest.optString("telecom", null);
 		String phone = jsonRequest.optString("phone", null);
 		String profileImage = jsonRequest.optString("profileImage", null);
@@ -91,18 +91,18 @@ public class UpdateAction extends HttpServlet implements Action {
 				System.out.println("password update 성공!");
 			}
 
-			if (name != null && !name.equals("") && !name.equals(user.getName())) {
-				userDto.setName(name);
-				userDao.updateUserName(userDto);
-				user.setName(name);
-				System.out.println("이름 업데이트 완료: " + name);
-			}
-
 			if (email != null && !email.equals("") && !email.equals(user.getEmail()) && !userDao.isEmailDuplicate(email)) {
 				userDto.setEmail(email);
 				userDao.updateUserEmail(userDto);
 				user.setEmail(email);
 				System.out.println("이메일 업데이트 완료: " + email);
+			}
+
+			if (name != null && !name.equals("") && !name.equals(user.getName())) {
+				userDto.setName(name);
+				userDao.updateUserName(userDto);
+				user.setName(name);
+				System.out.println("이름 업데이트 완료: " + name);
 			}
 
 			if (telecom != null && !telecom.equals("") && !telecom.equals(user.getTelecom())) {
@@ -124,6 +124,17 @@ public class UpdateAction extends HttpServlet implements Action {
 				user.setProfileImage(profileImage);
 				System.out.println("이메일 업데이트 완료: " + email);
 			}
+
+			JSONObject userObj = new JSONObject();
+			userObj.put("id", id);
+			userObj.put("password", password);
+			userObj.put("email", email);
+			userObj.put("name", name);
+			userObj.put("birth", birth);
+			userObj.put("gender", gender);
+			userObj.put("telecom", telecom);
+			userObj.put("phone", phone);
+			userObj.put("profileImage", profileImage);
 
 			//userDao.updateUser(user);
 			jsonResponse.put("status", 200);
