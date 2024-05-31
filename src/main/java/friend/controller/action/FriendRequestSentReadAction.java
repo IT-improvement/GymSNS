@@ -28,8 +28,7 @@ public class FriendRequestSentReadAction implements Action {
 		JSONObject resObj = new JSONObject();
 
 		if (!ParameterValidator.isInteger(userCodeStr) || !ParameterValidator.isInteger(userCodeOtherStr)) {
-			resObj = ApiResponseManager.getStatusObject(400);
-			response.getWriter().write(resObj.toString());
+			response.sendError(400, "Bad Request");
 			return;
 		}
 
@@ -39,7 +38,7 @@ public class FriendRequestSentReadAction implements Action {
 		FriendRequestDao friendRequestDao = FriendRequestDao.getInstance();
 		FriendRequestRequestDto friendRequestDto = new FriendRequestRequestDto(userCode, userCodeOther);
 
-		resObj.put("is_user_in_friend_request", friendRequestDao.isUserInSentFriendRequest(friendRequestDto));
+		resObj.put("isUserInFriendRequest", friendRequestDao.isUserInSentFriendRequest(friendRequestDto));
 
 		response.getWriter().write(resObj.toString());
 	}
