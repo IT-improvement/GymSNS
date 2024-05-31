@@ -29,7 +29,7 @@ public class RoutineDAO {
 		
 		conn = DBManager.getConnection();
 		try {
-			String sql ="SELECT e.name, ec.name, r.day, e.exercise_index\r\n"
+			String sql ="SELECT e.name, ec.name, r.day, e.exercise_index, r.routine_index\r\n"
 					+ "FROM exercises e, exercise_categories ec, routines r, routine_details rd\r\n"
 					+ "WHERE e.exercise_index IN (\r\n"
 					+ "    SELECT rd.exercise_index\r\n"
@@ -55,6 +55,7 @@ public class RoutineDAO {
 				dto.setCategory(rs.getString(2));
 				dto.setDay(rs.getString(3));
 				dto.setExerciseIndex(rs.getInt(4));
+				dto.setRoutineIndex(rs.getInt(5));
 				list.add(dto);
 			}
 		} catch (Exception e) {

@@ -5,7 +5,14 @@ public class RoutineResponseDTO {
 	private String name;
 	private String category;
 	private String day;
+	private int routineIndex;
 	
+	public int getRoutineIndex() {
+		return routineIndex;
+	}
+	public void setRoutineIndex(int routineIndex) {
+		this.routineIndex = routineIndex;
+	}
 	public int getExerciseIndex() {
 		return exerciseIndex;
 	}
