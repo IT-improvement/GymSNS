@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import feed.controller.action.FeedCommentsObject;
@@ -142,13 +141,13 @@ public class FeedDAO {
 		return feed;
 	}
 
-	public ArrayList<Feed> getAllFeed() {
+	public ArrayList<Feed> getAllFeed(Integer userCode) {
 		ArrayList<Feed> list = new ArrayList<Feed>();
 		try {
 			conn = DBManager.getConnection();
-			String sql = "SELECT DISTINCT f.feed_index, f.user_code, title, content, f.create_date, mod_date, " +
+			String sql = "SELECT DISTINCT f.feed_index, f.user_code, title, content, f.create_date, f.mod_date, users.id, users.name, " +
 					"(SELECT COUNT(*) FROM favorites WHERE f.feed_index = favorites.feed_index) AS favorite_count " +
-					"FROM feeds AS f ";
+					"FROM feeds AS f JOIN users ON users.code = f.user_code;";
 
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
@@ -161,6 +160,8 @@ public class FeedDAO {
 				feed.setContent(rs.getString(4));
 				feed.setCreateDate(rs.getTimestamp(5));
 				feed.setModDate(rs.getTimestamp(6));
+				feed.setUserId(rs.getString(7));
+				feed.setUserName(rs.getString(8));
 
 				list.add(feed);
 			}
@@ -174,24 +175,33 @@ public class FeedDAO {
 		System.out.println(list.size());
 
 		addCommentToFeed(list);
+		readFeedFavoriteInfoAll(list);
+		if (userCode != null) {
+			checkFeedFavoriteAll(list, userCode);
+		}
 
 		return list;
 	}
 
 	public Feed getFeedByFeedIndex(int feedIndex, String userCodeViewer) {
-		Feed feed = null;
+		Feed feed = new Feed();
 		try {
 			conn = DBManager.getConnection();
-			String sql = "SELECT title, content, user_code, create_date FROM feeds WHERE feed_index = ?;";
+			String sql = "SELECT DISTINCT f.feed_index, f.user_code, title, content, f.create_date, f.mod_date, users.id, users.name, " +
+					"(SELECT COUNT(*) FROM favorites WHERE f.feed_index = favorites.feed_index) AS favorite_count " +
+					"FROM feeds AS f JOIN users ON users.code = f.user_code WHERE feed_index=?;";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, feedIndex);
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
-				String title = rs.getString(1);
-				String content = rs.getString(2);
-				int userCode = rs.getInt(3);
-				Timestamp createDate = rs.getTimestamp(4);
-				feed = new Feed(title, content, feedIndex, userCode, createDate);
+				feed.setFeedIndex(rs.getInt(1));
+				feed.setUserCode(rs.getInt(2));
+				feed.setTitle(rs.getString(3));
+				feed.setContent(rs.getString(4));
+				feed.setCreateDate(rs.getTimestamp(5));
+				feed.setModDate(rs.getTimestamp(6));
+				feed.setUserId(rs.getString(7));
+				feed.setUserName(rs.getString(8));
 
 			}
 		} catch (Exception e) {
@@ -276,6 +286,29 @@ public class FeedDAO {
 		}
 	}
 
+	public ArrayList<Feed> readFeedFavoriteInfoAll(ArrayList<Feed> list) {
+		String sql = "SELECT COUNT(*) FROM favorites WHERE feed_index = ?;";
+		try {
+			conn = DBManager.getConnection();
+			for(int i = 0; i < list.size(); i++) {
+				Feed feed = list.get(i);
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, feed.getFeedIndex());
+				rs = pstmt.executeQuery();
+				if(rs.next()) {
+					feed.setFavoriteCount(rs.getInt(1));
+				}
+			}
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt);
+		}
+		return list;
+	}
+
 	public Feed readFeedFavoriteInfo(Feed feed) {
 		try {
 			conn = DBManager.getConnection();
@@ -316,6 +349,31 @@ public class FeedDAO {
 		}
 
 		return feed;
+	}
+
+	public List<Feed> checkFeedFavoriteAll(List<Feed> feeds, int userCode) {
+		String sql = "SELECT feed_index, user_code FROM favorites WHERE feed_index = ? AND user_code = ?;";
+		try {
+			conn = DBManager.getConnection();
+			for(int i =0; i < feeds.size(); i++) {
+				Feed feed = feeds.get(i);
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, feed.getFeedIndex());
+				pstmt.setInt(2, userCode);
+				pstmt.execute();
+				rs = pstmt.executeQuery();
+
+				if (rs.next()) {
+					feed.setIsFavorite(true);
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt);
+		}
+		return feeds;
 	}
 
 	public FeedResponseDTO checkFeedFavorite(FeedRequestDTO feedDto) {
