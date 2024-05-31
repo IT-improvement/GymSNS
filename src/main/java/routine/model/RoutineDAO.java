@@ -29,21 +29,21 @@ public class RoutineDAO {
 		
 		conn = DBManager.getConnection();
 		try {
-			String sql ="SELECT e.name, ec.name, r.day, e.exercise_index"
-					+ "FROM exercises e, exercise_categories ec, routines r, routine_details rd"
-					+ "WHERE e.exercise_index IN ("
-					+ "    SELECT rd.exercise_index"
-					+ "    FROM routine_details rd"
-					+ "    WHERE rd.routine_index in("
-					+ "		SELECT routine_index"
-					+ "        FROM routines"
-					+ "        WHERE user_code=?"
-					+ "    )"
-					+ ")"
-					+ "and e.exercise_category_index = ec.exercise_category_index"
-					+ "and r.routine_index = rd.routine_index"
-					+ "and e.exercise_index = rd.exercise_index"
-					+ "order by day asc"
+			String sql ="SELECT e.name, ec.name, r.day, e.exercise_index\r\n"
+					+ "FROM exercises e, exercise_categories ec, routines r, routine_details rd\r\n"
+					+ "WHERE e.exercise_index IN (\r\n"
+					+ "    SELECT rd.exercise_index\r\n"
+					+ "    FROM routine_details rd\r\n"
+					+ "    WHERE rd.routine_index in(\r\n"
+					+ "		SELECT routine_index\r\n"
+					+ "        FROM routines\r\n"
+					+ "        WHERE user_code=?\r\n"
+					+ "    )\r\n"
+					+ ")\r\n"
+					+ "and e.exercise_category_index = ec.exercise_category_index\r\n"
+					+ "and r.routine_index = rd.routine_index\r\n"
+					+ "and e.exercise_index = rd.exercise_index\r\n"
+					+ "order by day asc\r\n"
 					+ ";";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, code);
