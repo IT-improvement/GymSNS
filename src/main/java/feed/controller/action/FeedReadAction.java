@@ -43,7 +43,7 @@ public class FeedReadAction implements Action{
 			feedObj.put("userCode", feed.getUserCode());
 			feedObj.put("createDate", feed.getCreateDate());
 			feedObj.put("comments", feed.getComments());
-					
+			System.out.println(feed.getComments().size());
 			feedJsonArr.put(feedObj);
 		}
 		System.out.println(list.size());

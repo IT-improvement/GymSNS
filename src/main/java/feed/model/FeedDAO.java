@@ -69,10 +69,11 @@ public class FeedDAO {
 
 
 	private List<Feed> addCommentToFeed(List<Feed> feeds) {
-		String sql = "SELECT feed_comment_index, comment "
-				+ "FROM feed_comments "
-				+ "WHERE feed_index = ?";
-		List<FeedCommentsObject> comments = new ArrayList<>();
+		String sql = "SELECT feed_comment_index, comment, users.id, users.name, users.code "
+				+ "FROM feed_comments " +
+				"JOIN users ON users.code = feed_comments.user_code " +
+				 "WHERE feed_index = ?";
+
 
 		try {
 			conn = DBManager.getConnection();
@@ -83,14 +84,17 @@ public class FeedDAO {
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, feed.getFeedIndex());
 				rs = pstmt.executeQuery();
-
+				System.out.println(pstmt.toString());
+				List<FeedCommentsObject> comments = new ArrayList<>();
 				while (rs.next()) {
 					comments.add(new FeedCommentsObject(
-							rs.getInt(1), rs.getString(2)
+							rs.getInt(1), rs.getString(2), rs.getString(3),
+							rs.getString(4), rs.getInt(5)
 					));
 				}
 
 				feed.setComments(comments);
+
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -98,9 +102,6 @@ public class FeedDAO {
 		}finally {
 			DBManager.close(conn, pstmt);
 		}
-
-
-
 		return feeds;
 	}
 
@@ -109,9 +110,10 @@ public class FeedDAO {
 		List<FeedCommentsObject> comments = new ArrayList<>() {
 		};
 		try {
-			String sql = "SELECT feed_comment_index, comment "
-					+ "FROM feed_comments "
-					+ "WHERE feed_index = ?";
+			String sql = "SELECT feed_comment_index, comment, users.id, users.name, users.code "
+					+ "FROM feed_comments " +
+					"JOIN users ON users.code = feed_comments.user_code " +
+					"WHERE feed_index = ?";
 			conn = DBManager.getConnection();
 
 
@@ -123,6 +125,9 @@ public class FeedDAO {
 				FeedCommentsObject feedCommentsObject = new FeedCommentsObject();
 				feedCommentsObject.setFeedCommentsIndex(rs.getInt(1));
 				feedCommentsObject.setComment(rs.getString(2));
+				feedCommentsObject.setUserId(rs.getString(3));
+				feedCommentsObject.setUserName(rs.getString(4));
+				feedCommentsObject.setUserCode(rs.getInt(5));
 				comments.add(feedCommentsObject);
 			}
 

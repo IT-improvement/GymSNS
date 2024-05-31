@@ -32,8 +32,7 @@ public class FeedCommentCreateAction implements Action {
 
 
 		if (!ParameterValidator.isInteger(userCodeStr) || !ParameterValidator.isInteger(url[1])) {
-			JSONObject resObj = ApiResponseManager.getStatusObject(400);
-			response.getWriter().write(resObj.toString());
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 			return;
 		}
 
