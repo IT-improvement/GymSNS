@@ -35,6 +35,7 @@ public class FeedCreateAction implements Action {
 
 
 		String userCodeStr = request.getHeader("Authorization");
+		System.out.println(userCodeStr);
 		if (!ParameterValidator.isInteger(userCodeStr)) {
 			JSONObject resObj = ApiResponseManager.getStatusObject(400);
 			response.getWriter().write(resObj.toString());

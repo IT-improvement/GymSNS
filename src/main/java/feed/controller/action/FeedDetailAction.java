@@ -27,16 +27,18 @@ public class FeedDetailAction implements Action {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String userCodeStr = request.getHeader("Authorization");
+//		String userCodeStr = request.getHeader("Authorization");
 		String url[] = request.getPathInfo().split("/");
 
 
-		if (!ParameterValidator.isInteger(userCodeStr) || !ParameterValidator.isInteger(url[1])) {
-			JSONObject resObj = ApiResponseManager.getStatusObject(400);
-			response.getWriter().write(resObj.toString());
-			return;
-		}
+//		if (!ParameterValidator.isInteger(userCodeStr) || !ParameterValidator.isInteger(url[1])) {
+//			JSONObject resObj = ApiResponseManager.getStatusObject(400);
+//			response.getWriter().write(resObj.toString());
+//			return;
+//		}
 
+
+		String userCodeStr = "1004";
 		int feedIndex = Integer.parseInt(url[1]);
 		System.out.println(feedIndex);
 
@@ -50,15 +52,28 @@ public class FeedDetailAction implements Action {
 		System.out.println(feed.getContent());
 		System.out.println(feed.getFeedIndex());
 		System.out.println(feed.getUserCode());
+		for(int i = 0; i < feed.getComments().size(); i++) {
+			System.out.println(feed.getComments().get(i));
+		}
+		System.out.println(feed.getFavoriteCount());
+		System.out.println(feed.getIsFavorite());
 
 
+		feedObj.put("feedIndex", feed.getFeedIndex());
 		feedObj.put("title", feed.getTitle());
 		feedObj.put("content", feed.getContent());
-		feedObj.put("feedIndex", feed.getFeedIndex());
 		feedObj.put("userCode", feed.getUserCode());
-		feedObj.put("comment", feed.getComments());
+		feedObj.put("createDate", feed.getCreateDate());
+		feedObj.put("comments", feed.getComments());
+		if(feed.getModDate() == null) {
+			feedObj.put("modDate", "");
+		}else {
+			feedObj.put("modDate", feed.getModDate());
+		}
+		feedObj.put("userId", feed.getUserId());
+		feedObj.put("userName", feed.getUserName());
 		feedObj.put("favoriteCount", feed.getFavoriteCount());
-		feedObj.put("isFavorite", feed.getIsFavorite());
+		feedObj.put("checkFavorite" ,feed.getIsFavorite());
 
 
 

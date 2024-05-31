@@ -26,9 +26,19 @@ public class FeedReadAction implements Action{
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		String userCodeStr = request.getHeader("Authorization");
+
+		Integer userCode = -1;
+		if (!ParameterValidator.isInteger(userCodeStr)) {
+			userCode = null;
+		}else {
+			userCode = Integer.valueOf(userCodeStr);
+		}
+
+
 
 		FeedDAO feedDao = new FeedDAO();
-		ArrayList<Feed> list = feedDao.getAllFeed();
+		ArrayList<Feed> list = feedDao.getAllFeed(userCode);
 				
 		
 				
@@ -43,7 +53,17 @@ public class FeedReadAction implements Action{
 			feedObj.put("userCode", feed.getUserCode());
 			feedObj.put("createDate", feed.getCreateDate());
 			feedObj.put("comments", feed.getComments());
-					
+			if(feed.getModDate() == null) {
+				feedObj.put("modDate", "");
+			}else {
+				feedObj.put("modDate", feed.getModDate());
+			}
+			feedObj.put("userId", feed.getUserId());
+			feedObj.put("userName", feed.getUserName());
+			feedObj.put("favoriteCount", feed.getFavoriteCount());
+			feedObj.put("checkFavorite", feed.getIsFavorite());
+
+			System.out.println(feed.getComments().size());
 			feedJsonArr.put(feedObj);
 		}
 		System.out.println(list.size());
