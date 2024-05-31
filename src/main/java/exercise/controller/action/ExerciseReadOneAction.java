@@ -27,8 +27,7 @@ public class ExerciseReadOneAction implements Action {
 		JSONObject exerciseObj = new JSONObject();
 
 		if (!ParameterValidator.isInteger(exerciseIndexStr)) {
-			exerciseObj = ApiResponseManager.getStatusObject(404);
-			response.getWriter().write(exerciseObj.toString());
+			response.sendError(400, "Bad Request");
 			return;
 		}
 
@@ -42,8 +41,7 @@ public class ExerciseReadOneAction implements Action {
 		ExerciseResponseDto exercise = exerciseDao.findExerciseOneByIndex(exerciseDto);
 
 		if (exercise == null) {
-			exerciseObj = ApiResponseManager.getStatusObject(400);
-			response.getWriter().write(exerciseObj.toString());
+			response.sendError(400, "Bad Request");
 			return;
 		}
 

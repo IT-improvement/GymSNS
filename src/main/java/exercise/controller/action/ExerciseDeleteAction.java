@@ -26,8 +26,7 @@ public class ExerciseDeleteAction implements Action {
 		JSONObject resObj = new JSONObject();
 
 		if (!ParameterValidator.isInteger(userCodeStr) || !ParameterValidator.isInteger(exerciseIndexStr)) {
-			resObj = ApiResponseManager.getStatusObject(400);
-			response.getWriter().write(resObj.toString());
+			response.sendError(400, "Bad Request");
 			return;
 		}
 
@@ -37,12 +36,17 @@ public class ExerciseDeleteAction implements Action {
 		ExerciseDao exerciseDao = ExerciseDao.getInstance();
 		ExerciseRequestDto exerciseDto = new ExerciseRequestDto(exerciseIndex, userCode);
 
-		if (exerciseDao.deleteExercise(exerciseDto)) {
-			resObj = ApiResponseManager.getStatusObject(200, "Exercise Delete is finished successfully");
-		} else {
-			resObj = ApiResponseManager.getStatusObject(500);
+		if (!exerciseDao.isExerciseWriter(exerciseDto)) {
+			response.sendError(400, "Bad Request");
+			return;
 		}
 
+		if (!exerciseDao.deleteExercise(exerciseDto)) {
+			response.sendError(500, "Server Error");
+			return;
+		}
+
+		resObj = ApiResponseManager.getStatusObject(200, "Exercise Delete is finished successfully");
 		response.getWriter().write(resObj.toString());
 	}
 }
