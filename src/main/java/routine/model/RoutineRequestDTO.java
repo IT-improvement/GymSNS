@@ -16,6 +16,10 @@ public class RoutineRequestDTO {
 		date = Timestamp.valueOf(time);
 	}
 	
+	public Timestamp getDate() {
+		return date;
+	}
+
 	public String getDay() {
 		return day;
 	}
