@@ -6,6 +6,7 @@ import feed.model.FeedDAO;
 import feed.model.FeedRequestDTO;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import util.ParameterValidator;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -20,26 +21,45 @@ public class FeedReadByQueryAction implements Action{
        
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String userCodeStr = request.getHeader("Authorization");
 		String query = request.getParameter("query");
+
+		Integer userCode = -1;
+		if (!ParameterValidator.isInteger(userCodeStr)) {
+			userCode = null;
+		}else {
+			userCode = Integer.valueOf(userCodeStr);
+		}
 
 		FeedDAO feedDao = new FeedDAO();
 
-//		ArrayList<Feed> list = feedDao.getAllFeedByQuery(query);
+		ArrayList<Feed> list = feedDao.getAllFeedByQuery(userCode, query);
 
 		JSONArray feedJsonArr = new JSONArray();
 				
-//		for (Feed feed : list) {
-//			JSONObject feedObj = new JSONObject();
-//
-//			feedObj.put("feedIndex", feed.getFeedIndex());
-//			feedObj.put("title", feed.getTitle());
-//			feedObj.put("content", feed.getContent());
-//			feedObj.put("userCode", feed.getUserCode());
-//			feedObj.put("createDate", feed.getCreateDate());
-//			feedObj.put("comments", feed.getComments());
-//					
-//			feedJsonArr.put(feedObj);
-//		}
+		for (Feed feed : list) {
+			JSONObject feedObj = new JSONObject();
+
+			feedObj.put("feedIndex", feed.getFeedIndex());
+			feedObj.put("title", feed.getTitle());
+			feedObj.put("content", feed.getContent());
+			feedObj.put("userCode", feed.getUserCode());
+			feedObj.put("createDate", feed.getCreateDate());
+			feedObj.put("comments", feed.getComments());
+
+			if(feed.getModDate() == null) {
+				feedObj.put("modDate", "");
+			} else {
+				feedObj.put("modDate", feed.getModDate());
+			}
+
+			feedObj.put("userId", feed.getUserId());
+			feedObj.put("userName", feed.getUserName());
+			feedObj.put("favoriteCount", feed.getFavoriteCount());
+			feedObj.put("checkFavorite", feed.getIsFavorite());
+
+			feedJsonArr.put(feedObj);
+		}
 
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
