@@ -21,7 +21,7 @@ public class ExerciseDao {
 		return instance;
 	}
 	
-	public List<ExerciseResponseDto> findExerciseAll(ExerciseRequestDto exerciseDto) {
+	public List<ExerciseResponseDto> findExerciseAll() {
 		List<ExerciseResponseDto> exercises = new ArrayList<>();
 		String sql = "SELECT exercise_index, exer.exercise_category_index, exer_cate.name, exer.user_code, users.id, users.name, exer.name, content, exer.create_date, exer.mod_date "
 				+ "FROM exercises AS exer "
@@ -60,10 +60,52 @@ public class ExerciseDao {
 		return exercises;
 	}
 
-	public List<ExerciseResponseDto> findExerciseAllByQuery(ExerciseRequestDto exerciseDto, String query) {
+	public List<ExerciseResponseDto> findExerciseAllWithLimit(int limit) {
 		List<ExerciseResponseDto> exercises = new ArrayList<>();
-		String sql = "SELECT exercise_index, exer.exercise_category_index, exer_cate.name, exer.user_code, users.id, users.name, exer.name, content, exer.create_date, exer.mod_date " +
-				" FROM exercises AS exer "
+		String sql = "SELECT exercise_index, exer.exercise_category_index, exer_cate.name, exer.user_code, users.id, users.name, exer.name, content, exer.create_date, exer.mod_date "
+				+ "FROM exercises AS exer "
+				+ "JOIN exercise_categories as exer_cate ON exer_cate.exercise_category_index = exer.exercise_category_index "
+				+ "JOIN users ON users.code = exer.user_code "
+				+ "ORDER BY create_date DESC "
+				+ "LIMIT ?";
+
+		try {
+			conn = DBManager.getConnection();
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setInt(1, limit);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				int index = rs.getInt(1);
+				int categoryIndex = rs.getInt(2);
+				String categoryName = rs.getString(3);
+
+				int userCode = rs.getInt(4);
+				String userId = rs.getString(5);
+				String userName = rs.getString(6);
+
+				String name = rs.getString(7);
+				String content = rs.getString(8);
+				Timestamp createDate = rs.getTimestamp(9);
+				Timestamp modDate = rs.getTimestamp(10);
+
+				exercises.add(new ExerciseResponseDto(index, categoryIndex, categoryName, userCode, userId, userName, name, content, createDate, modDate));
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			DBManager.close(conn, pstmt, rs);
+		}
+
+		return exercises;
+	}
+
+	public List<ExerciseResponseDto> findExerciseAllByQuery(String query) {
+		List<ExerciseResponseDto> exercises = new ArrayList<>();
+		String sql = "SELECT exercise_index, exer.exercise_category_index, exer_cate.name, exer.user_code, users.id, users.name, exer.name, content, exer.create_date, exer.mod_date "
+				+ "FROM exercises AS exer "
 				+ "JOIN exercise_categories as exer_cate ON exer_cate.exercise_category_index = exer.exercise_category_index "
 				+ "JOIN users ON users.code = exer.user_code "
 				+ "WHERE exer_cate.name LIKE ? "
@@ -82,6 +124,58 @@ public class ExerciseDao {
 			pstmt.setString(3, "%" + query + "%");
 			pstmt.setString(4, "%" + query + "%");
 			pstmt.setString(5, "%" + query + "%");
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				int index = rs.getInt(1);
+				int categoryIndex = rs.getInt(2);
+				String categoryName = rs.getString(3);
+
+				int userCode = rs.getInt(4);
+				String userId = rs.getString(5);
+				String userName = rs.getString(6);
+
+				String name = rs.getString(7);
+				String content = rs.getString(8);
+				Timestamp createDate = rs.getTimestamp(9);
+				Timestamp modDate = rs.getTimestamp(10);
+
+				exercises.add(new ExerciseResponseDto(index, categoryIndex, categoryName, userCode, userId, userName, name, content, createDate, modDate));
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			DBManager.close(conn, pstmt, rs);
+		}
+
+		return exercises;
+	}
+
+	public List<ExerciseResponseDto> findExerciseAllByQueryWithLimit(String query, int limit) {
+		List<ExerciseResponseDto> exercises = new ArrayList<>();
+		String sql = "SELECT exercise_index, exer.exercise_category_index, exer_cate.name, exer.user_code, users.id, users.name, exer.name, content, exer.create_date, exer.mod_date "
+				+ "FROM exercises AS exer "
+				+ "JOIN exercise_categories as exer_cate ON exer_cate.exercise_category_index = exer.exercise_category_index "
+				+ "JOIN users ON users.code = exer.user_code "
+				+ "WHERE exer_cate.name LIKE ? "
+				+ "OR exer.name LIKE ? "
+				+ "OR users.id LIKE ? "
+				+ "OR users.name LIKE ? "
+				+ "OR content LIKE ? "
+				+ "ORDER BY create_date DESC "
+				+ "LIMIT ?";
+
+		try {
+			conn = DBManager.getConnection();
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setString(1, "%" + query + "%");
+			pstmt.setString(2, "%" + query + "%");
+			pstmt.setString(3, "%" + query + "%");
+			pstmt.setString(4, "%" + query + "%");
+			pstmt.setString(5, "%" + query + "%");
+			pstmt.setInt(6, limit);
 
 			rs = pstmt.executeQuery();
 
