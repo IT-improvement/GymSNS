@@ -23,17 +23,17 @@ public class FeedReadByQueryAction implements Action{
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String userCodeStr = request.getHeader("Authorization");
 		String query = request.getParameter("query");
+		String limit = request.getParameter("limit");
 
-		Integer userCode = -1;
-		if (!ParameterValidator.isInteger(userCodeStr)) {
-			userCode = null;
-		}else {
-			userCode = Integer.valueOf(userCodeStr);
-		}
+		Integer userCode = (ParameterValidator.isInteger(userCodeStr)) ?
+							Integer.valueOf(userCodeStr) :
+							null;
 
 		FeedDAO feedDao = new FeedDAO();
 
-		ArrayList<Feed> list = feedDao.getAllFeedByQuery(userCode, query);
+		ArrayList<Feed> list = (ParameterValidator.isInteger(limit)) ?
+				feedDao.getAllFeedByQueryWithLimit(userCode, query, Integer.parseInt(limit)) :
+				feedDao.getAllFeedByQuery(userCode, query);
 
 		JSONArray feedJsonArr = new JSONArray();
 				
