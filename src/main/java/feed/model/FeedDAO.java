@@ -146,7 +146,8 @@ public class FeedDAO {
 			conn = DBManager.getConnection();
 			String sql = "SELECT DISTINCT f.feed_index, f.user_code, title, content, f.create_date, f.mod_date, users.id, users.name, " +
 					"(SELECT COUNT(*) FROM favorites WHERE f.feed_index = favorites.feed_index) AS favorite_count " +
-					"FROM feeds AS f JOIN users ON users.code = f.user_code;";
+					"FROM feeds AS f JOIN users ON users.code = f.user_code " +
+					"ORDER BY create_date DESC";
 
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
@@ -182,21 +183,111 @@ public class FeedDAO {
 		return list;
 	}
 
-	public ArrayList<Feed> getAllFeedByQuery(Integer userCode, String query) {
+	public ArrayList<Feed> getAllFeedByUserCode(int userCode, Integer userCodeViewer) {
 		ArrayList<Feed> list = new ArrayList<Feed>();
+		String sql = "SELECT DISTINCT f.feed_index, f.user_code, title, content, f.create_date, f.mod_date, users.id, users.name, " +
+				"(SELECT COUNT(*) FROM favorites WHERE f.feed_index = favorites.feed_index) AS favorite_count " +
+				"FROM feeds AS f JOIN users ON users.code = f.user_code " +
+				"WHERE f.user_code = ? " +
+				"ORDER BY create_date DESC";
 
 		try {
 			conn = DBManager.getConnection();
 
-			String sql =
-					"SELECT feed_index, user_code, title, content, create_date, feeds.mod_date, " +
-							"(SELECT COUNT(*) FROM favorites WHERE feeds.feed_index = favorites.feed_index) AS favorite_count " +
-							"FROM feeds " +
-							"JOIN users ON users.code = feeds.user_code " +
-							"WHERE title LIKE ?" +
-							"OR content LIKE ?";
-
 			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, userCode);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				Feed feed = new Feed();
+				feed.setFeedIndex(rs.getInt(1));
+				feed.setUserCode(rs.getInt(2));
+				feed.setTitle(rs.getString(3));
+				feed.setContent(rs.getString(4));
+				feed.setCreateDate(rs.getTimestamp(5));
+				feed.setModDate(rs.getTimestamp(6));
+				feed.setUserId(rs.getString(7));
+				feed.setUserName(rs.getString(8));
+
+				list.add(feed);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt);
+		}
+
+		addCommentToFeed(list);
+		readFeedFavoriteInfoAll(list);
+
+		if (userCodeViewer != null) {
+			checkFeedFavoriteAll(list, userCodeViewer);
+		}
+
+		return list;
+	}
+
+	public ArrayList<Feed> getAllFeedWithLimit(Integer userCode, int limit) {
+		ArrayList<Feed> list = new ArrayList<Feed>();
+		String sql = "SELECT DISTINCT f.feed_index, f.user_code, title, content, f.create_date, f.mod_date, users.id, users.name, " +
+				"(SELECT COUNT(*) FROM favorites WHERE f.feed_index = favorites.feed_index) AS favorite_count " +
+				"FROM feeds AS f JOIN users ON users.code = f.user_code " +
+				"ORDER BY create_date DESC " +
+				"LIMIT ?";
+
+		try {
+			conn = DBManager.getConnection();
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setInt(1, limit);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				Feed feed = new Feed();
+				feed.setFeedIndex(rs.getInt(1));
+				feed.setUserCode(rs.getInt(2));
+				feed.setTitle(rs.getString(3));
+				feed.setContent(rs.getString(4));
+				feed.setCreateDate(rs.getTimestamp(5));
+				feed.setModDate(rs.getTimestamp(6));
+				feed.setUserId(rs.getString(7));
+				feed.setUserName(rs.getString(8));
+
+				list.add(feed);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt);
+		}
+
+		addCommentToFeed(list);
+		readFeedFavoriteInfoAll(list);
+
+		if (userCode != null) {
+			checkFeedFavoriteAll(list, userCode);
+		}
+
+		return list;
+	}
+
+	public ArrayList<Feed> getAllFeedByQuery(Integer userCode, String query) {
+		ArrayList<Feed> list = new ArrayList<Feed>();
+		String sql = "SELECT feed_index, user_code, title, content, create_date, feeds.mod_date, " +
+				"(SELECT COUNT(*) FROM favorites WHERE feeds.feed_index = favorites.feed_index) AS favorite_count " +
+				"FROM feeds " +
+				"JOIN users ON users.code = feeds.user_code " +
+				"WHERE title LIKE ? " +
+				"OR content LIKE ? " +
+				"ORDER BY create_date DESC";
+
+		try {
+			conn = DBManager.getConnection();
+			pstmt = conn.prepareStatement(sql);
+
 			pstmt.setString(1, "%" + query + "%");
 			pstmt.setString(2, "%" + query + "%");
 
@@ -214,7 +305,54 @@ public class FeedDAO {
 				list.add(feed);
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt);
+		}
+
+		addCommentToFeed(list);
+		readFeedFavoriteInfoAll(list);
+
+		if (userCode != null) {
+			checkFeedFavoriteAll(list, userCode);
+		}
+
+		return list;
+	}
+
+	public ArrayList<Feed> getAllFeedByQueryWithLimit(Integer userCode, String query, int limit) {
+		ArrayList<Feed> list = new ArrayList<Feed>();
+		String sql = "SELECT feed_index, user_code, title, content, create_date, feeds.mod_date, " +
+				"(SELECT COUNT(*) FROM favorites WHERE feeds.feed_index = favorites.feed_index) AS favorite_count " +
+				"FROM feeds " +
+				"JOIN users ON users.code = feeds.user_code " +
+				"WHERE title LIKE ? " +
+				"OR content LIKE ? " +
+				"ORDER BY create_date DESC " +
+				"LIMIT ?";
+
+		try {
+			conn = DBManager.getConnection();
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setString(1, "%" + query + "%");
+			pstmt.setString(2, "%" + query + "%");
+			pstmt.setInt(3, limit);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				Feed feed = new Feed();
+				feed.setFeedIndex(rs.getInt(1));
+				feed.setUserCode(rs.getInt(2));
+				feed.setTitle(rs.getString(3));
+				feed.setContent(rs.getString(4));
+				feed.setCreateDate(rs.getTimestamp(5));
+				feed.setModDate(rs.getTimestamp(6));
+
+				list.add(feed);
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
 			DBManager.close(conn, pstmt);
