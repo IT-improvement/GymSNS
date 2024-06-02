@@ -62,7 +62,6 @@ public class DiaryDAO {
 				dto.setDiaryDate(rs.getTimestamp("diary_date"));
 				list.add(dto);
 			}
-			DBManager.close(conn, pstmt, rs);
 		} catch (Exception e) {
 			System.out.println("다이어리 읽기(날짜) 오류");
 			e.printStackTrace();
@@ -75,6 +74,7 @@ public class DiaryDAO {
 	public List<Diary> readDiaryMonth(int userCode, Timestamp startMonth, Timestamp endMonth){
 		List<Diary> diaryListItem = new ArrayList<Diary>();
 		conn = DBManager.getConnection();
+		System.out.println("성공");
 		try {
 			String sql = "SELECT * FROM diary WHERE user_code=? and diary_date BETWEEN ? and ?";
 			pstmt = conn.prepareStatement(sql);
@@ -90,7 +90,6 @@ public class DiaryDAO {
 		         diary.setDiaryDate(rs.getTimestamp("diary_date"));
 		         diaryListItem.add(diary);
 			}
-			DBManager.close(conn, pstmt, rs);
 		} catch (Exception e) {
 			System.out.println("다이어리 읽기(달) 오류");
 			e.printStackTrace();
