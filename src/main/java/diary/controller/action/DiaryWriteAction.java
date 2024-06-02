@@ -18,8 +18,9 @@ public class DiaryWriteAction implements Action{
 		HttpSession session = request.getSession();
 //		String userCode = (String)session.getAttribute("user");
 		int userCode = 123;
+		System.out.println("작성");
 		String content = request.getParameter("content");
-		Timestamp diaryDate = Timestamp.valueOf(request.getParameter("diaryDate"));
+		Timestamp diaryDate = Timestamp.valueOf(request.getParameter("date"));
 		
 		DiaryRequestDTO dto = new DiaryRequestDTO();
 		dto.setUserCode(userCode);

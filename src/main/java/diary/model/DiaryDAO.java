@@ -36,6 +36,7 @@ public class DiaryDAO {
 			pstmt.setTimestamp(3, dto.getDiary_date());
 			
 			pstmt.execute();
+			System.out.println("다이어리 생성 완료");
 		} catch (Exception e) {
 			System.out.println("다이어리 생성 오류");
 			e.printStackTrace();
