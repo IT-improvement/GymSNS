@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import exercise.model.ExerciseDao;
 import exercise.model.ExerciseRequestDto;
 import exercise.model.ExerciseResponseDto;
+import util.ParameterValidator;
 
 public class ExerciseReadAllAction implements Action {
 	@Override
@@ -21,11 +22,14 @@ public class ExerciseReadAllAction implements Action {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 
+		String limit = request.getParameter("limit");
+
 		ExerciseDao exerciseDao = ExerciseDao.getInstance();
 
-		ExerciseRequestDto exerciseDto = new ExerciseRequestDto();
-		List<ExerciseResponseDto> exercises = exerciseDao.findExerciseAll(exerciseDto);
-		
+		List<ExerciseResponseDto> exercises = ParameterValidator.isInteger(limit) ?
+				exerciseDao.findExerciseAllWithLimit(Integer.parseInt(limit)) :
+				exerciseDao.findExerciseAll();
+
 		JSONArray exerciseJsonArr = new JSONArray();
 		
 		for (ExerciseResponseDto exercise : exercises) {
