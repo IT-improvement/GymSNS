@@ -125,16 +125,16 @@ public class UpdateAction extends HttpServlet implements Action {
 				System.out.println("이메일 업데이트 완료: " + email);
 			}
 
-			JSONObject userObj = new JSONObject();
-			userObj.put("id", id);
-			userObj.put("password", password);
-			userObj.put("email", email);
-			userObj.put("name", name);
-			userObj.put("birth", birth);
-			userObj.put("gender", gender);
-			userObj.put("telecom", telecom);
-			userObj.put("phone", phone);
-			userObj.put("profileImage", profileImage);
+//			JSONObject userObj = new JSONObject();
+			jsonResponse.put("id", id);
+			jsonResponse.put("password", password);
+			jsonResponse.put("email", email);
+			jsonResponse.put("name", name);
+			jsonResponse.put("birth", birth);
+			jsonResponse.put("gender", gender);
+			jsonResponse.put("telecom", telecom);
+			jsonResponse.put("phone", phone);
+			jsonResponse.put("profileImage", profileImage);
 
 			//userDao.updateUser(user);
 			jsonResponse.put("status", 200);
