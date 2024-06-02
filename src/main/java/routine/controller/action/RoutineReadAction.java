@@ -35,6 +35,7 @@ public class RoutineReadAction implements Action{
         	object.put("category", routine.getCategory());
         	object.put("day", routine.getDay());
         	object.put("exerciseIndex", routine.getExerciseIndex());
+        	object.put("routineIndex", routine.getRoutineIndex());
         	array.put(object);
         }
         

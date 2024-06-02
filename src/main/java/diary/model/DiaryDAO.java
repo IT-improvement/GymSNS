@@ -36,9 +36,12 @@ public class DiaryDAO {
 			pstmt.setTimestamp(3, dto.getDiary_date());
 			
 			pstmt.execute();
+			System.out.println("다이어리 생성 완료");
 		} catch (Exception e) {
 			System.out.println("다이어리 생성 오류");
 			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt,rs);
 		}
 	}
 	
@@ -60,10 +63,11 @@ public class DiaryDAO {
 				dto.setDiaryDate(rs.getTimestamp("diary_date"));
 				list.add(dto);
 			}
-			DBManager.close(conn, pstmt, rs);
 		} catch (Exception e) {
 			System.out.println("다이어리 읽기(날짜) 오류");
 			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt,rs);
 		}
 		return list;
 	}
@@ -71,6 +75,7 @@ public class DiaryDAO {
 	public List<Diary> readDiaryMonth(int userCode, Timestamp startMonth, Timestamp endMonth){
 		List<Diary> diaryListItem = new ArrayList<Diary>();
 		conn = DBManager.getConnection();
+		System.out.println("성공");
 		try {
 			String sql = "SELECT * FROM diary WHERE user_code=? and diary_date BETWEEN ? and ?";
 			pstmt = conn.prepareStatement(sql);
@@ -86,10 +91,11 @@ public class DiaryDAO {
 		         diary.setDiaryDate(rs.getTimestamp("diary_date"));
 		         diaryListItem.add(diary);
 			}
-			DBManager.close(conn, pstmt, rs);
 		} catch (Exception e) {
 			System.out.println("다이어리 읽기(달) 오류");
 			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt,rs);
 		}
 		return diaryListItem;
 	}
@@ -106,6 +112,8 @@ public class DiaryDAO {
 		} catch (Exception e) {
 			System.out.println("다이어리 수정 오류");
 			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt,rs);
 		}
 	}
 	
@@ -120,6 +128,8 @@ public class DiaryDAO {
 		} catch (Exception e) {
 			System.out.println("다이어리 삭제 오류");
 			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt,rs);
 		}
 	}
 

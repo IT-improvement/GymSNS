@@ -29,7 +29,7 @@ public class RoutineDAO {
 		
 		conn = DBManager.getConnection();
 		try {
-			String sql ="SELECT e.name, ec.name, r.day, e.exercise_index\r\n"
+			String sql ="SELECT e.name, ec.name, r.day, e.exercise_index, r.routine_index\r\n"
 					+ "FROM exercises e, exercise_categories ec, routines r, routine_details rd\r\n"
 					+ "WHERE e.exercise_index IN (\r\n"
 					+ "    SELECT rd.exercise_index\r\n"
@@ -55,11 +55,14 @@ public class RoutineDAO {
 				dto.setCategory(rs.getString(2));
 				dto.setDay(rs.getString(3));
 				dto.setExerciseIndex(rs.getInt(4));
+				dto.setRoutineIndex(rs.getInt(5));
 				list.add(dto);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("루틴 읽기 실패");
+		}finally {
+			DBManager.close(conn, pstmt,rs);
 		}
 		
 		return list;
@@ -81,6 +84,8 @@ public class RoutineDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("루틴인덱스 찾기 실패");
+		}finally {
+			DBManager.close(conn, pstmt,rs);
 		}
 		return temp;
 	}
@@ -101,6 +106,8 @@ public class RoutineDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("루틴 생성 실패");
+		}finally {
+			DBManager.close(conn, pstmt,rs);
 		}
 	}
 	
@@ -109,7 +116,7 @@ public class RoutineDAO {
 		
 		conn = DBManager.getConnection();
 		try {
-			String sql = "DLETE FROM routine_index WHERE routine_index=? and exercise_index";
+			String sql = "DELETE FROM routine_details WHERE routine_index=? and exercise_index=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, requestDTO.getRoutineIndex());
 			pstmt.setInt(2, requestDTO.getExerciseIndex());
@@ -118,6 +125,8 @@ public class RoutineDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("루틴 삭제 오류");
+		}finally {
+			DBManager.close(conn, pstmt,rs);
 		}
 	}
 }
