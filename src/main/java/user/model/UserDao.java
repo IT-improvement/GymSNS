@@ -63,7 +63,121 @@ public class UserDao {
 		}
 		return list;
 	}
-	
+
+	public List<UserResponseDto> findUserAllWithLimit(int limit) {
+		List<UserResponseDto> list = new ArrayList<UserResponseDto>();
+
+		try {
+			conn = DBManager.getConnection();
+
+			// 쿼리할 준비
+			String sql = "SELECT code, id, email, name, birth, gender, telecom, phone "
+						+ "FROM users "
+						+ "LIMIT ?";
+
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setInt(1, limit);
+
+			rs = pstmt.executeQuery();
+
+			// 튜플 읽기
+			while(rs.next()) {
+				int code = rs.getInt(1);
+				String id = rs.getString(2);
+				String email = rs.getString(3);
+				String name = rs.getString(4);
+				String birth = rs.getString(5);
+				String gender = rs.getString(6);
+				String telecom = rs.getString(7);
+				String phone = rs.getString(8);
+
+				UserResponseDto user = new UserResponseDto(code, id, email, name, birth, gender, telecom, phone);
+				list.add(user);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt, rs);
+		}
+		return list;
+	}
+
+	public List<UserResponseDto> findUserAllByIdOrName(String query) {
+		List<UserResponseDto> list = new ArrayList<UserResponseDto>();
+		String sql = "SELECT code, id, email, name, birth, gender, telecom, phone "
+				+ "FROM users "
+				+ "WHERE id LIKE ? OR name LIKE ?";
+
+		try {
+			conn = DBManager.getConnection();
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, "%" + query + "%");
+			pstmt.setString(2, "%" + query + "%");
+
+			rs = pstmt.executeQuery();
+
+			while(rs.next()) {
+				int code = rs.getInt(1);
+				String id = rs.getString(2);
+				String email = rs.getString(3);
+				String name = rs.getString(4);
+				String birth = rs.getString(5);
+				String gender = rs.getString(6);
+				String telecom = rs.getString(7);
+				String phone = rs.getString(8);
+
+				UserResponseDto user = new UserResponseDto(code, id, email, name, birth, gender, telecom, phone);
+				list.add(user);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt, rs);
+		}
+		return list;
+	}
+
+	public List<UserResponseDto> findUserAllByIdOrNameWithLimit(String query, int limit) {
+		List<UserResponseDto> list = new ArrayList<UserResponseDto>();
+		String sql = "SELECT code, id, email, name, birth, gender, telecom, phone "
+				+ "FROM users "
+				+ "WHERE id LIKE ? OR name LIKE ? "
+				+ "LIMIT ?";
+
+		try {
+			conn = DBManager.getConnection();
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, "%" + query + "%");
+			pstmt.setString(2, "%" + query + "%");
+			pstmt.setInt(3, limit);
+
+			rs = pstmt.executeQuery();
+
+			while(rs.next()) {
+				int code = rs.getInt(1);
+				String id = rs.getString(2);
+				String email = rs.getString(3);
+				String name = rs.getString(4);
+				String birth = rs.getString(5);
+				String gender = rs.getString(6);
+				String telecom = rs.getString(7);
+				String phone = rs.getString(8);
+
+				UserResponseDto user = new UserResponseDto(code, id, email, name, birth, gender, telecom, phone);
+				list.add(user);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt, rs);
+		}
+
+		return list;
+	}
+
 	public UserResponseDto findUserByIdAndPassword(String id, String password) {
 		UserResponseDto user = null;
 		
@@ -166,42 +280,6 @@ public class UserDao {
 			DBManager.close(conn, pstmt, rs);
 		}
 		return user;
-	}
-
-	public List<UserResponseDto> findUserAllByIdOrName(String query) {
-		List<UserResponseDto> list = new ArrayList<UserResponseDto>();
-		String sql = "SELECT code, id, email, name, birth, gender, telecom, phone "
-					+ "FROM users "
-					+ "WHERE id LIKE ? OR name LIKE ?";
-
-		try {
-			conn = DBManager.getConnection();
-
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, "%" + query + "%");
-			pstmt.setString(2, "%" + query + "%");
-
-			rs = pstmt.executeQuery();
-
-			while(rs.next()) {
-				int code = rs.getInt(1);
-				String id = rs.getString(2);
-				String email = rs.getString(3);
-				String name = rs.getString(4);
-				String birth = rs.getString(5);
-				String gender = rs.getString(6);
-				String telecom = rs.getString(7);
-				String phone = rs.getString(8);
-
-				UserResponseDto user = new UserResponseDto(code, id, email, name, birth, gender, telecom, phone);
-				list.add(user);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DBManager.close(conn, pstmt, rs);
-		}
-		return list;
 	}
 
 	public String findPassword(String id, String password) {
