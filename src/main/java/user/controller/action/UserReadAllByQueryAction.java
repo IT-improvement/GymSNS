@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import user.controller.Action;
 import user.model.UserDao;
 import user.model.UserResponseDto;
+import util.ParameterValidator;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -19,10 +20,14 @@ public class UserReadAllByQueryAction implements Action {
         response.setCharacterEncoding("UTF-8");
 
         String query = request.getParameter("query");
+        String limit = request.getParameter("limit");
 
         UserDao userDao = UserDao.getInstance();
 
-        List<UserResponseDto> users = userDao.findUserAllByIdOrName(query);
+        List<UserResponseDto> users = ParameterValidator.isInteger(limit) ?
+                userDao.findUserAllByIdOrNameWithLimit(query, Integer.parseInt(limit)) :
+                userDao.findUserAllByIdOrName(query);
+
         JSONArray userJsonArr = new JSONArray();
 
         for (UserResponseDto user : users) {
