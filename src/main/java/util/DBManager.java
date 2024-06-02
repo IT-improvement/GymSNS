@@ -33,6 +33,7 @@ public class DBManager {
 			if(conn !=null) conn.close();
 			if(pstmt !=null )pstmt.close();
 			if(rs !=null) rs.close();
+			System.err.println("DB 종료");
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.err.println("DB 종료 오류");
