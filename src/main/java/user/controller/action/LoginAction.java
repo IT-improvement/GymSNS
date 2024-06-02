@@ -76,7 +76,6 @@ public class LoginAction extends HttpServlet implements Action {
 				 session.setAttribute("code", user.getCode());
 				 session.setAttribute("id", user.getId());
 
-//				 JSONObject userObj = new JSONObject();
                  jsonResponse.put("code", user.getCode());
                  jsonResponse.put("id", id);
                  jsonResponse.put("password", password);
@@ -84,14 +83,10 @@ public class LoginAction extends HttpServlet implements Action {
 				 jsonResponse.put("status", 200);
 				 jsonResponse.put("message", "로그인 성공");
 			 } else {
-//				 jsonResponse.put("status", 401);
-//				 jsonResponse.put("message", "로그인 실패1");
                  response.sendError(401, "로그인 실패1");
                  return;
 			 }
 		 } else {
-//			 jsonResponse.put("status", 401);
-//			 jsonResponse.put("message", "로그인 실패2");
              response.sendError(401, "로그인 실패2");
              return;
 		 }
