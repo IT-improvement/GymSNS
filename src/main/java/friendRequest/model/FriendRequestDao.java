@@ -20,15 +20,15 @@ public class FriendRequestDao {
 		return instance;
 	}
 
-	public boolean isUserInReceivedFriendRequest(FriendRequestRequestDto friendRequestDto) {
-		return findUserInReceivedFriendRequest(friendRequestDto) != null;
+	public boolean isUserSelfInReceivedFriendRequest(FriendRequestRequestDto friendRequestDto) {
+		return findUserSelfInReceivedFriendRequest(friendRequestDto) != null;
 	}
 	
-	public boolean isUserInSentFriendRequest(FriendRequestRequestDto friendRequestDto) {
-		return findUserInSentFriendRequest(friendRequestDto) != null;
+	public boolean isUserSelfInSentFriendRequest(FriendRequestRequestDto friendRequestDto) {
+		return findUserSelfInSentFriendRequest(friendRequestDto) != null;
 	}
 
-	public FriendRequestResponseDto findUserInReceivedFriendRequest(FriendRequestRequestDto friendDto) {
+	public FriendRequestResponseDto findUserSelfInReceivedFriendRequest(FriendRequestRequestDto friendDto) {
 		FriendRequestResponseDto friendRequest = null;
 		String sql = "SELECT user_code_self, user_code_other, users.id, users.name "
 				+ "FROM friend_requests "
@@ -61,7 +61,7 @@ public class FriendRequestDao {
 		return friendRequest;
 	}
 
-	public FriendRequestResponseDto findUserInSentFriendRequest(FriendRequestRequestDto friendDto) {
+	public FriendRequestResponseDto findUserSelfInSentFriendRequest(FriendRequestRequestDto friendDto) {
 		FriendRequestResponseDto friendRequest = null;
 		String sql = "SELECT user_code_other AS \"self_code\", user_code_self AS \"receiver_code\", users.id, users.name "
 				+ "FROM friend_requests "
