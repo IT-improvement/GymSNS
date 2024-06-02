@@ -24,21 +24,21 @@ public class FeedReadAction implements Action{
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String userCodeStr = request.getHeader("Authorization");
+		String limit = request.getParameter("limit");
 
 		Integer userCode = -1;
 		if (!ParameterValidator.isInteger(userCodeStr)) {
 			userCode = null;
-		}else {
+		} else {
 			userCode = Integer.valueOf(userCodeStr);
 		}
 
-
-
 		FeedDAO feedDao = new FeedDAO();
-		ArrayList<Feed> list = feedDao.getAllFeed(userCode);
-				
-		
-				
+
+		ArrayList<Feed> list = (ParameterValidator.isInteger(limit)) ?
+				feedDao.getAllFeedWithLimit(userCode, Integer.parseInt(limit)) :
+				feedDao.getAllFeed(userCode);
+
 		JSONArray feedJsonArr = new JSONArray();
 				
 		for (Feed feed : list) {
