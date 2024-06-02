@@ -38,7 +38,7 @@ public class FriendRequestSentReadAction implements Action {
 		FriendRequestDao friendRequestDao = FriendRequestDao.getInstance();
 		FriendRequestRequestDto friendRequestDto = new FriendRequestRequestDto(userCode, userCodeOther);
 
-		resObj.put("isUserInFriendRequest", friendRequestDao.isUserInSentFriendRequest(friendRequestDto));
+		resObj.put("isUserInFriendRequest", friendRequestDao.isUserSelfInSentFriendRequest(friendRequestDto));
 
 		response.getWriter().write(resObj.toString());
 	}
