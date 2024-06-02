@@ -1,5 +1,6 @@
 package user.controller.action;
 
+import exercise.model.ExerciseResponseDto;
 import friend.model.FriendDao;
 import friend.model.FriendRequestDto;
 import friend.model.FriendResponseDto;
@@ -9,6 +10,7 @@ import user.controller.Action;
 import user.model.UserDao;
 import user.model.UserRequestDto;
 import user.model.UserResponseDto;
+import util.ParameterValidator;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -22,9 +24,14 @@ public class UserReadAllAction implements Action {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
+        String limit = request.getParameter("limit");
+
         UserDao userDao = UserDao.getInstance();
 
-        List<UserResponseDto> users = userDao.findUserAll();
+        List<UserResponseDto> users = ParameterValidator.isInteger(limit) ?
+                userDao.findUserAllWithLimit(Integer.parseInt(limit)) :
+                userDao.findUserAll();
+
         JSONArray userJsonArr = new JSONArray();
 
         for (UserResponseDto user : users) {
