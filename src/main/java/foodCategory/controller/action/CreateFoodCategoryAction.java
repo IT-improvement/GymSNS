@@ -22,7 +22,8 @@ public class CreateFoodCategoryAction implements Action {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 
-		String userCodeStr = request.getHeader("Authorization");
+//		String userCodeStr = request.getHeader("Authorization");
+		String userCodeStr = request.getParameter("userCode");
 		String categoryName = request.getParameter("categoryName");
 		String categoryImageUrl = request.getParameter("categoryImageUrl");
 

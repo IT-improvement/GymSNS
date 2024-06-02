@@ -29,6 +29,9 @@ public class UpdateFoodCategoryAction implements Action {
 			String indexStr  = request.getParameter("foodCategoryIndex");
 			String userCodeStr  = request.getParameter("userCode");
 
+			System.out.println(indexStr);
+			System.out.println(userCodeStr);
+
 			if (indexStr  == null || userCodeStr  == null) {
 				// 필수 매개변수가 null이면 오류 반환
 				JSONObject jsonResponse = ApiResponseManager.getStatusObject(400, "Missing required parameters");

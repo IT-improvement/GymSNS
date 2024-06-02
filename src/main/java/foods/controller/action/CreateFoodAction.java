@@ -26,6 +26,8 @@ public class CreateFoodAction implements Action {
 			String data = request.getReader().lines().reduce("", (accumulator, actual) -> accumulator + actual);
 			JSONObject object = new JSONObject(data);
 
+			System.out.println(object.toString());
+
 			int userCode = object.getInt("userCode");
 			int foodCategoryIndex = object.getInt("foodCategoryIndex");
 			String foodName = object.getString("foodName");
