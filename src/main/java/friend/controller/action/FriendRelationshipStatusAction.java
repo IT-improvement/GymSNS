@@ -39,9 +39,9 @@ public class FriendRelationshipStatusAction implements Action {
 		FriendDao friendDao = FriendDao.getInstance();
 		FriendRequestDto friendDto = new FriendRequestDto(userCode, userCodeOther);
 
-		if (friendRequestDao.isUserInSentFriendRequest(friendRequestDto)) {
+		if (friendRequestDao.isUserSelfInSentFriendRequest(friendRequestDto)) {
 			resObj.put("relationshipStatus", "friendRequestSent");
-		} else if (friendRequestDao.isUserInReceivedFriendRequest(friendRequestDto)) {
+		} else if (friendRequestDao.isUserSelfInReceivedFriendRequest(friendRequestDto)) {
 			resObj.put("relationshipStatus", "friendRequestReceived");
 		} else if (friendDao.isFriend(friendDto)) {
 			resObj.put("relationshipStatus", "friend");
