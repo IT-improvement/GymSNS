@@ -52,11 +52,12 @@ public class LeaveAction extends HttpServlet implements Action {
 
 		JSONObject jsonRequest = new JSONObject(sb.toString());
 		
-		String id = (String) session.getAttribute("id");
-		if (id == null) {
-            System.out.println("로그인 되어있지 않은 사용자입니다.");
-            return;
-        }
+//		String id = (String) session.getAttribute("id");
+//		if (id == null) {
+//            System.out.println("로그인 되어있지 않은 사용자입니다.");
+//            return;
+//        }
+		String id = jsonRequest.getString("id");
         String password = jsonRequest.getString("password");
 
         System.out.println("id : " + id + ", password : " + password);
@@ -70,8 +71,12 @@ public class LeaveAction extends HttpServlet implements Action {
 		JSONObject jsonResponse = new JSONObject();
 		
 		if(result) {
+			session.setAttribute("id", id);
+			session.setAttribute("password", password);
 			session.removeAttribute("user");
 			session.invalidate();
+			jsonResponse.put("id", id);
+			jsonResponse.put("password", password);
 			jsonResponse.put("status", 200);
             jsonResponse.put("message", "회원탈퇴 완료");
             
