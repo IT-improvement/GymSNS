@@ -6,6 +6,7 @@ import exercise.model.ExerciseRequestDto;
 import exercise.model.ExerciseResponseDto;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import util.ParameterValidator;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -20,12 +21,14 @@ public class ExerciseReadAllByQueryAction implements Action {
 		response.setCharacterEncoding("UTF-8");
 
 		String query = request.getParameter("query");
+		String limit = request.getParameter("limit");
 
 		ExerciseDao exerciseDao = ExerciseDao.getInstance();
 
-		ExerciseRequestDto exerciseDto = new ExerciseRequestDto();
-		List<ExerciseResponseDto> exercises = exerciseDao.findExerciseAllByQuery(exerciseDto, query);
-		
+		List<ExerciseResponseDto> exercises = ParameterValidator.isInteger(limit) ?
+				exerciseDao.findExerciseAllByQueryWithLimit(query, Integer.parseInt(limit)) :
+				exerciseDao.findExerciseAllByQuery(query);
+
 		JSONArray exerciseJsonArr = new JSONArray();
 		
 		for (ExerciseResponseDto exercise : exercises) {
