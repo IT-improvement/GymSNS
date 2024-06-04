@@ -121,23 +121,7 @@
 		<url-pattern>/userReadOneAction</url-pattern>
 	</servlet-mapping>
 
-	<servlet>
-		<servlet-name>Action</servlet-name>
-		<servlet-class>user.controller.Action</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>Action</servlet-name>
-		<url-pattern>/Action</url-pattern>
-	</servlet-mapping>
 
-	<servlet>
-		<servlet-name>ActionFactory</servlet-name>
-		<servlet-class>user.controller.ActionFactory</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>ActionFactory</servlet-name>
-		<url-pattern>/ActionFactory</url-pattern>
-	</servlet-mapping>
 
 <!--	<servlet>-->
 <!--		<servlet-name>Action</servlet-name>-->
