@@ -1,5 +1,6 @@
 package diary.controller.action;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 
 import javax.servlet.ServletException;
@@ -14,9 +15,10 @@ import diary.model.DiaryRequestDTO;
 public class DiaryWriteAction implements Action{
 
 	@Override
-	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException {
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, UnsupportedEncodingException {
 		HttpSession session = request.getSession();
 //		String userCode = (String)session.getAttribute("user");
+		request.setCharacterEncoding("UTF-8");
 		int userCode = 123;
 		System.out.println("작성");
 		String content = request.getParameter("content");
