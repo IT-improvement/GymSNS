@@ -2,6 +2,8 @@ package user.controller.action;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -21,22 +23,17 @@ import util.PasswordCrypto;
 public class UpdateAction extends HttpServlet implements Action {
 	private static final long serialVersionUID = 1L;
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		execute(request, response);
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		execute(request, response);
-	}
-
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		HttpSession session = request.getSession();
 
-		String id = (String) session.getAttribute("id");
-		String gender = (String) session.getAttribute("gender");
-		String birth = (String) session.getAttribute("birth");
+//		String id = (String) session.getAttribute("id");
+//		String gender = (String) session.getAttribute("gender");
+//		String birth = (String) session.getAttribute("birth");
+		String id = request.getParameter("id");
+		String gender = request.getParameter("gender");
+		String birth = request.getParameter("birth");
 
 		UserDao userDao = UserDao.getInstance();
 		//UserResponseDto user = (UserResponseDto) session.getAttribute("user");
@@ -55,7 +52,25 @@ public class UpdateAction extends HttpServlet implements Action {
 
 		String jsonString = sb.toString();
 
+//		InputStream in = request.getInputStream();
+//		BufferedReader br = new BufferedReader(new InputStreamReader(in));
+//
+//		String data = "";
+//		while(br.ready()) {
+//			data += br.readLine();
+//		}
+
 		// JSON 데이터 파싱
+
+//		JSONObject jsonRequest = new JSONObject(data);
+//
+//		String password = jsonRequest.getString("password");
+//		String email = jsonRequest.getString("email");
+//		String name = jsonRequest.getString("name");
+//		String telecom = jsonRequest.getString("telecom");
+//		String phone = jsonRequest.getString("phone");
+//		String profileImage = jsonRequest.getString("profileImage");
+
 		JSONObject jsonRequest = new JSONObject(jsonString);
 
 		String password = jsonRequest.optString("password", null);
@@ -83,6 +98,51 @@ public class UpdateAction extends HttpServlet implements Action {
 		JSONObject jsonResponse = new JSONObject();
 
 		try {
+//			if (jsonRequest.has("password") && !jsonRequest.isNull("password")) {
+//				userDto.setPassword(password);
+//				password = jsonRequest.getString("password");
+//				userDao.updateUserPassword(userDto, password);
+//				user.setPassword(password);
+//			}
+//			if (jsonRequest.has("email") && !jsonRequest.isNull("email") && !email.equals(user.getEmail())) {
+//				userDto.setEmail(email);
+//				email = jsonRequest.getString("email");
+//				userDao.updateUserEmail(userDto);
+//				user.setEmail(email);
+//			} else {
+//
+//			}
+//			if (jsonRequest.has("name") && !jsonRequest.isNull("name") && !name.equals(user.getName())) {
+//				userDto.setName(name);
+//				name = jsonRequest.getString("name");
+//				userDao.updateUserName(userDto);
+//				user.setName(name);
+//			}
+//			if (jsonRequest.has("birth") && !jsonRequest.isNull("birth")) {
+//				userDto.setBirth(user.getBirth());
+//				user.setBirth(user.getBirth());
+//			} else {
+//
+//			}
+//
+//			userDto.setGender(user.getGender());
+//			user.setGender(user.getGender());
+//
+//			if (jsonRequest.has("telecom") && !jsonRequest.isNull("telecom") && !telecom.equals(user.getTelecom())) {
+//				telecom = jsonRequest.getString("telecom");
+//				userDao.updateUserTelecom(userDto);
+//				user.setTelecom(telecom);
+//			}
+//			if (jsonRequest.has("phone") && !jsonRequest.isNull("phone") && !phone.equals(user.getPhone())) {
+//				phone = jsonRequest.getString("phone");
+//				userDto.setPhone(phone);
+//				userDao.updateUserPhone(userDto);
+//			}
+//			if (jsonRequest.has("profileImage") && !jsonRequest.isNull("profileImage") && !profileImage.equals(user.getProfileImage())) {
+//				userDto.setProfileImage(profileImage);
+//				userDao.updateUserProfileImage(userDto);
+//				user.setProfileImage(profileImage);
+//			}
 			String encryptedPassword = userDao.findPassword(user.getId(), user.getPassword());
 			if (password != null && !password.equals("")) {
 				userDto.setPassword(password);
@@ -120,7 +180,7 @@ public class UpdateAction extends HttpServlet implements Action {
 
 			if (profileImage != null && !profileImage.equals("") && !profileImage.equals(user.getProfileImage())) {
 				userDto.setProfileImage(profileImage);
-				userDao.updateUserEmail(userDto);
+				userDao.updateUserProfileImage(userDto);
 				user.setProfileImage(profileImage);
 				System.out.println("이메일 업데이트 완료: " + email);
 			}
