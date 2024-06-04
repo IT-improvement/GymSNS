@@ -58,6 +58,7 @@ public class LoginAction extends HttpServlet implements Action {
         String password = jsonRequest.getString("password");
 
         System.out.println("id : " + id + ", password : " + password);
+		System.out.println("sfewf");
 		 
 		 boolean isValid = true;
 		 if(id == null || id.equals(""))
@@ -66,11 +67,13 @@ public class LoginAction extends HttpServlet implements Action {
 			 isValid = false;
 		 
 		 JSONObject jsonResponse = new JSONObject();
-		 
+		UserDao userDao = UserDao.getInstance();
+		UserResponseDto user = userDao.findUserByIdAndPassword(id, password);
+		System.out.println(user);
 		 if(isValid) {
-			 UserDao userDao = UserDao.getInstance();
-			 UserResponseDto user = userDao.findUserByIdAndPassword(id, password);
-			 
+
+
+
 			 if(user != null) {
 				 session.setAttribute("user", user);
 				 session.setAttribute("code", user.getCode());

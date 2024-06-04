@@ -27,7 +27,7 @@ public class FeedDetailAction implements Action {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-//		String userCodeStr = request.getHeader("Authorization");
+		String userCodeStr = request.getHeader("Authorization");
 		String url[] = request.getPathInfo().split("/");
 
 
@@ -38,7 +38,6 @@ public class FeedDetailAction implements Action {
 //		}
 
 
-		String userCodeStr = "1004";
 		int feedIndex = Integer.parseInt(url[1]);
 		System.out.println(feedIndex);
 
@@ -52,6 +51,7 @@ public class FeedDetailAction implements Action {
 		System.out.println(feed.getContent());
 		System.out.println(feed.getFeedIndex());
 		System.out.println(feed.getUserCode());
+		System.out.println(feed.getUserName());
 		for(int i = 0; i < feed.getComments().size(); i++) {
 			System.out.println(feed.getComments().get(i));
 		}
@@ -64,7 +64,7 @@ public class FeedDetailAction implements Action {
 		feedObj.put("content", feed.getContent());
 		feedObj.put("userCode", feed.getUserCode());
 		feedObj.put("createDate", feed.getCreateDate());
-		//feedObj.put("comments", feed.getComments());
+		feedObj.put("comments", feed.getComments());
 		if(feed.getModDate() == null) {
 			feedObj.put("modDate", "");
 		}else {
@@ -74,7 +74,7 @@ public class FeedDetailAction implements Action {
 		feedObj.put("userName", feed.getUserName());
 		feedObj.put("favoriteCount", feed.getFavoriteCount());
 		feedObj.put("checkFavorite" ,feed.getIsFavorite());
-
+		System.out.println(feedObj.toString());
 
 
 		response.setContentType("application/json");
