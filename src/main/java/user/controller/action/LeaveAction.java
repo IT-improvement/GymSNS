@@ -20,56 +20,44 @@ import user.model.UserResponseDto;
 public class LeaveAction extends HttpServlet implements Action {
 	private static final long serialVersionUID = 1L;
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		execute(request, response);
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		execute(request, response);
-	}
-
-	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		execute(request, response);
-	}
-
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 
 		HttpSession session = request.getSession();
-		
+
 		StringBuilder sb = new StringBuilder();
-        BufferedReader reader = request.getReader();
-        
-        String line = "";
-        while ((line = reader.readLine()) != null) {
-            sb.append(line);
-        }
-		
+		BufferedReader reader = request.getReader();
+
+		String line = "";
+		while ((line = reader.readLine()) != null) {
+			sb.append(line);
+		}
+
 		UserDao userDao = UserDao.getInstance();
-		
+
 		UserResponseDto user = (UserResponseDto) session.getAttribute("user");
 
 		JSONObject jsonRequest = new JSONObject(sb.toString());
-		
+
 //		String id = (String) session.getAttribute("id");
 //		if (id == null) {
 //            System.out.println("로그인 되어있지 않은 사용자입니다.");
 //            return;
 //        }
 		String id = jsonRequest.getString("id");
-        String password = jsonRequest.getString("password");
+		String password = jsonRequest.getString("password");
 
-        System.out.println("id : " + id + ", password : " + password);
-		
+		System.out.println("id : " + id + ", password : " + password);
+
 		UserRequestDto userDto = new UserRequestDto();
 
 		userDto.setId(id);
 		userDto.setPassword(password);
-		
+
 		boolean result = userDao.deleteUser(userDto);
 		JSONObject jsonResponse = new JSONObject();
-		
+
 		if(result) {
 			session.setAttribute("id", id);
 			session.setAttribute("password", password);
@@ -78,15 +66,18 @@ public class LeaveAction extends HttpServlet implements Action {
 			jsonResponse.put("id", id);
 			jsonResponse.put("password", password);
 			jsonResponse.put("status", 200);
-            jsonResponse.put("message", "회원탈퇴 완료");
-            
+			jsonResponse.put("message", "회원탈퇴 완료");
+
 			System.out.println("회원탈퇴 완료");
 		} else {
 			jsonResponse.put("status", 401);
-            jsonResponse.put("message", "회원탈퇴 실패");
+			jsonResponse.put("message", "회원탈퇴 실패");
 			System.out.println("회원탈퇴 실패");
 		}
-		
+
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().write(jsonResponse.toString());
 		System.out.println("result: " + result);
 	}
 }
