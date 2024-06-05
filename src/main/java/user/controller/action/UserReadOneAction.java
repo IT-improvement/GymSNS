@@ -57,7 +57,7 @@ public class UserReadOneAction extends HttpServlet implements Action {
             jsonResponse.put("gender", user.getGender());
             jsonResponse.put("telecom", user.getTelecom());
             jsonResponse.put("phone", user.getPhone());
-            jsonResponse.put("profile_image", user.getProfileImage());
+            jsonResponse.put("profileImage", user.getProfileImage());
 
             System.out.println("id : " + user.getId());
             System.out.println("name : " + user.getName());
