@@ -409,8 +409,8 @@ public class FeedDAO {
 	}
 
 
-	public FeedResponseDTO createFeed(FeedRequestDTO feedDto) {
-		FeedResponseDTO feed = null;
+	public boolean createFeed(FeedRequestDTO feedDto) {
+		boolean isCreate = true;
 
 		try {
 			conn = DBManager.getConnection();
@@ -424,11 +424,12 @@ public class FeedDAO {
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
+			isCreate = false;
 		}finally {
 			DBManager.close(conn, pstmt);
 		}
 
-		return feed;
+		return isCreate;
 	}
 
 	public boolean updateFeed(FeedRequestDTO feedDto) {

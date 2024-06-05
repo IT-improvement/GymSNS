@@ -62,9 +62,8 @@ public class FeedCreateAction implements Action {
 			JSONObject resObj = new JSONObject();
 			FeedRequestDTO feedDto = new FeedRequestDTO(userCode, title, content);
 			FeedDAO feedDao = FeedDAO.getInstance();
-			FeedResponseDTO feed = feedDao.createFeed(feedDto);
-			if(feed != null) {
-				resObj = ApiResponseManager.getStatusObject(200, "Feed Update is finished successfully");
+			if(feedDao.createFeed(feedDto)) {
+				resObj = ApiResponseManager.getStatusObject(200, "Feed Create is finished successfully");
 			}else {
 				resObj = ApiResponseManager.getStatusObject(500);
 			}
