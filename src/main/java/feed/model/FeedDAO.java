@@ -22,7 +22,7 @@ public class FeedDAO {
 	}
 
 	public FeedResponseDTO searchCommentByCommentIndex(FeedRequestDTO feedDto) {
-		FeedResponseDTO feed = null;
+		FeedResponseDTO feed = new FeedResponseDTO();
 		try {
 			conn = DBManager.getConnection();
 			String sql = "SELECT feed_index, user_code, comment FROM feed_comments WHERE feed_comment_index = ?;";
@@ -786,7 +786,7 @@ public class FeedDAO {
 	}
 
 	public FeedResponseDTO updateComment(FeedRequestDTO feedDto) {
-		FeedResponseDTO feed = null;
+		FeedResponseDTO feed = new FeedResponseDTO();
 		try {
 			conn = DBManager.getConnection();
 			String sql = "UPDATE feed_comments SET comment = ? WHERE feed_comment_index = ?;";

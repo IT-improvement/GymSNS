@@ -27,15 +27,15 @@ public class FeedCommentUpdateAction implements Action {
 		String url[] = request.getPathInfo().split("/");
 
 
-		if (!ParameterValidator.isInteger(userCodeStr) || !ParameterValidator.isInteger(request.getParameter("commentIndex")) || request.getParameter("comment") == null) {
-			JSONObject resObj = ApiResponseManager.getStatusObject(400);
-			response.getWriter().write(resObj.toString());
-			return;
-		}
 
 
-		int commentIndex = Integer.parseInt(request.getParameter("commentIndex"));
+
+		int commentIndex = Integer.parseInt(url[1]);
 		String comment = request.getParameter("comment");
+
+
+		System.out.println(commentIndex);
+		System.out.println(comment);
 
 
 		FeedRequestDTO feedDto = new FeedRequestDTO();
@@ -44,6 +44,13 @@ public class FeedCommentUpdateAction implements Action {
 		FeedDAO feedDao = FeedDAO.getInstance();
 		FeedResponseDTO feed = feedDao.updateComment(feedDto);
 
+		JSONObject resObj = new JSONObject();
+		if(feed.getComment().equals(comment)) {
+			resObj = ApiResponseManager.getStatusObject(200);
+		}else {
+			resObj = ApiResponseManager.getStatusObject(400);
+		}
+
 		JSONObject feedObj = new JSONObject();
 		feedObj.put("feedIndex", feed.getFeedIndex());
 		feedObj.put("userCode", feed.getUserCode());
@@ -51,7 +58,7 @@ public class FeedCommentUpdateAction implements Action {
 
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(feedObj.toString());
+		response.getWriter().write(resObj.toString());
 
 
 	}

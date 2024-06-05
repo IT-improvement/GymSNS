@@ -25,32 +25,30 @@ public class FeedCommentDeleteAction implements Action {
 
 		String userCodeStr = request.getHeader("Authorization");
 		String url[] = request.getPathInfo().split("/");
+		System.out.println("><><>><>");
+		System.out.println("User : " + userCodeStr);
+		int commentIndex = Integer.parseInt(url[1]);
 
-
-		if (!ParameterValidator.isInteger(userCodeStr) || !ParameterValidator.isInteger(request.getParameter("commentIndex"))) {
-			JSONObject resObj = ApiResponseManager.getStatusObject(400);
-			response.getWriter().write(resObj.toString());
-			return;
-		}
 
 		int userCode = Integer.parseInt(userCodeStr);
-		int commentIndex = Integer.parseInt(request.getParameter("commentIndex"));
+
+		System.out.println("CommentIndex : " + commentIndex);
 
 		FeedRequestDTO feedDto = new FeedRequestDTO();
 		feedDto.setCommentIndex(commentIndex);
 		FeedDAO feedDao = FeedDAO.getInstance();
 		FeedResponseDTO feed = feedDao.deleteComment(feedDto);
 
-		JSONObject feedObj = new JSONObject();
+		JSONObject resObj = new JSONObject();
 		if (feed == null) {
-			feedObj = ApiResponseManager.getStatusObject(200);
+			resObj = ApiResponseManager.getStatusObject(200);
 		} else {
-			feedObj = ApiResponseManager.getStatusObject(400);
+			resObj = ApiResponseManager.getStatusObject(500);
 		}
 
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json;charset=utf-8");
-		response.getWriter().append(feedObj.toString());
+		response.getWriter().write(resObj.toString());
 
 
 	}
