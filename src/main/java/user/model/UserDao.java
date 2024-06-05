@@ -34,7 +34,7 @@ public class UserDao {
 		try {
 			conn = DBManager.getConnection();
 			String sql = "SELECT DISTINCT code, name, profile_image " +
-					"FROM users AS u" +
+					"FROM users" +
 					"ORDER BY reg_date DESC " +
 					"LIMIT ?," +
 					PagingManager.LIMIT;
@@ -297,7 +297,7 @@ public class UserDao {
 		try {
 			conn = DBManager.getConnection();
 
-			String sql = "SELECT id, email, name, birth, gender, telecom, phone, reg_date, mod_date FROM users WHERE code=?";
+			String sql = "SELECT id, email, name, birth, gender, telecom, phone, profile_image, reg_date, mod_date FROM users WHERE code=?";
 
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, code);
@@ -312,10 +312,11 @@ public class UserDao {
 				String gender = rs.getString(5);
 				String telecom = rs.getString(6);
 				String phone = rs.getString(7);
-				Timestamp regDate = rs.getTimestamp(8);
-				Timestamp modDate = rs.getTimestamp(9);
+				String profileImage = rs.getString(8);
+				Timestamp regDate = rs.getTimestamp(9);
+				Timestamp modDate = rs.getTimestamp(10);
 
-				user = new UserResponseDto(id, email, name, birth, gender, telecom, phone);
+				user = new UserResponseDto(id, email, name, birth, gender, telecom, phone, profileImage);
 			}
 
 		} catch (SQLException e) {
