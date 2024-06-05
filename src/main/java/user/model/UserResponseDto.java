@@ -48,6 +48,20 @@ public class UserResponseDto extends User {
 		this.phone = phone;
 		this.profileImage = profileImage;
 	}
+
+	public UserResponseDto(int code, String id, String email, String name, String birth, String gender, String telecom,
+						   String phone, String profileImage) {
+		super();
+		this.code = code;
+		this.id = id;
+		this.email = email;
+		this.name = name;
+		this.birth = birth;
+		this.gender = gender;
+		this.telecom = telecom;
+		this.phone = phone;
+		this.profileImage = profileImage;
+	}
 	
 	public UserResponseDto(User user) {
 		super();
@@ -133,6 +147,9 @@ public class UserResponseDto extends User {
 		this.password = password;
 	}
 
+	public String getProfileImage() {
+		return profileImage;
+	}
 
 	public void setProfileImage(String profileImage) {
 		this.profileImage = profileImage;
