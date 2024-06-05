@@ -29,20 +29,20 @@ public class RoutineDietDAO {
 
         conn = DBManager.getConnection();
         try {
-            String sql ="SELECT e.name, ec.name, r.day, e.food_index, r.routine_index\r\n"
-                    + "FROM food e, food_categories ec, routines r, routine_details rd\r\n"
-                    + "WHERE e.food_index IN (\r\n"
+            String sql ="SELECT f.food_name, fc.category_name, r.day, f.food_index, r.routine_index\r\n"
+                    + "FROM foods f, food_categories fc, routines r, routine_diet_details rd\r\n"
+                    + "WHERE f.food_index IN (\r\n"
                     + "    SELECT rd.food_index\r\n"
-                    + "    FROM routine_details rd\r\n"
+                    + "    FROM routine_diet_details rd\r\n"
                     + "    WHERE rd.routine_index in(\r\n"
                     + "		SELECT routine_index\r\n"
                     + "        FROM routines\r\n"
                     + "        WHERE user_code=?\r\n"
                     + "    )\r\n"
                     + ")\r\n"
-                    + "and e.food_category_index = ec.food_category_index\r\n"
+                    + "and f.food_category_index = fc.food_category_index\r\n"
                     + "and r.routine_index = rd.routine_index\r\n"
-                    + "and e.food_index = rd.food_index\r\n"
+                    + "and f.food_index = rd.food_index\r\n"
                     + "order by day asc\r\n"
                     + ";";
             pstmt = conn.prepareStatement(sql);
