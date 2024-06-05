@@ -32,6 +32,15 @@
 	</servlet-mapping>
 
 	<servlet>
+		<servlet-name>DietCategoryServiceServlet</servlet-name>
+		<servlet-class>dietcategory.controller.ServiceServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DietCategoryServiceServlet</servlet-name>
+		<url-pattern>/dietCategories/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
 		<servlet-name>FriendServiceServlet</servlet-name>
 		<servlet-class>friend.controller.ServiceServlet</servlet-class>
 	</servlet>
