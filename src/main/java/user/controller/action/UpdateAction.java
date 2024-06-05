@@ -94,15 +94,15 @@ public class UpdateAction extends HttpServlet implements Action {
 
 //		System.out.println("id2 : " + id);
 
-		String id = null;
-		String birth = null;
-		String gender = null;
-		String password = null;
-		String email = null;
-		String name = null;
-		String telecom = null;
-		String phone = null;
-		String profileImage = null;
+		String id = "";
+		String birth = "";
+		String gender = "";
+		String password = "";
+		String email = "";
+		String name = "";
+		String telecom = "";
+		String phone = "";
+		String profileImage = "";
 
 		JSONObject jsonObject = new JSONObject();
 
@@ -114,19 +114,19 @@ public class UpdateAction extends HttpServlet implements Action {
 			System.out.println("body" + body);
 			jsonObject = new JSONObject(body);
 
-			id = jsonObject.getString("id");
-			password = jsonObject.getString("password");
-			email = jsonObject.getString("email");
-			name = jsonObject.getString("name");
-			birth = jsonObject.getString("birth");
-			gender = jsonObject.getString("gender");
-			telecom = jsonObject.getString("telecom");
-			phone = jsonObject.getString("phone");
+			id = jsonObject.optString("id", null);
+			password = jsonObject.optString("password", null);
+			email = jsonObject.optString("email", null);
+			name = jsonObject.optString("name", null);
+			birth = jsonObject.optString("birth", null);
+			gender = jsonObject.optString("gender", null);
+			telecom = jsonObject.optString("telecom", null);
+			phone = jsonObject.optString("phone", null);
 
 			System.out.println(jsonObject);
 			System.out.println(id);
 
-			String imageBase64 = jsonObject.getString("profileImage");
+			String imageBase64 = jsonObject.optString("profileImage", null);
 			profileImage = ImgBB.uploadImage(imageBase64);
 			System.out.println("profileImage : " + profileImage);
 
