@@ -2,6 +2,7 @@ package diary.controller;
 
 import diary.controller.action.DiaryDeleteAction;
 import diary.controller.action.DiaryReadAction;
+import diary.controller.action.DiaryReadGroup;
 import diary.controller.action.DiaryReadMonthAction;
 import diary.controller.action.DiaryUpdateAction;
 import diary.controller.action.DiaryWriteAction;
@@ -31,6 +32,8 @@ public class ActionFactory {
 			action = new DiaryUpdateAction();
 		} else if (command.equals("delete")) {
 			action = new DiaryDeleteAction();
+		} else if(command.equals("readGroup")) {
+			action = new DiaryReadGroup();
 		}
 
 		return action;
