@@ -1,5 +1,7 @@
 package util;
 
+import org.json.JSONObject;
+
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,22 +14,36 @@ public class ImgBB {
 
     private ImgBB() { }
 
-    public static String convertImageObjToBase64(String objStr) throws IOException {
+    public static String convertImageObjToBase64(String objStr) {
         return objStr.split(":")[1].replace("\"", "").replace("}", "").trim();
     }
 
-    public static String getParams(String imageBase64) throws IOException {
+    public static String getParams(String imageBase64) {
         return DEFAULT_PARAMS + URLEncoder.encode(imageBase64);
     }
 
     public static String getImageUrl(String body) {
-        String[] arr = body.split("url");
-        String[] arr2 = arr[2].split("\"");
+        JSONObject responseObj = new JSONObject(body);
+        JSONObject dataObj = responseObj.getJSONObject("data");
 
-        return arr2[2].replace("\\", "");
+        return dataObj.getString("url");
     }
 
-    public static void upload() {
+    public static String uploadImage(String imageBase64) {
+        HttpRequestManager requestManager = HttpRequestManager.getInstance();
 
+        try {
+            requestManager = HttpRequestManager.getInstance();
+
+            requestManager.connect(ImgBB.API_URL);
+            requestManager.sendParams(ImgBB.getParams(imageBase64));
+            String body = requestManager.getResponseBodyFromRequest();
+
+            return getImageUrl(body);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return null;
     }
 }
