@@ -7,12 +7,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import feed.controller.PagingManager;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import feed.controller.Action;
 import feed.model.Feed;
 import feed.model.FeedDAO;
+import util.HttpRequestManager;
+import util.ImgBB;
 import util.ParameterValidator;
 
 /**
@@ -23,8 +26,12 @@ public class FeedReadAction implements Action{
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+
+
+
+
 		String userCodeStr = request.getHeader("Authorization");
-		String limit = request.getParameter("limit");
+		String pageNumber = request.getParameter("pageNumber");
 
 		Integer userCode = -1;
 		if (!ParameterValidator.isInteger(userCodeStr)) {
@@ -35,14 +42,16 @@ public class FeedReadAction implements Action{
 
 		FeedDAO feedDao = new FeedDAO();
 
-		ArrayList<Feed> list = (ParameterValidator.isInteger(limit)) ?
-				feedDao.getAllFeedWithLimit(userCode, Integer.parseInt(limit)) :
-				feedDao.getAllFeed(userCode);
+
+		ArrayList<Feed> list = feedDao.getAllFeed(userCode, Integer.parseInt(pageNumber));
 
 		JSONArray feedJsonArr = new JSONArray();
 				
 		for (Feed feed : list) {
+			System.out.println(feed.getFeedIndex());
+			System.out.println(feed.getImageURL());
 			JSONObject feedObj = new JSONObject();
+
 
 			feedObj.put("feedIndex", feed.getFeedIndex());
 			feedObj.put("title", feed.getTitle());
@@ -59,6 +68,7 @@ public class FeedReadAction implements Action{
 			feedObj.put("userName", feed.getUserName());
 			feedObj.put("favoriteCount", feed.getFavoriteCount());
 			feedObj.put("checkFavorite", feed.getIsFavorite());
+			feedObj.put("imageURL", feed.getImageURL());
 
 			System.out.println(feed.getComments().size());
 			feedJsonArr.put(feedObj);

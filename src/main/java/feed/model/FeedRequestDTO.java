@@ -13,13 +13,17 @@ public class FeedRequestDTO {
 	private Timestamp modDate;
 	private List<String> comments;
 	private String comment;
+	private String imageURL;
+
+
 
 	public FeedRequestDTO() {}
 
-	public FeedRequestDTO(int userCode, String title, String content) {
+	public FeedRequestDTO(int userCode, String title, String content, String imageURL) {
 		this.userCode = userCode;
 		this.title = title;
 		this.content = content;
+		this.imageURL = imageURL;
 	}
 	
 	public FeedRequestDTO(String title, String content, int feedIndex, int userCode ) {
@@ -112,5 +116,13 @@ public class FeedRequestDTO {
 
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+
+	public void setImageURL(String imageURL) {
+		this.imageURL = imageURL;
+	}
+
+	public String getImageURL() {
+		return imageURL;
 	}
 }

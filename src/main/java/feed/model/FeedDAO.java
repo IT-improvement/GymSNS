@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import feed.controller.PagingManager;
 import feed.controller.action.FeedCommentsObject;
 import util.DBManager;
 
@@ -140,16 +141,19 @@ public class FeedDAO {
 		return feed;
 	}
 
-	public ArrayList<Feed> getAllFeed(Integer userCode) {
+	public ArrayList<Feed> getAllFeed(Integer userCode, int pageNumber) {
 		ArrayList<Feed> list = new ArrayList<Feed>();
 		try {
 			conn = DBManager.getConnection();
 			String sql = "SELECT DISTINCT f.feed_index, f.user_code, title, content, f.create_date, f.mod_date, users.id, users.name, " +
 					"(SELECT COUNT(*) FROM favorites WHERE f.feed_index = favorites.feed_index) AS favorite_count " +
 					"FROM feeds AS f JOIN users ON users.code = f.user_code " +
-					"ORDER BY create_date DESC";
+					"ORDER BY create_date DESC " +
+					"LIMIT ?," +
+					PagingManager.LIMIT;
 
 			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, pageNumber * PagingManager.LIMIT);
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -175,6 +179,52 @@ public class FeedDAO {
 		System.out.println(list.size());
 
 		addCommentToFeed(list);
+		addImageToFeed(list);
+		readFeedFavoriteInfoAll(list);
+		if (userCode != null) {
+			checkFeedFavoriteAll(list, userCode);
+		}
+
+		return list;
+	}
+
+	public ArrayList<Feed> getCurrentFeed(Integer userCode, int pageNumber) {
+		ArrayList<Feed> list = new ArrayList<Feed>();
+		try {
+			conn = DBManager.getConnection();
+			String sql = "SELECT DISTINCT f.feed_index, f.user_code, title, content, f.create_date, f.mod_date, users.id, users.name, " +
+					"(SELECT COUNT(*) FROM favorites WHERE f.feed_index = favorites.feed_index) AS favorite_count " +
+					"FROM feeds AS f JOIN users ON users.code = f.user_code " +
+					"ORDER BY create_date DESC " +
+					"LIMIT 0," +
+					PagingManager.LIMIT * (pageNumber + 1);
+
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				Feed feed = new Feed();
+				feed.setFeedIndex(rs.getInt(1));
+				feed.setUserCode(rs.getInt(2));
+				feed.setTitle(rs.getString(3));
+				feed.setContent(rs.getString(4));
+				feed.setCreateDate(rs.getTimestamp(5));
+				feed.setModDate(rs.getTimestamp(6));
+				feed.setUserId(rs.getString(7));
+				feed.setUserName(rs.getString(8));
+
+				list.add(feed);
+			}
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt);
+		}
+		System.out.println(list.size());
+		addCommentToFeed(list);
+		addImageToFeed(list);
 		readFeedFavoriteInfoAll(list);
 		if (userCode != null) {
 			checkFeedFavoriteAll(list, userCode);
@@ -408,9 +458,76 @@ public class FeedDAO {
 		return feed;
 	}
 
+	public Feed getFeedByUserCodeAndTitleAndContent(FeedRequestDTO feedDto) {
+		Feed feed = new Feed();
+		try {
+			conn = DBManager.getConnection();
+			String sql = "SELECT * FROM feeds WHERE user_code=? AND title=? AND content=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, feedDto.getUserCode());
+			pstmt.setString(2, feedDto.getTitle());
+			pstmt.setString(3, feedDto.getContent());
+			pstmt.execute();
+			rs = pstmt.getResultSet();
+			if(rs.next()) {
+				feed.setFeedIndex(rs.getInt(1));
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt);
+		}
+
+		return feed;
+	}
+
+	public void addImage(String imageURL, int feedIndex) {
+		try {
+			conn = DBManager.getConnection();
+			String sql = "INSERT INTO feed_images(feed_index, image_url) VALUES(?,?);";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, feedIndex);
+			pstmt.setString(2, imageURL);
+			pstmt.execute();
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt);
+		}
+	}
+
+	public List<Feed> addImageToFeed(List<Feed> feeds) {
+		String sql = "SELECT feed_image_index, feed_index, image_url "
+				+ "FROM feed_images " +
+				"WHERE feed_index = ?";
+		try {
+			conn = DBManager.getConnection();
+
+			for (int i = 0; i < feeds.size(); i++) {
+				Feed feed = feeds.get(i);
+
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, feed.getFeedIndex());
+				rs = pstmt.executeQuery();
+				if (rs.next()) {
+					feed.setImageURL(rs.getString(3));
+				}
+
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt);
+		}
+		return feeds;
+	}
 
 	public boolean createFeed(FeedRequestDTO feedDto) {
 		boolean isCreate = true;
+		Feed feed = new Feed();
 
 		try {
 			conn = DBManager.getConnection();
@@ -420,7 +537,8 @@ public class FeedDAO {
 			pstmt.setString(2, feedDto.getTitle());
 			pstmt.setString(3, feedDto.getContent());
 			pstmt.execute();
-
+			feed = getFeedByUserCodeAndTitleAndContent(feedDto);
+			addImage(feedDto.getImageURL(), feed.getFeedIndex());
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -428,6 +546,7 @@ public class FeedDAO {
 		}finally {
 			DBManager.close(conn, pstmt);
 		}
+
 
 		return isCreate;
 	}
