@@ -111,7 +111,7 @@ public class UserRequestDto {
 		return profileImage;
 	}
 
-	public void setProfileImage(String phone) {
+	public void setProfileImage(String profileImage) {
 		this.profileImage = profileImage;
 	}
 	
