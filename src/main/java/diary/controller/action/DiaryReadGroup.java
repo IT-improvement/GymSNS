@@ -1,7 +1,6 @@
 package diary.controller.action;
 
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -16,30 +15,34 @@ import diary.model.Diary;
 import diary.model.DiaryDAO;
 import diary.model.DiaryResponseDTO;
 
-public class DiaryReadGroup implements Action{
+public class DiaryReadGroup implements Action {
 
-	@Override
-	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("application/json");
+    @Override
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*"); // CORS 헤더 추가
-        
+
         int userCode = 123;
         int number = Integer.parseInt(request.getParameter("number"));
         DiaryDAO dao = DiaryDAO.getInstance();
         List<DiaryResponseDTO> diaryListItem = dao.readDiaryGroup5(userCode, number);
         JSONArray array = new JSONArray();
-        
-        for(DiaryResponseDTO diary : diaryListItem) {
-        	JSONObject object = new JSONObject();
-        	object.put("diary_index", diary.getDairyIndex());
-        	object.put("user_cod", diary.getUserCode());
-        	object.put("content", diary.getContent());
-        	object.put("diary_date", diary.getDiaryDate());
-        	array.put(object);
-        }
-        
-        response.getWriter().write(array.toString());
-	}
 
+        for (DiaryResponseDTO diary : diaryListItem) {
+            JSONObject object = new JSONObject();
+            object.put("diary_index", diary.getDairyIndex());
+            object.put("user_code", diary.getUserCode()); 
+            object.put("content", diary.getContent());
+            object.put("diary_date", diary.getDiaryDate());
+            array.put(object);
+        }
+        boolean check = dao.checkEnd(userCode, number);
+
+        JSONObject responseJson = new JSONObject();
+        responseJson.put("diaries", array);
+        responseJson.put("end", check);
+
+        response.getWriter().write(responseJson.toString());
+    }
 }
