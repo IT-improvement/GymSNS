@@ -39,7 +39,7 @@ public class FeedDeleteAction implements Action {
 		FeedRequestDTO feedDto = new FeedRequestDTO(feedIndex);
 		FeedDAO feedDao = FeedDAO.getInstance();
 		if (feedDao.deleteFeed(feedDto)) {
-			resObj = ApiResponseManager.getStatusObject(200, "Exercise Delete is finished successfully");
+			resObj = ApiResponseManager.getStatusObject(200, "Feed Delete is finished successfully");
 		} else {
 			resObj = ApiResponseManager.getStatusObject(500);
 		}

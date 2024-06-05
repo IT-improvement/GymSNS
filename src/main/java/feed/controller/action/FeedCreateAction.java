@@ -59,13 +59,24 @@ public class FeedCreateAction implements Action {
 			isValid = false;
 		
 		if(isValid) {
+			JSONObject resObj = new JSONObject();
 			FeedRequestDTO feedDto = new FeedRequestDTO(userCode, title, content);
 			FeedDAO feedDao = FeedDAO.getInstance();
 			FeedResponseDTO feed = feedDao.createFeed(feedDto);
+			if(feed != null) {
+				resObj = ApiResponseManager.getStatusObject(200, "Feed Update is finished successfully");
+			}else {
+				resObj = ApiResponseManager.getStatusObject(500);
+			}
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().write(resObj.toString());
 		}
 		else {
 			System.out.println("isValid 실패");
 		}
+
+
 	}
 
 }

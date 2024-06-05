@@ -39,22 +39,19 @@ public class FeedUpdateAction implements Action{
 		int feedIndex = Integer.parseInt(url[1]);
 		String title = request.getParameter("title");
 		String content = request.getParameter("content");
-		
+
+		JSONObject resObj = new JSONObject();
 		FeedRequestDTO feedDto = new FeedRequestDTO(title, content, feedIndex, userCode);
 		FeedDAO feedDao = FeedDAO.getInstance();
-		Feed feed = feedDao.updateFeed(feedDto);
-		
-		JSONObject feedObj = new JSONObject();
-		feedObj.put("title", feed.getTitle());
-		feedObj.put("content", feed.getContent());
-		feedObj.put("userCode", feed.getUserCode());
-		feedObj.put("createDate", feed.getCreateDate());
-		
-		
-				
+
+		if(feedDao.updateFeed(feedDto)) {
+			resObj = ApiResponseManager.getStatusObject(200, "Feed Update is finished successfully");
+		}else {
+			resObj = ApiResponseManager.getStatusObject(500);
+		}
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(feedObj.toString());
+		response.getWriter().write(resObj.toString());
 		
 	}
 

@@ -431,8 +431,8 @@ public class FeedDAO {
 		return feed;
 	}
 
-	public Feed updateFeed(FeedRequestDTO feedDto) {
-		Feed feed = null;
+	public boolean updateFeed(FeedRequestDTO feedDto) {
+		boolean isUpdated = true;
 
 		try {
 			conn = DBManager.getConnection();
@@ -442,16 +442,16 @@ public class FeedDAO {
 			pstmt.setString(2, feedDto.getContent());
 			pstmt.setInt(3, feedDto.getFeedIndex());
 			pstmt.execute();
-			feed = getFeedByFeedIndex(feedDto.getFeedIndex(), String.valueOf(feedDto.getUserCode()));
 
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
+			isUpdated = false;
 		}finally {
 			DBManager.close(conn, pstmt);
 		}
 
-		return feed;
+		return isUpdated;
 	}
 
 	public boolean deleteFeed(FeedRequestDTO feedDto) {
