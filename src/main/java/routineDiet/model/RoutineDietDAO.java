@@ -29,8 +29,8 @@ public class RoutineDietDAO {
 
         conn = DBManager.getConnection();
         try {
-            String sql ="SELECT f.food_name, fc.category_name, r.day, f.food_index, r.routine_index\r\n"
-                    + "FROM foods f, food_categories fc, routines r, routine_diet_details rd\r\n"
+            String sql ="SELECT f.food_name, dc.name, r.day, f.food_index, r.routine_index\r\n"
+                    + "FROM foods f, diet_categories dc, routines r, routine_diet_details rd\r\n"
                     + "WHERE f.food_index IN (\r\n"
                     + "    SELECT rd.food_index\r\n"
                     + "    FROM routine_diet_details rd\r\n"
@@ -40,7 +40,7 @@ public class RoutineDietDAO {
                     + "        WHERE user_code=?\r\n"
                     + "    )\r\n"
                     + ")\r\n"
-                    + "and f.food_category_index = fc.food_category_index\r\n"
+//                    + "and f.food_category_index = dc.diet_category_index\r\n"
                     + "and r.routine_index = rd.routine_index\r\n"
                     + "and f.food_index = rd.food_index\r\n"
                     + "order by day asc\r\n"
@@ -81,6 +81,7 @@ public class RoutineDietDAO {
             rs = pstmt.executeQuery();
             if(rs.next())
                 temp.setRoutineIndex(rs.getInt(1));
+            System.out.println("루틴인덱스 찾기 성공");
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("루틴인덱스 찾기 실패");
@@ -95,7 +96,7 @@ public class RoutineDietDAO {
 
         conn = DBManager.getConnection();
         try {
-            String sql = "INSERT INTO routine_details(routine_index, food_index, create_date)"
+            String sql = "INSERT INTO routine_diet_details(routine_index, food_index, create_date)"
                     + " VALUES(?, ?, ?)";
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, requestDTO.getRoutineIndex());
