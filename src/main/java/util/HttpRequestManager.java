@@ -16,33 +16,37 @@ public class HttpRequestManager {
         return new HttpRequestManager();
     }
 
-    public static void connect(String urlStr) throws IOException {
+    public static void connect(String urlStr) {
         if (urlStr == null || urlStr.isEmpty())
             return;
 
-        URL url = new URL(urlStr);
-        conn = (HttpURLConnection) url.openConnection();
+        try {
+            URL url = new URL(urlStr);
+            conn = (HttpURLConnection) url.openConnection();
 
-        conn.setRequestMethod("POST");
-        conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
-        conn.setDoOutput(true);
-        conn.setDoInput(true);
+            conn.setDoOutput(true);
+            conn.setDoInput(true);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
-    public static void closeRequestConnection(HttpURLConnection conn) {
-        conn.disconnect();
+    public static void sendParams(String params) {
+        try {
+            DataOutputStream os = new DataOutputStream(conn.getOutputStream());
+            byte[] input = params.getBytes("UTF-8");
+            os.write(input, 0, input.length);
+            os.flush();
+            os.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
-    public static void sendParams(String params) throws IOException {
-        DataOutputStream os = new DataOutputStream(conn.getOutputStream());
-        byte[] input = params.getBytes("UTF-8");
-        os.write(input, 0, input.length);
-        os.flush();
-        os.close();
-    }
-
-    public static String getRequestBodyFromClientRequest(HttpServletRequest request) throws IOException {
+    public static String getRequestBodyFromClientRequest(HttpServletRequest request) {
         StringBuilder sb = new StringBuilder();
         String line;
 
@@ -50,13 +54,14 @@ public class HttpRequestManager {
             while ((line = reader.readLine()) != null) {
                 sb.append(line);
             }
-
+        } catch (IOException e) {
+            System.out.println(e);
         }
 
         return sb.toString();
     }
 
-    public static String getResponseBodyFromRequest() throws IOException {
+    public static String getResponseBodyFromRequest() {
         StringBuilder responseBody = new StringBuilder();
 
         try {
