@@ -25,6 +25,34 @@ public class DiaryDAO {
 		return instance;
 	}
 	
+	public List<DiaryResponseDTO> readDiaryGroup5(int userCode, int number){
+		List<DiaryResponseDTO> list = new ArrayList<DiaryResponseDTO>();
+		conn = DBManager.getConnection();
+		int count = 5*(number-1);
+		try {
+			String sql = "select * from diary where user_code=? limit ?,5";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, number);
+			pstmt.setInt(2, count);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				DiaryResponseDTO dto = new DiaryResponseDTO();
+				dto.setDairyIndex(rs.getInt("diary_index"));
+				dto.setContent(rs.getString("content"));
+				dto.setDiaryDate(rs.getTimestamp("diary_date"));
+				list.add(dto);
+			}
+			System.out.println("다이어리 읽기 완료");
+		} catch (Exception e) {
+			System.out.println("다이어리 읽기 오류");
+			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt,rs);
+		}
+		return list;
+	}
+	
 	public void writeDiary(DiaryRequestDTO dto) {
 		conn = DBManager.getConnection();
 		try {
