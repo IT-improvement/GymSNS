@@ -42,7 +42,7 @@ public class FeedDAO {
 	}
 
 	public FeedResponseDTO searchCommentByFeedIndexAndUserCode(FeedRequestDTO feedDto) {
-		FeedResponseDTO feed = null;
+		FeedResponseDTO feed = new FeedResponseDTO();
 
 		try {
 			conn = DBManager.getConnection();
@@ -643,8 +643,9 @@ public class FeedDAO {
 		return list;
 	}
 
-	public FeedResponseDTO createComment(FeedRequestDTO feedDto) {
-		FeedResponseDTO feed = null;
+	public boolean createComment(FeedRequestDTO feedDto) {
+		boolean isCreate = true;
+		FeedResponseDTO feed = new FeedResponseDTO();
 		try {
 			conn = DBManager.getConnection();
 			String sql = "INSERT INTO feed_comments(feed_index, user_code, comment) VALUES(?, ?, ?);";
@@ -657,11 +658,12 @@ public class FeedDAO {
 
 		}catch (Exception e) {
 			e.printStackTrace();
+			isCreate = false;
 		}finally {
 			DBManager.close(conn, pstmt);
 		}
 
-		return feed;
+		return isCreate;
 	}
 
 	public FeedResponseDTO updateComment(FeedRequestDTO feedDto) {

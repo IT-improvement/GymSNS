@@ -43,16 +43,16 @@ public class FeedCommentCreateAction implements Action {
 
 		FeedRequestDTO feedDto = new FeedRequestDTO(feedIndex, userCode, comment);
 		FeedDAO feedDao = FeedDAO.getInstance();
-		FeedResponseDTO feed = feedDao.createComment(feedDto);
-
-		JSONObject feedObj = new JSONObject();
-		feedObj.put("feedIndex", feed.getFeedIndex());
-		feedObj.put("userCode", feed.getUserCode());
-		feedObj.put("comment", feed.getComments());
+		JSONObject resObj = new JSONObject();
+		if(feedDao.createComment(feedDto)) {
+			resObj = ApiResponseManager.getStatusObject(200, "FeedComment Create is finished successfully");
+		}else {
+			resObj = ApiResponseManager.getStatusObject(500);
+		}
 
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(feedObj.toString());
+		response.getWriter().write(resObj.toString());
 	}
 
 
