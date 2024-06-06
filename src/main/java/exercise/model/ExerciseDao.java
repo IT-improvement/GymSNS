@@ -21,13 +21,13 @@ public class ExerciseDao {
 		return instance;
 	}
 	
-	public List<ExerciseResponseDto> findExerciseAll() {
+	public List<ExerciseResponseDto> findExerciseAll(boolean isDescOrder) {
 		List<ExerciseResponseDto> exercises = new ArrayList<>();
 		String sql = "SELECT exercise_index, exer.exercise_category_index, exer_cate.name, exer.user_code, users.id, users.name, exer.name, content, exer.create_date, exer.mod_date "
 				+ "FROM exercises AS exer "
 				+ "JOIN exercise_categories as exer_cate ON exer_cate.exercise_category_index = exer.exercise_category_index "
 				+ "JOIN users ON users.code = exer.user_code "
-				+ "ORDER BY create_date DESC";
+				+ "ORDER BY create_date " + (isDescOrder ? "DESC" : "ASC");
 
 		try {
 			conn = DBManager.getConnection();
@@ -60,13 +60,13 @@ public class ExerciseDao {
 		return exercises;
 	}
 
-	public List<ExerciseResponseDto> findExerciseAllWithLimit(int limit) {
+	public List<ExerciseResponseDto> findExerciseAllWithLimit(boolean isDescOrder, int limit) {
 		List<ExerciseResponseDto> exercises = new ArrayList<>();
 		String sql = "SELECT exercise_index, exer.exercise_category_index, exer_cate.name, exer.user_code, users.id, users.name, exer.name, content, exer.create_date, exer.mod_date "
 				+ "FROM exercises AS exer "
 				+ "JOIN exercise_categories as exer_cate ON exer_cate.exercise_category_index = exer.exercise_category_index "
 				+ "JOIN users ON users.code = exer.user_code "
-				+ "ORDER BY create_date DESC "
+				+ "ORDER BY create_date " + (isDescOrder ? "DESC " : "ASC ")
 				+ "LIMIT ?";
 
 		try {
@@ -102,7 +102,7 @@ public class ExerciseDao {
 		return exercises;
 	}
 
-	public List<ExerciseResponseDto> findExerciseAllByQuery(String query) {
+	public List<ExerciseResponseDto> findExerciseAllByQuery(boolean isDescOrder, String query) {
 		List<ExerciseResponseDto> exercises = new ArrayList<>();
 		String sql = "SELECT exercise_index, exer.exercise_category_index, exer_cate.name, exer.user_code, users.id, users.name, exer.name, content, exer.create_date, exer.mod_date "
 				+ "FROM exercises AS exer "
@@ -113,7 +113,7 @@ public class ExerciseDao {
 				+ "OR users.id LIKE ? "
 				+ "OR users.name LIKE ? "
 				+ "OR content LIKE ? "
-				+ "ORDER BY create_date DESC";
+				+ "ORDER BY create_date " + (isDescOrder ? "DESC" : "ASC");
 
 		try {
 			conn = DBManager.getConnection();
@@ -152,7 +152,7 @@ public class ExerciseDao {
 		return exercises;
 	}
 
-	public List<ExerciseResponseDto> findExerciseAllByQueryWithLimit(String query, int limit) {
+	public List<ExerciseResponseDto> findExerciseAllByQueryWithLimit(boolean isDescOrder, String query, int limit) {
 		List<ExerciseResponseDto> exercises = new ArrayList<>();
 		String sql = "SELECT exercise_index, exer.exercise_category_index, exer_cate.name, exer.user_code, users.id, users.name, exer.name, content, exer.create_date, exer.mod_date "
 				+ "FROM exercises AS exer "
@@ -163,7 +163,7 @@ public class ExerciseDao {
 				+ "OR users.id LIKE ? "
 				+ "OR users.name LIKE ? "
 				+ "OR content LIKE ? "
-				+ "ORDER BY create_date DESC "
+				+ "ORDER BY create_date " + (isDescOrder ? "DESC " : "ASC ")
 				+ "LIMIT ?";
 
 		try {
