@@ -32,6 +32,15 @@
 	</servlet-mapping>
 
 	<servlet>
+		<servlet-name>DietCategoryServiceServlet</servlet-name>
+		<servlet-class>dietcategory.controller.ServiceServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DietCategoryServiceServlet</servlet-name>
+		<url-pattern>/dietCategories/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
 		<servlet-name>FriendServiceServlet</servlet-name>
 		<servlet-class>friend.controller.ServiceServlet</servlet-class>
 	</servlet>
@@ -121,23 +130,7 @@
 		<url-pattern>/userReadOneAction</url-pattern>
 	</servlet-mapping>
 
-	<servlet>
-		<servlet-name>Action</servlet-name>
-		<servlet-class>user.controller.Action</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>Action</servlet-name>
-		<url-pattern>/Action</url-pattern>
-	</servlet-mapping>
 
-	<servlet>
-		<servlet-name>ActionFactory</servlet-name>
-		<servlet-class>user.controller.ActionFactory</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>ActionFactory</servlet-name>
-		<url-pattern>/ActionFactory</url-pattern>
-	</servlet-mapping>
 
 <!--	<servlet>-->
 <!--		<servlet-name>Action</servlet-name>-->
@@ -186,14 +179,6 @@
 
 
 
-	<servlet>
-		<servlet-name>FoodCategoryActionFactory</servlet-name>
-		<servlet-class>foodCategory.controller.FoodCategoryActionFactory</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>FoodCategoryActionFactory</servlet-name>
-		<url-pattern>/FoodCategoryActionFactory</url-pattern>
-	</servlet-mapping>
 	
 	<error-page>
 		<location>/error</location>
@@ -218,12 +203,12 @@
 	</servlet-mapping>
 
 	<servlet>
-		<servlet-name>DietServiceServlet</servlet-name>
-		<servlet-class>diet.controller.ServiceServlet</servlet-class>
+		<servlet-name>RoutineDietServiceServlet</servlet-name>
+		<servlet-class>routineDiet.controller.RoutineDietServiceServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>DietServiceServlet</servlet-name>
-		<url-pattern>/diet/service</url-pattern>
+		<servlet-name>RoutineDietServiceServlet</servlet-name>
+		<url-pattern>/routineDiet</url-pattern>
 	</servlet-mapping>
 	
 	<servlet>
