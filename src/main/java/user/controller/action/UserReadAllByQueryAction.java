@@ -20,13 +20,12 @@ public class UserReadAllByQueryAction implements Action {
         response.setCharacterEncoding("UTF-8");
 
         String query = request.getParameter("query");
-        String limit = request.getParameter("limit");
+        String pageNumberStr = request.getParameter("pageNumber");
 
+        int pageNumber = ParameterValidator.isInteger(pageNumberStr) ? Integer.parseInt(pageNumberStr) : 1;
         UserDao userDao = UserDao.getInstance();
 
-        List<UserResponseDto> users = ParameterValidator.isInteger(limit) ?
-                userDao.findUserAllByIdOrNameWithLimit(query, Integer.parseInt(limit)) :
-                userDao.findUserAllByIdOrName(query);
+        List<UserResponseDto> users = userDao.findUserAllByIdOrName(query, pageNumber);
 
         JSONArray userJsonArr = new JSONArray();
 
