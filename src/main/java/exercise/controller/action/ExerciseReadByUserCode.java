@@ -14,7 +14,7 @@ import exercise.controller.Action;
 import exercise.model.ExerciseDao;
 import exercise.model.ExerciseResponseDto;
 
-public class ExserciseReadByUserCode implements Action{
+public class ExerciseReadByUserCode implements Action{
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
