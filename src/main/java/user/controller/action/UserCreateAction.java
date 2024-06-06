@@ -131,27 +131,35 @@ public class UserCreateAction extends HttpServlet implements Action {
 			isCreate = false;
 			if (!message.equals(""))
 				message += System.lineSeparator();
-			message += "이미 사용 중인 ID입니다.";
+			message += "이미 사용 중인 email입니다.";
+		}
+
+		if (dao.isPhoneDuplicate(phone)) {
+			isCreate = false;
+			if (!message.equals(""))
+				message += System.lineSeparator();
+			message += "이미 사용 중인 phone입니다.";
 		}
 
 		if (!isCreate) {
 			jsonResponse.put("status", 401);
 			jsonResponse.put("message", message);
+
 		} else {
 			try {
 				dao.createUser(userDto);
-				JSONObject userObj = new JSONObject();
-				userObj.put("id", id);
-				userObj.put("password", password);
-				userObj.put("email", email);
-				userObj.put("name", name);
-				userObj.put("birth", birth);
-				userObj.put("gender", gender);
-				userObj.put("telecom", telecom);
-				userObj.put("phone", phone);
+				jsonResponse.put("id", id);
+				jsonResponse.put("password", password);
+				jsonResponse.put("email", email);
+				jsonResponse.put("name", name);
+				jsonResponse.put("birth", birth);
+				jsonResponse.put("gender", gender);
+				jsonResponse.put("telecom", telecom);
+				jsonResponse.put("phone", phone);
 				System.out.println("유저 생성 완료");
 				jsonResponse.put("status", 200);
 				jsonResponse.put("message", "회원가입 완료");
+
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.out.println("유저 생성 실패");
