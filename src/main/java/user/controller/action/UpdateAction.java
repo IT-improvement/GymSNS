@@ -31,68 +31,8 @@ public class UpdateAction extends HttpServlet implements Action {
 //		response.setCharacterEncoding("UTF-8");
 		HttpSession session = request.getSession();
 
-
-//		String imageBase64 = ImgBbUploader.getImageBase64FromRequestBody(request);
-//		User user = (User) session.getAttribute("user");
-//		System.out.println(ImgBbUploader.uploadImage(imageBase64)); // https://i.ibb.co/xsFJSDw/ce678522b2f1.jpg
-
-//		String id = (String) session.getAttribute("id");
-//		String gender = (String) session.getAttribute("gender");
-//		String birth = (String) session.getAttribute("birth");
-//		int code = Integer.parseInt(request.getParameter("code"));
-//		String id = request.getParameter("id");
-//		String gender = request.getParameter("gender");
-//		String birth = request.getParameter("birth");
-
-
 		UserDao userDao = UserDao.getInstance();
-
 		UserRequestDto userDto = new UserRequestDto();
-
-//		StringBuilder sb = new StringBuilder();
-//		try (BufferedReader reader = request.getReader()) {
-//			String line;
-//			while ((line = reader.readLine()) != null) {
-//				sb.append(line);
-//			}
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//
-//		String jsonString = sb.toString();
-
-
-//		InputStream in = request.getInputStream();
-//		BufferedReader br = new BufferedReader(new InputStreamReader(in));
-//
-//		String data = "";
-//		while(br.ready()) {
-//			data += br.readLine();
-//		}
-
-		// JSON 데이터 파싱
-
-//		JSONObject jsonRequest = new JSONObject(data);
-//		JSONObject jsonRequest = new JSONObject(jsonString);
-
-//		String id =  jsonRequest.getString("id");
-//		String gender = jsonRequest.getString("gender");
-//		String birth = jsonRequest.getString("birth");
-
-//		System.out.println("id : " + id);
-//		System.out.println("gender : " + gender);
-//		System.out.println("birth : " + birth);
-
-//		String password = jsonRequest.getString("password");
-//		String email = jsonRequest.getString("email");
-//		String name = jsonRequest.getString("name");
-//		String telecom = jsonRequest.getString("telecom");
-//		String phone = jsonRequest.getString("phone");
-//		String profileImage = jsonRequest.getString("profileImage");
-
-//		System.out.println("id1 : " + id);
-
-//		System.out.println("id2 : " + id);
 
 		String id = "";
 		String birth = "";
@@ -104,11 +44,11 @@ public class UpdateAction extends HttpServlet implements Action {
 		String phone = "";
 		String profileImage = "";
 
+		// JSON 데이터 파싱
 		JSONObject jsonObject = new JSONObject();
 
 		try {
 			HttpRequestManager requestManager = HttpRequestManager.getInstance();
-
 
 			String body = requestManager.getRequestBodyFromClientRequest(request);
 			System.out.println("body" + body);
@@ -135,16 +75,6 @@ public class UpdateAction extends HttpServlet implements Action {
 		}
 
 		UserResponseDto user = userDao.findUserById(id);
-
-
-//		String password = jsonRequest.optString("password", null);
-//		String email = jsonRequest.optString("email", null);
-//		String name = jsonRequest.optString("name", null);
-//		String telecom = jsonRequest.optString("telecom", null);
-//		String phone = jsonRequest.optString("phone", null);
-//		String profileImage = jsonRequest.optString("profileImage", null);
-
-		String newPassword = PasswordCrypto.encrypt(password);
 
 		userDto.setId(id);
 		userDto.setGender(gender);
@@ -208,9 +138,6 @@ public class UpdateAction extends HttpServlet implements Action {
 				System.out.println("프로필 이미지 업데이트 완료: " + profileImage);
 			}
 
-
-;
-//			JSONObject userObj = new JSONObject();
 			jsonResponse.put("id", id);
 			jsonResponse.put("password", password);
 			jsonResponse.put("email", email);
@@ -221,7 +148,6 @@ public class UpdateAction extends HttpServlet implements Action {
 			jsonResponse.put("phone", phone);
 			jsonResponse.put("profileImage", profileImage);
 
-			//userDao.updateUser(user);
 			jsonResponse.put("status", 200);
 			jsonResponse.put("message", "업데이트 성공");
 
@@ -230,8 +156,7 @@ public class UpdateAction extends HttpServlet implements Action {
 			jsonResponse.put("message", "업데이트 실패");
 			e.printStackTrace();
 		}
-//		user = userDao.findUserById(user.getId());
-//		System.out.println("1)id : " + user.getId());
+
 		session.setAttribute("user", user);
 
 		response.setContentType("application/json");
