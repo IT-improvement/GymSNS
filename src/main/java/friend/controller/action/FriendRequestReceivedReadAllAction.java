@@ -45,6 +45,7 @@ public class FriendRequestReceivedReadAllAction implements Action {
 			friendRequestObj.put("userCode", friendRequest.getUserCodeOther());
 			friendRequestObj.put("userId", friendRequest.getUserIdOther());
 			friendRequestObj.put("userName", friendRequest.getUserNameOther());
+			friendRequestObj.put("userProfileImage", friendRequest.getUserProfileImageOther());
 
 			friendRequestJsonArr.put(friendRequestObj);
 		}

@@ -46,6 +46,7 @@ public class FriendReadAllAction implements Action {
 			friendObj.put("userCode", friend.getUserCodeFriend());
 			friendObj.put("userId", friend.getUserId());
 			friendObj.put("userName", friend.getUserName());
+			friendObj.put("userProfileImage", friend.getUserProfileImage());
 
 			friendJsonArr.put(friendObj);
 		}
