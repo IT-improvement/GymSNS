@@ -2,7 +2,6 @@ package exercise.controller.action;
 
 import exercise.controller.Action;
 import exercise.model.ExerciseDao;
-import exercise.model.ExerciseRequestDto;
 import exercise.model.ExerciseResponseDto;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -22,12 +21,15 @@ public class ExerciseReadAllByQueryAction implements Action {
 
 		String query = request.getParameter("query");
 		String limit = request.getParameter("limit");
+		String isDescOrderStr = request.getParameter("isDescOrder");
+
+		boolean isDescOrder = (isDescOrderStr != null && isDescOrderStr.equals("false")) ? false : true;
 
 		ExerciseDao exerciseDao = ExerciseDao.getInstance();
 
 		List<ExerciseResponseDto> exercises = ParameterValidator.isInteger(limit) ?
-				exerciseDao.findExerciseAllByQueryWithLimit(query, Integer.parseInt(limit)) :
-				exerciseDao.findExerciseAllByQuery(query);
+				exerciseDao.findExerciseAllByQueryWithLimit(isDescOrder, query, Integer.parseInt(limit)) :
+				exerciseDao.findExerciseAllByQuery(isDescOrder, query);
 
 		JSONArray exerciseJsonArr = new JSONArray();
 		
