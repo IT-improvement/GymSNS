@@ -9,17 +9,19 @@ public class Exercise {
 	private int userCode;
 	private String userId;
 	private String userName;
+	private String userProfileImage;
 	private String name;
 	private String content;
 	private Timestamp createDate;
 	private Timestamp modDate;
 
-	public Exercise(int index, int categoryIndex, String categoryName, int userCode, String userId, String userName, String name,  String content, Timestamp createDate, Timestamp modDate) {
+	public Exercise(int index, int categoryIndex, String categoryName, int userCode, String userId, String userName, String userProfileImage, String name,  String content, Timestamp createDate, Timestamp modDate) {
 		this.index = index;
 		this.categoryIndex = categoryIndex;
 		this.userCode = userCode;
 		this.userId = userId;
 		this.userName = userName;
+		this.userProfileImage = userProfileImage;
 		this.name = name;
 		this.categoryName = categoryName;
 		this.content = content;
@@ -49,6 +51,10 @@ public class Exercise {
 
 	public String getUserName() {
 		return userName;
+	}
+
+	public String getUserProfileImage() {
+		return userProfileImage;
 	}
 
 	public String getName() {

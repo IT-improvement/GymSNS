@@ -8,6 +8,7 @@ public class ExerciseResponseDto {
 	private int userCode;
 	private String userId;
 	private String userName;
+	private String userProfileImage;
 	private String name;
 	private String categoryName;
 	private String content;
@@ -18,13 +19,14 @@ public class ExerciseResponseDto {
 		
 	}
 	
-	public ExerciseResponseDto(int index, int categoryIndex, String categoryName, int userCode, String userId, String userName, String name, String content, Timestamp createDate, Timestamp modDate) {
+	public ExerciseResponseDto(int index, int categoryIndex, String categoryName, int userCode, String userId, String userName, String userProfileImage, String name, String content, Timestamp createDate, Timestamp modDate) {
 		this.index = index;
 		this.categoryIndex = categoryIndex;
 		this.categoryName = categoryName;
 		this.userCode = userCode;
 		this.userId = userId;
 		this.userName = userName;
+		this.userProfileImage = userProfileImage;
 		this.name = name;
 		this.content = content;
 		this.createDate = createDate;
@@ -77,6 +79,14 @@ public class ExerciseResponseDto {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public String getUserProfileImage() {
+		return userProfileImage;
+	}
+
+	public void setUserProfileImage(String userProfileImage) {
+		this.userProfileImage = userProfileImage;
 	}
 
 	public String getName() {
