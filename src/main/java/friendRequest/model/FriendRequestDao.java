@@ -95,7 +95,7 @@ public class FriendRequestDao {
 	}
 	
 	public List<FriendRequestResponseDto> findReceivedFriendRequestAll(FriendRequestRequestDto friendDto) { List<FriendRequestResponseDto> friendRequests = new ArrayList<>();
-		String sql = "SELECT user_code_self, user_code_other, users.id, users.name "
+		String sql = "SELECT user_code_self, user_code_other, users.id, users.name, users.profile_image "
 				+ "FROM friend_requests "
 				+ "JOIN users ON friend_requests.user_code_other = users.code "
 				+ "WHERE user_code_self=?";
@@ -113,8 +113,9 @@ public class FriendRequestDao {
 				int userCodeOther = rs.getInt(2);
 				String userIdOther = rs.getString(3);
 				String userNameOther = rs.getString(4);
-				
-				friendRequests.add(new FriendRequestResponseDto(userCodeSelf, userCodeOther, userIdOther, userNameOther));
+				String userProfileImageOther = rs.getString(5);
+
+				friendRequests.add(new FriendRequestResponseDto(userCodeSelf, userCodeOther, userIdOther, userNameOther, userProfileImageOther));
 			}
 		} catch (Exception e) {
 			System.out.println(e);
