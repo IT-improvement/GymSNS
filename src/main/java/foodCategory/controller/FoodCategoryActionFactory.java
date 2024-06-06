@@ -1,9 +1,6 @@
 package foodCategory.controller;
 
-import foodCategory.controller.action.CreateFoodCategoryAction;
-import foodCategory.controller.action.DeleteFoodCategoryAction;
-import foodCategory.controller.action.ReadAllFoodCategoryAction;
-import foodCategory.controller.action.UpdateFoodCategoryAction;
+import foodCategory.controller.action.*;
 import user.controller.Action;
 
 public class FoodCategoryActionFactory {
@@ -28,6 +25,8 @@ public class FoodCategoryActionFactory {
 			action = new UpdateFoodCategoryAction();
 		else if(command.equals("readAllFoodCategory"))
 			action = new ReadAllFoodCategoryAction();
+		else if(command.equals("readDetailFoodCategory"))
+			action = new ReadDetailFoodCategoryAction();
 		
 		return action;
 	}

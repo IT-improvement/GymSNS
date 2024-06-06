@@ -73,6 +73,7 @@ public class FoodCategoryDao {
     public FoodCategoryResponseDto getFoodCategoryByIndex(int foodCategoryIndex) {
         String sql = "SELECT * FROM food_categories WHERE food_category_index = ?";
         try {
+            conn = DBManager.getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, foodCategoryIndex);
             rs = pstmt.executeQuery();

@@ -29,22 +29,12 @@ public class RoutineDietDAO {
 
         conn = DBManager.getConnection();
         try {
-            String sql ="SELECT f.food_name, dc.name, r.day, f.food_index, r.routine_index\r\n"
-                    + "FROM foods f, diet_categories dc, routines r, routine_diet_details rd\r\n"
-                    + "WHERE f.food_index IN (\r\n"
-                    + "    SELECT rd.food_index\r\n"
-                    + "    FROM routine_diet_details rd\r\n"
-                    + "    WHERE rd.routine_index in(\r\n"
-                    + "		SELECT routine_index\r\n"
-                    + "        FROM routines\r\n"
-                    + "        WHERE user_code=?\r\n"
-                    + "    )\r\n"
-                    + ")\r\n"
-//                    + "and f.food_category_index = dc.diet_category_index\r\n"
-                    + "and r.routine_index = rd.routine_index\r\n"
-                    + "and f.food_index = rd.food_index\r\n"
-                    + "order by day asc\r\n"
-                    + ";";
+            String sql ="SELECT f.food_name, r.day, f.food_index, rd.meal_time, rd.routine_index\r\n"
+                    + "FROM foods f, routines r, routine_diet_details rd\r\n" +
+                    "WHERE f.food_index = rd.food_index\r\n" +
+                    "AND r.routine_index = rd.routine_index\r\n" +
+                    "AND r.user_code = ?";
+
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, code);
             rs = pstmt.executeQuery();
@@ -52,9 +42,10 @@ public class RoutineDietDAO {
             while(rs.next()) {
                 RoutineDietResponseDTO dto = new RoutineDietResponseDTO();
                 dto.setName(rs.getString(1));
-                dto.setCategory(rs.getString(2));
-                dto.setDay(rs.getString(3));
-                dto.setFoodIndex(rs.getInt(4));
+                dto.setDay(rs.getString(2));
+                dto.setFoodIndex(rs.getInt(3));
+                dto.setMealTime(rs.getString(4));
+
                 dto.setRoutineIndex(rs.getInt(5));
                 list.add(dto);
             }
@@ -96,12 +87,13 @@ public class RoutineDietDAO {
 
         conn = DBManager.getConnection();
         try {
-            String sql = "INSERT INTO routine_diet_details(routine_index, food_index, create_date)"
-                    + " VALUES(?, ?, ?)";
+            String sql = "INSERT INTO routine_diet_details(routine_index, food_index, create_date,meal_time)"
+                    + " VALUES(?, ?, ?, ?)";
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, requestDTO.getRoutineIndex());
             pstmt.setInt(2, requestDTO.getFoodIndex());
             pstmt.setTimestamp(3, requestDTO.getDate());
+            pstmt.setString(4, requestDTO.getMealTime());
 
             pstmt.execute();
         } catch (Exception e) {
@@ -117,7 +109,7 @@ public class RoutineDietDAO {
 
         conn = DBManager.getConnection();
         try {
-            String sql = "DELETE FROM routine_details WHERE routine_index=? and food_index=?";
+            String sql = "DELETE FROM routine_diet_details WHERE routine_index=? and food_index=?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, requestDTO.getRoutineIndex());
             pstmt.setInt(2, requestDTO.getFoodIndex());

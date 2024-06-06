@@ -9,6 +9,7 @@ public class RoutineDietRequestDTO {
     private int foodIndex;
     private int userCode;
     private Timestamp date;
+    private String mealTime;
 
     public RoutineDietRequestDTO() {
         SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -42,4 +43,6 @@ public class RoutineDietRequestDTO {
     public void setUserCode(int userCode) {
         this.userCode = userCode;
     }
+    public String getMealTime() {return mealTime;}
+    public void setMealTime(String mealTime) {this.mealTime = mealTime;}
 }

@@ -25,25 +25,19 @@ public class UpdateFoodCategoryAction implements Action {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 
-		try {
-			String indexStr  = request.getParameter("foodCategoryIndex");
-			String userCodeStr  = request.getParameter("userCode");
-
-			System.out.println(indexStr);
-			System.out.println(userCodeStr);
-
-			if (indexStr  == null || userCodeStr  == null) {
-				// 필수 매개변수가 null이면 오류 반환
-				JSONObject jsonResponse = ApiResponseManager.getStatusObject(400, "Missing required parameters");
-				response.getWriter().write(jsonResponse.toString());
-				return;
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream(), "UTF-8"))) {
+			StringBuilder jsonString = new StringBuilder();
+			String line;
+			while ((line = reader.readLine()) != null) {
+				jsonString.append(line);
 			}
 
-			int foodCategoryIndex = Integer.parseInt(indexStr );
-			int userCode = Integer.parseInt(userCodeStr );
+			JSONObject jsonRequest = new JSONObject(jsonString.toString());
 
-			String categoryName = request.getParameter("categoryName");
-			String categoryImageUrl = request.getParameter("categoryImageUrl");
+			int foodCategoryIndex = jsonRequest.getInt("foodCategoryIndex");
+			int userCode = jsonRequest.getInt("userCode");
+			String categoryName = jsonRequest.getString("categoryName");
+			String categoryImageUrl = jsonRequest.getString("categoryImageUrl");
 
 			FoodCategoryDao dao = FoodCategoryDao.getInstance();
 			FoodCategoryRequestDto foodCategoryDto = new FoodCategoryRequestDto(userCode, categoryName, categoryImageUrl);
