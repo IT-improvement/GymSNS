@@ -20,34 +20,17 @@ public class UserReadOneAction extends HttpServlet implements Action {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-        //HttpSession session = request.getSession();
+
         String codeString = request.getParameter("code");
         int code = Integer.parseInt(codeString);
-        System.out.println(code + "1234");
-
-//        StringBuilder sb = new StringBuilder();
-//        BufferedReader reader = request.getReader();
-//
-//        String line = "";
-//        while ((line = reader.readLine()) != null) {
-//            sb.append(line);
-//        }
 
         UserDao userDao = UserDao.getInstance();
-//        JSONObject jsonRequest = new JSONObject(sb.toString());
-        JSONObject jsonRequest = new JSONObject();
-
-        System.out.println("1");
-//        String id = jsonRequest.getString("id");
-//        System.out.println("id) " + id);
         User user = userDao.findUserByCode(code);
-        System.out.println("2");
-        System.out.println(user);
 
+//        JSONObject jsonRequest = new JSONObject();
         JSONObject jsonResponse = new JSONObject();
 
         if (user != null) {
-//            JSONObject userObj = new JSONObject();
             jsonResponse.put("code", code);
             jsonResponse.put("id", user.getId());
             jsonResponse.put("password", user.getPassword());
