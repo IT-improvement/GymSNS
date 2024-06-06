@@ -36,6 +36,7 @@ public class UserReadAllByQueryAction implements Action {
             userObj.put("code", user.getCode());
             userObj.put("id", user.getId());
             userObj.put("name", user.getName());
+            userObj.put("profileImage", user.getProfileImage());
 
             userJsonArr.put(userObj);
         }
