@@ -74,6 +74,7 @@ public class FeedDetailAction implements Action {
 		feedObj.put("userName", feed.getUserName());
 		feedObj.put("favoriteCount", feed.getFavoriteCount());
 		feedObj.put("checkFavorite" ,feed.getIsFavorite());
+		feedObj.put("imageURL", feed.getImageURL());
 		System.out.println(feedObj.toString());
 
 
