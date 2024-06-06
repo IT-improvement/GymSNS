@@ -71,6 +71,7 @@ public class LoginAction extends HttpServlet implements Action {
 				jsonResponse.put("code", user.getCode());
 				jsonResponse.put("id", id);
 				jsonResponse.put("password", password);
+				jsonResponse.put("profileImage", user.getProfileImage());
 
 				jsonResponse.put("status", 200);
 				jsonResponse.put("message", "로그인 성공");
