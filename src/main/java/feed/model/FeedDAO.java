@@ -332,6 +332,8 @@ public class FeedDAO {
 				"JOIN users ON users.code = feeds.user_code " +
 				"WHERE title LIKE ? " +
 				"OR content LIKE ? " +
+				"OR users.id LIKE ? " +
+				"OR users.name LIKE ? " +
 				"ORDER BY create_date DESC";
 
 		try {
