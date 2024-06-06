@@ -31,8 +31,9 @@ public class UserReadAllAction implements Action {
         List<UserResponseDto> users = ParameterValidator.isInteger(limit) ?
                 userDao.findUserAllWithLimit(Integer.parseInt(limit)) :
                 userDao.findUserAll();
+//        List<UserResponseDto> users = userDao.findUserAll();
 
-        JSONArray userJsonArr = new JSONArray();
+                JSONArray userJsonArr = new JSONArray();
 
         for (UserResponseDto user : users) {
             JSONObject userObj = new JSONObject();
@@ -40,6 +41,10 @@ public class UserReadAllAction implements Action {
             userObj.put("code", user.getCode());
             userObj.put("id", user.getId());
             userObj.put("name", user.getName());
+            userObj.put("profileImage", user.getProfileImage());
+
+            System.out.println("name" + user.getName());
+            System.out.println("profileimage: " + user.getProfileImage());
 
             userJsonArr.put(userObj);
         }

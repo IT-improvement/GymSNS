@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import user.controller.PagingManager;
 import util.DBManager;
 import util.PasswordCrypto;
 
@@ -26,8 +27,47 @@ public class UserDao {
 	public static UserDao getInstance() {
 		return instance;
 	}
-	
-	
+
+	public ArrayList<User> getAllUser(Integer code, int pageNumber) {
+		ArrayList<User> list = new ArrayList<User>();
+
+		try {
+			conn = DBManager.getConnection();
+			String sql = "SELECT DISTINCT code, name, profile_image " +
+					"FROM users" +
+					"ORDER BY reg_date DESC " +
+					"LIMIT ?," +
+					PagingManager.LIMIT;
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, pageNumber * PagingManager.LIMIT);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				User user = new User();
+				user.setCode(rs.getInt(1));
+				user.setName(rs.getString(2));
+				user.setProfileImage(rs.getString(3));
+
+				list.add(user);
+			}
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt);
+		}
+		System.out.println(list.size());
+
+		System.out.println("><><>><><");
+		//
+		if (code != null) {
+			//
+		}
+
+		return list;
+	}
 	
 	public List<UserResponseDto> findUserAll() {
 		List<UserResponseDto> list = new ArrayList<UserResponseDto>();
@@ -36,7 +76,7 @@ public class UserDao {
 			conn = DBManager.getConnection();
 			
 			// 쿼리할 준비 
-			String sql = "SELECT code, id, email, name, birth, gender, telecom, phone FROM users";
+			String sql = "SELECT code, id, email, name, birth, gender, telecom, phone, profile_image FROM users";
 			pstmt = conn.prepareStatement(sql);
 			
 			// 쿼리 실행 
@@ -52,8 +92,12 @@ public class UserDao {
 				String gender = rs.getString(6);
 				String telecom = rs.getString(7);
 				String phone = rs.getString(8);
+				String profileImage = rs.getString(9);
+
+				System.out.println("finduserall");
+				System.out.println("id + profileImage" + id + profileImage);
 				
-				UserResponseDto user = new UserResponseDto(code, id, email, name, birth, gender, telecom, phone);
+				UserResponseDto user = new UserResponseDto(code, id, email, name, birth, gender, telecom, phone, profileImage);
 				list.add(user);
 			}
 		} catch (SQLException e) {
@@ -253,7 +297,7 @@ public class UserDao {
 		try {
 			conn = DBManager.getConnection();
 
-			String sql = "SELECT id, email, name, birth, gender, telecom, phone, reg_date, mod_date FROM users WHERE code=?";
+			String sql = "SELECT id, email, name, birth, gender, telecom, phone, profile_image, reg_date, mod_date FROM users WHERE code=?";
 
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, code);
@@ -268,10 +312,11 @@ public class UserDao {
 				String gender = rs.getString(5);
 				String telecom = rs.getString(6);
 				String phone = rs.getString(7);
-				Timestamp regDate = rs.getTimestamp(8);
-				Timestamp modDate = rs.getTimestamp(9);
+				String profileImage = rs.getString(8);
+				Timestamp regDate = rs.getTimestamp(9);
+				Timestamp modDate = rs.getTimestamp(10);
 
-				user = new UserResponseDto(id, email, name, birth, gender, telecom, phone);
+				user = new UserResponseDto(id, email, name, birth, gender, telecom, phone, profileImage);
 			}
 
 		} catch (SQLException e) {
@@ -449,6 +494,8 @@ public class UserDao {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, userDto.getProfileImage());
 			pstmt.setString(2, userDto.getId());
+			System.out.println(userDto.getProfileImage());
+			System.out.println(userDto.getId());
 
 			pstmt.execute();
 
