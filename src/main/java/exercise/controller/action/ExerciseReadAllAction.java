@@ -12,7 +12,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import exercise.model.ExerciseDao;
-import exercise.model.ExerciseRequestDto;
 import exercise.model.ExerciseResponseDto;
 import util.ParameterValidator;
 
@@ -23,12 +22,15 @@ public class ExerciseReadAllAction implements Action {
 		response.setCharacterEncoding("UTF-8");
 
 		String limit = request.getParameter("limit");
+		String isDescOrderStr = request.getParameter("isDescOrder");
+
+		boolean isDescOrder = (isDescOrderStr != null && isDescOrderStr.equals("false")) ? false : true;
 
 		ExerciseDao exerciseDao = ExerciseDao.getInstance();
 
 		List<ExerciseResponseDto> exercises = ParameterValidator.isInteger(limit) ?
-				exerciseDao.findExerciseAllWithLimit(Integer.parseInt(limit)) :
-				exerciseDao.findExerciseAll();
+				exerciseDao.findExerciseAllWithLimit(isDescOrder, Integer.parseInt(limit)) :
+				exerciseDao.findExerciseAll(isDescOrder);
 
 		JSONArray exerciseJsonArr = new JSONArray();
 		
