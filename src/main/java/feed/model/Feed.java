@@ -19,6 +19,9 @@ public class Feed {
 	private int favoriteCount;
 	private String userId;
 	private String userName;
+	private String imageURL;
+
+
 
 	public void setUserName(String userName) {
 		this.userName = userName;
@@ -129,6 +132,14 @@ public class Feed {
 
 	public int getFavoriteCount() {
 		return favoriteCount;
+	}
+
+	public void setImageURL(String imageURL) {
+		this.imageURL = imageURL;
+	}
+
+	public String getImageURL() {
+		return imageURL;
 	}
 
 }

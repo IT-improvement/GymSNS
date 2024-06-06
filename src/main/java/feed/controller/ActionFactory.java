@@ -44,6 +44,8 @@ private ActionFactory() {
 			action = new FeedCommentUpdateAction();
 		}else if (command.equals("feedCommentDelete")) {
 			action = new FeedCommentDeleteAction();
+		}else if (command.equals("feedCurrentPage")) {
+			action = new FeedCurrentPageAction();
 		}
 	
 		

@@ -21,6 +21,8 @@ import feed.model.FeedResponseDTO;
 import user.model.User;
 import user.model.UserResponseDto;
 import util.ApiResponseManager;
+import util.HttpRequestManager;
+import util.ImgBB;
 import util.ParameterValidator;
 
 /**
@@ -32,6 +34,20 @@ public class FeedCreateAction implements Action {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		request.setCharacterEncoding("UTF-8");
+
+
+		HttpRequestManager requestManager = HttpRequestManager.getInstance();
+
+		JSONObject jsonObject = new JSONObject();
+
+		String body = requestManager.getRequestBodyFromClientRequest(request);
+
+		jsonObject = new JSONObject(body);
+
+		String imageBase64 = jsonObject.getString("image");
+
+		String imageURL = ImgBB.uploadImage(imageBase64);
+
 
 
 		String userCodeStr = request.getHeader("Authorization");
@@ -46,10 +62,6 @@ public class FeedCreateAction implements Action {
 		String title = request.getParameter("title");
 		String content = request.getParameter("content");
 		String feedImage = request.getParameter("feedImage");
-
-		
-		System.out.println(title);
-		System.out.println(content);
 		
 		boolean isValid = true;
 		
@@ -59,13 +71,23 @@ public class FeedCreateAction implements Action {
 			isValid = false;
 		
 		if(isValid) {
-			FeedRequestDTO feedDto = new FeedRequestDTO(userCode, title, content);
+			JSONObject resObj = new JSONObject();
+			FeedRequestDTO feedDto = new FeedRequestDTO(userCode, title, content, imageURL);
 			FeedDAO feedDao = FeedDAO.getInstance();
-			FeedResponseDTO feed = feedDao.createFeed(feedDto);
+			if(feedDao.createFeed(feedDto)) {
+				resObj = ApiResponseManager.getStatusObject(200, "Feed Create is finished successfully");
+			}else {
+				resObj = ApiResponseManager.getStatusObject(500);
+			}
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().write(resObj.toString());
 		}
 		else {
 			System.out.println("isValid 실패");
 		}
+
+
 	}
 
 }
