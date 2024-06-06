@@ -23,6 +23,8 @@ public class UserDao {
 	}
 	
 	private static UserDao instance = new UserDao();
+
+	private final int ITEM_COUNT_PER_PAGE = 5;
 	
 	public static UserDao getInstance() {
 		return instance;
@@ -69,16 +71,21 @@ public class UserDao {
 		return list;
 	}
 	
-	public List<UserResponseDto> findUserAll() {
+	public List<UserResponseDto> findUserAll(int pageNumber) {
 		List<UserResponseDto> list = new ArrayList<UserResponseDto>();
 		
 		try {
 			conn = DBManager.getConnection();
 			
 			// 쿼리할 준비 
-			String sql = "SELECT code, id, email, name, birth, gender, telecom, phone, profile_image FROM users";
+			String sql = "SELECT code, id, email, name, birth, gender, telecom, phone, profile_image FROM users "
+					+ "LIMIT ?, ?";
+
 			pstmt = conn.prepareStatement(sql);
-			
+
+			pstmt.setInt(1, (pageNumber - 1) * ITEM_COUNT_PER_PAGE);
+			pstmt.setInt(2, ITEM_COUNT_PER_PAGE);
+
 			// 쿼리 실행 
 			rs = pstmt.executeQuery();
 			
@@ -148,11 +155,12 @@ public class UserDao {
 		return list;
 	}
 
-	public List<UserResponseDto> findUserAllByIdOrName(String query) {
+	public List<UserResponseDto> findUserAllByIdOrName(String query, int pageNumber) {
 		List<UserResponseDto> list = new ArrayList<UserResponseDto>();
 		String sql = "SELECT code, id, email, name, birth, gender, telecom, phone, profile_image "
 				+ "FROM users "
-				+ "WHERE id LIKE ? OR name LIKE ?";
+				+ "WHERE id LIKE ? OR name LIKE ? "
+				+ "LIMIT ?, ?";
 
 		try {
 			conn = DBManager.getConnection();
@@ -160,6 +168,8 @@ public class UserDao {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, "%" + query + "%");
 			pstmt.setString(2, "%" + query + "%");
+			pstmt.setInt(3, (pageNumber - 1) * ITEM_COUNT_PER_PAGE);
+			pstmt.setInt(4, ITEM_COUNT_PER_PAGE);
 
 			rs = pstmt.executeQuery();
 
