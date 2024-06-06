@@ -20,6 +20,7 @@ public class Feed {
 	private String userId;
 	private String userName;
 	private String imageURL;
+	private int imageIndex;
 
 
 
@@ -140,6 +141,14 @@ public class Feed {
 
 	public String getImageURL() {
 		return imageURL;
+	}
+
+	public void setImageIndex(int imageIndex) {
+		this.imageIndex = imageIndex;
+	}
+
+	public int getImageIndex() {
+		return imageIndex;
 	}
 
 }
