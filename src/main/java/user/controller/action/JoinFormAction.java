@@ -75,6 +75,8 @@ public class JoinFormAction extends HttpServlet {
 		
 		try {
 			dao.createUser(userDto);
+			int code =dao.findById(id);
+			dao.joinRoutine(code);
 			System.out.println("유저 생성 완료");
 		} catch (Exception e) {
 			e.printStackTrace();

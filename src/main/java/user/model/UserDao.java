@@ -29,7 +29,44 @@ public class UserDao {
 	public static UserDao getInstance() {
 		return instance;
 	}
-
+	
+	public void joinRoutine(int userCode) {
+		String days[] = {"Mo","Tu","We","Th","Fr","Sa","Su"};
+		conn = DBManager.getConnection();
+		try {
+			for(int i=0; i<days.length;i++) {
+				String sql="INSERT INTO routines (user_code, day) values(?,?)";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, userCode);
+				pstmt.setString(2, days[i]);
+				
+				pstmt.execute();
+			}
+		} catch (Exception e) {
+		}finally {
+			DBManager.close(conn, pstmt, rs);
+		}
+	}
+	
+	public int findById(String id) {
+		int code = 0;
+		conn = DBManager.getConnection();
+		try {
+			String sql = "SELECT code FROM users WHERE id=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			
+			rs = pstmt.executeQuery();
+			if(rs.next())
+				code = rs.getInt("code");
+		} catch (Exception e) {
+			System.out.println("유저코드 찾기 오류");
+		}finally {
+			DBManager.close(conn, pstmt, rs);
+		}
+		return code;
+	}
+	
 	public ArrayList<User> getAllUser(Integer code, int pageNumber) {
 		ArrayList<User> list = new ArrayList<User>();
 
