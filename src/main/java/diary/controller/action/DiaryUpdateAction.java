@@ -16,8 +16,7 @@ public class DiaryUpdateAction implements Action{
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException {
 		HttpSession session = request.getSession();
-//		String userCode = (String)session.getAttribute("user");
-		int userCode = 123;
+		int userCode = (int)session.getAttribute("code");
 		int diaryIndex = Integer.parseInt(request.getParameter("diaryIndex"));
 		String content = request.getParameter("content");
 		

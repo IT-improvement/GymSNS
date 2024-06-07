@@ -7,6 +7,7 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -22,7 +23,8 @@ public class DiaryReadAction implements Action {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*"); // CORS 헤더 추가
-        int userCode = 123;
+        HttpSession session = request.getSession();
+		int userCode = (int)session.getAttribute("code");
         Timestamp date = Timestamp.valueOf(request.getParameter("date"));
         System.out.println("date: "+date);
         DiaryDAO dao = DiaryDAO.getInstance();

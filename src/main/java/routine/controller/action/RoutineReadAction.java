@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -24,7 +25,8 @@ public class RoutineReadAction implements Action{
         response.setHeader("Access-Control-Allow-Origin", "*");
 		
 		RoutineDAO dao = RoutineDAO.getInstance();
-		int userCode = 123;
+		HttpSession session = request.getSession();
+		int userCode = (int)session.getAttribute("code");
 		List<RoutineResponseDTO> listItem = dao.readRoutine(userCode);
 		
 		JSONArray array = new JSONArray();

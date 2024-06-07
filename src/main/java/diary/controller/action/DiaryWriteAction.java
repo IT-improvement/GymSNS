@@ -17,9 +17,8 @@ public class DiaryWriteAction implements Action{
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, UnsupportedEncodingException {
 		HttpSession session = request.getSession();
-//		String userCode = (String)session.getAttribute("user");
+		int userCode = (int)session.getAttribute("code");
 		request.setCharacterEncoding("UTF-8");
-		int userCode = 123;
 		System.out.println("작성");
 		String content = request.getParameter("content");
 		Timestamp diaryDate = Timestamp.valueOf(request.getParameter("date"));

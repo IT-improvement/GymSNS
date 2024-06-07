@@ -20,8 +20,7 @@ public class DiaryDeleteAction implements Action{
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-//		String userCode = (String)session.getAttribute("user");
-		int userCode = 123;
+		int userCode = (int)session.getAttribute("code");
 		StringBuilder sb = new StringBuilder();
         BufferedReader reader = request.getReader();
         String line;
@@ -38,8 +37,5 @@ public class DiaryDeleteAction implements Action{
                 dao.deleteDiary(item);
             }
         }
-		
-		
 	}
-
 }
