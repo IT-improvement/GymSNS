@@ -6,6 +6,7 @@ public class RoutineDietResponseDTO {
     private String category;
     private String day;
     private int routineIndex;
+    private String mealTime;
 
     public int getRoutineIndex() {
         return routineIndex;
@@ -37,4 +38,6 @@ public class RoutineDietResponseDTO {
     public void setDay(String day) {
         this.day = day;
     }
+    public String getMealTime() {return mealTime;}
+    public void setMealTime(String mealTime) {this.mealTime = mealTime;}
 }

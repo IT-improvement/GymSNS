@@ -23,26 +23,23 @@ public class UpdateFoodAction implements Action {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 
-		try {
-			String indexStr = request.getParameter("foodIndex");
-			String userCodeStr = request.getParameter("userCode");
-
-			if (indexStr == null || userCodeStr == null) {
-				// 필수 매개변수가 null이면 오류 반환
-				JSONObject jsonResponse = ApiResponseManager.getStatusObject(400, "Missing required parameters");
-				response.getWriter().write(jsonResponse.toString());
-				return;
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream(), "UTF-8"))) {
+			StringBuilder jsonString = new StringBuilder();
+			String line;
+			while ((line = reader.readLine()) != null) {
+				jsonString.append(line);
 			}
 
-			int foodIndex = Integer.parseInt(indexStr);
-			int userCode = Integer.parseInt(userCodeStr);
+			JSONObject jsonRequest = new JSONObject(jsonString.toString());
 
-			String foodName = request.getParameter("foodName");
-			int foodCategoryIndex = Integer.parseInt(request.getParameter("foodCategoryIndex"));
-			int protein = Integer.parseInt(request.getParameter("protein"));
-			int calory = Integer.parseInt(request.getParameter("calory"));
-			int carbs = Integer.parseInt(request.getParameter("carbs"));
-			int size = Integer.parseInt(request.getParameter("size"));
+			int foodIndex = jsonRequest.getInt("foodIndex");
+			int userCode = jsonRequest.getInt("userCode");
+			String foodName = jsonRequest.getString("foodName");
+			int foodCategoryIndex = jsonRequest.getInt("foodCategoryIndex");
+			int protein = jsonRequest.getInt("protein");
+			int calory = jsonRequest.getInt("calory");
+			int carbs = jsonRequest.getInt("carbs");
+			int size = jsonRequest.getInt("size");
 
 			FoodDao dao = FoodDao.getInstance();
 			FoodRequestDto foodDto = new FoodRequestDto(userCode, foodCategoryIndex, foodName, protein, calory, carbs, size);

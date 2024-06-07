@@ -5,6 +5,7 @@ public class RoutineDiet {
     private int userCode;
     private String day;
     private int foodIndex;
+    private String mealTime;
 
     public int getRoutineIndex() {
         return routineIndex;
@@ -30,6 +31,7 @@ public class RoutineDiet {
     public void setFoodIndex(int foodIndex) {
         this.foodIndex = foodIndex;
     }
-
+    public String getMealTime() {return mealTime;}
+    public void setMealTime(String mealTime) {this.mealTime = mealTime;}
 
 }

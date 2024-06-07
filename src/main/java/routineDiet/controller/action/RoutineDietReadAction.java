@@ -29,12 +29,13 @@ public class RoutineDietReadAction implements Action {
         for(RoutineDietResponseDTO routine : listItem){
             JSONObject object = new JSONObject();
             object.put("name", routine.getName());
-            object.put("category", routine.getCategory());
             object.put("day", routine.getDay());
             object.put("foodIndex", routine.getFoodIndex());
+            object.put("mealTime", routine.getMealTime());
             object.put("routineIndex", routine.getRoutineIndex());
             array.put(object);
         }
+        System.out.println("array:"+ array.toString());
         response.getWriter().write(array.toString());
     }
 }
