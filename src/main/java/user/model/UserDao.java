@@ -96,14 +96,9 @@ public class UserDao {
 			// TODO: handle exception
 			e.printStackTrace();
 		}finally {
-			DBManager.close(conn, pstmt);
+			DBManager.close(conn, pstmt, rs);
 		}
-		System.out.println(list.size());
-
-		System.out.println("><><>><><");
-		//
 		if (code != null) {
-			//
 		}
 
 		return list;

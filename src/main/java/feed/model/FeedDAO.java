@@ -37,7 +37,7 @@ public class FeedDAO {
 		}catch (Exception e) {
 			e.printStackTrace();
 		}finally {
-			DBManager.close(conn, pstmt);
+			DBManager.close(conn, pstmt, rs);
 		}
 		return feed;
 	}
@@ -61,7 +61,7 @@ public class FeedDAO {
 		}catch (Exception e) {
 			e.printStackTrace();
 		}finally {
-			DBManager.close(conn, pstmt);
+			DBManager.close(conn, pstmt, rs);
 		}
 		return feed;
 	}
@@ -99,7 +99,7 @@ public class FeedDAO {
 			// TODO: handle exception
 			e.printStackTrace();
 		}finally {
-			DBManager.close(conn, pstmt);
+			DBManager.close(conn, pstmt, rs);
 		}
 		return feeds;
 	}
@@ -134,7 +134,7 @@ public class FeedDAO {
 			// TODO: handle exception
 			e.printStackTrace();
 		}finally {
-			DBManager.close(conn, pstmt);
+			DBManager.close(conn, pstmt, rs);
 		}
 
 		feed.setComments(comments);
@@ -174,7 +174,7 @@ public class FeedDAO {
 			// TODO: handle exception
 			e.printStackTrace();
 		}finally {
-			DBManager.close(conn, pstmt);
+			DBManager.close(conn, pstmt, rs);
 		}
 		System.out.println(list.size());
 
@@ -220,7 +220,7 @@ public class FeedDAO {
 			// TODO: handle exception
 			e.printStackTrace();
 		}finally {
-			DBManager.close(conn, pstmt);
+			DBManager.close(conn, pstmt, rs);
 		}
 		System.out.println(list.size());
 		addCommentToFeed(list);
@@ -265,7 +265,7 @@ public class FeedDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			DBManager.close(conn, pstmt);
+			DBManager.close(conn, pstmt, rs);
 		}
 
 		addCommentToFeed(list);
@@ -311,7 +311,7 @@ public class FeedDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			DBManager.close(conn, pstmt);
+			DBManager.close(conn, pstmt, rs);
 		}
 
 		addCommentToFeed(list);
@@ -359,7 +359,7 @@ public class FeedDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			DBManager.close(conn, pstmt);
+			DBManager.close(conn, pstmt, rs);
 		}
 
 		addCommentToFeed(list);
@@ -407,7 +407,7 @@ public class FeedDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
-			DBManager.close(conn, pstmt);
+			DBManager.close(conn, pstmt, rs);
 		}
 
 		addCommentToFeed(list);
@@ -478,7 +478,7 @@ public class FeedDAO {
 		}catch (Exception e) {
 			e.printStackTrace();
 		}finally {
-			DBManager.close(conn, pstmt);
+			DBManager.close(conn, pstmt, rs);
 		}
 
 		return feed;
@@ -498,7 +498,7 @@ public class FeedDAO {
 			// TODO: handle exception
 			e.printStackTrace();
 		}finally {
-			DBManager.close(conn, pstmt);
+			DBManager.close(conn, pstmt, rs);
 		}
 	}
 
@@ -520,7 +520,7 @@ public class FeedDAO {
 			// TODO: handle exception
 			e.printStackTrace();
 		}finally {
-			DBManager.close(conn, pstmt);
+			DBManager.close(conn, pstmt, rs);
 		}
 		return feed;
 	}
@@ -547,7 +547,7 @@ public class FeedDAO {
 			// TODO: handle exception
 			e.printStackTrace();
 		}finally {
-			DBManager.close(conn, pstmt);
+			DBManager.close(conn, pstmt, rs);
 		}
 		return feeds;
 	}
@@ -571,7 +571,7 @@ public class FeedDAO {
 			e.printStackTrace();
 			isCreate = false;
 		}finally {
-			DBManager.close(conn, pstmt);
+			DBManager.close(conn, pstmt, rs);
 		}
 
 
@@ -595,7 +595,7 @@ public class FeedDAO {
 			e.printStackTrace();
 			isUpdated = false;
 		}finally {
-			DBManager.close(conn, pstmt);
+			DBManager.close(conn, pstmt, rs);
 		}
 
 		return isUpdated;
@@ -639,7 +639,7 @@ public class FeedDAO {
 			// TODO: handle exception
 			e.printStackTrace();
 		}finally {
-			DBManager.close(conn, pstmt);
+			DBManager.close(conn, pstmt, rs);
 		}
 		return list;
 	}
@@ -660,7 +660,7 @@ public class FeedDAO {
 			// TODO: handle exception
 			e.printStackTrace();
 		}finally {
-			DBManager.close(conn, pstmt);
+			DBManager.close(conn, pstmt, rs);
 		}
 		return feed;
 	}
@@ -680,7 +680,7 @@ public class FeedDAO {
 			// TODO: handle exception
 			e.printStackTrace();
 		}finally {
-			DBManager.close(conn, pstmt);
+			DBManager.close(conn, pstmt, rs);
 		}
 
 		return feed;
@@ -706,7 +706,7 @@ public class FeedDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
-			DBManager.close(conn, pstmt);
+			DBManager.close(conn, pstmt, rs);
 		}
 		return feeds;
 	}
@@ -733,7 +733,7 @@ public class FeedDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
-			DBManager.close(conn, pstmt);
+			DBManager.close(conn, pstmt, rs);
 		}
 
 		return feed;
@@ -753,7 +753,7 @@ public class FeedDAO {
 		}catch (Exception e) {
 			e.printStackTrace();
 		}finally {
-			DBManager.close(conn, pstmt);
+			DBManager.close(conn, pstmt, rs);
 		}
 
 
@@ -783,7 +783,7 @@ public class FeedDAO {
 			// TODO: handle exception
 			e.printStackTrace();
 		}finally {
-			DBManager.close(conn, pstmt);
+			DBManager.close(conn, pstmt, rs);
 		}
 
 		return list;
@@ -806,7 +806,7 @@ public class FeedDAO {
 			e.printStackTrace();
 			isCreate = false;
 		}finally {
-			DBManager.close(conn, pstmt);
+			DBManager.close(conn, pstmt, rs);
 		}
 
 		return isCreate;
@@ -825,7 +825,7 @@ public class FeedDAO {
 		}catch (Exception e) {
 			e.printStackTrace();
 		}finally {
-			DBManager.close(conn, pstmt);
+			DBManager.close(conn, pstmt, rs);
 		}
 
 		return feed;
@@ -843,7 +843,7 @@ public class FeedDAO {
 		}catch (Exception e) {
 			e.printStackTrace();
 		}finally {
-			DBManager.close(conn, pstmt);
+			DBManager.close(conn, pstmt, rs);
 		}
 
 		return feed;

@@ -182,7 +182,9 @@ public class FoodDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }
+        }finally {
+        	DBManager.close(conn, pstmt, rs);
+		}
         return false;
     }
 
@@ -198,7 +200,9 @@ public class FoodDao {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }finally {
+        	DBManager.close(conn, pstmt, rs);
+		}
         return false;
     }
 }
