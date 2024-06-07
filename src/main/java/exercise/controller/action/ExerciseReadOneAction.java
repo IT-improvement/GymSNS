@@ -54,6 +54,7 @@ public class ExerciseReadOneAction implements Action {
 		exerciseObj.put("userCode", exercise.getUserCode());
 		exerciseObj.put("userId", exercise.getUserId());
 		exerciseObj.put("userName", exercise.getUserName());
+		exerciseObj.put("userProfileImage", exercise.getUserProfileImage());
 		exerciseObj.put("name", exercise.getName());
 		exerciseObj.put("content", exercise.getContent());
 		exerciseObj.put("createDate", exercise.getCreateDate());

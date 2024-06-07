@@ -21,16 +21,14 @@ public class ExerciseReadAllAction implements Action {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 
-		String limit = request.getParameter("limit");
+		String pageNumberStr = request.getParameter("pageNumber");
 		String isDescOrderStr = request.getParameter("isDescOrder");
 
 		boolean isDescOrder = (isDescOrderStr != null && isDescOrderStr.equals("false")) ? false : true;
+		int pageNumber = ParameterValidator.isInteger(pageNumberStr) ? Integer.parseInt(pageNumberStr) : 1;
 
 		ExerciseDao exerciseDao = ExerciseDao.getInstance();
-
-		List<ExerciseResponseDto> exercises = ParameterValidator.isInteger(limit) ?
-				exerciseDao.findExerciseAllWithLimit(isDescOrder, Integer.parseInt(limit)) :
-				exerciseDao.findExerciseAll(isDescOrder);
+		List<ExerciseResponseDto> exercises = exerciseDao.findExerciseAllByPageNumber(isDescOrder, pageNumber);
 
 		JSONArray exerciseJsonArr = new JSONArray();
 		
@@ -43,11 +41,12 @@ public class ExerciseReadAllAction implements Action {
 			exerciseObj.put("userCode", exercise.getUserCode());
 			exerciseObj.put("userId", exercise.getUserId());
 			exerciseObj.put("userName", exercise.getUserName());
+			exerciseObj.put("userProfileImage", exercise.getUserProfileImage());
 			exerciseObj.put("name", exercise.getName());
 			exerciseObj.put("content", exercise.getContent());
 			exerciseObj.put("createDate", exercise.getCreateDate());
 			exerciseObj.put("modDate", exercise.getModDate());
-			
+
 			exerciseJsonArr.put(exerciseObj);
 		}
 

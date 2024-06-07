@@ -34,7 +34,7 @@ public class FriendDao {
 
 	public FriendResponseDto findFriendByUserCode(FriendRequestDto friendDto) {
 		FriendResponseDto friend = null;
-		String sql = "SELECT friend_index, user_code_one, user_code_two, users.id, users.name "
+		String sql = "SELECT friend_index, user_code_one, user_code_two, users.id, users.name, users.profile_image "
 					+ "FROM friends "
 					+ "JOIN users ON users.code = friends.user_code_two "
 					+ "WHERE user_code_one=? AND user_code_two=?";
@@ -59,8 +59,9 @@ public class FriendDao {
 				int userCodeFriend = rs.getInt(3);
 				String friendUserId = rs.getString(4);
 				String friendUserName = rs.getString(5);
-				
-				friend = new FriendResponseDto(index, userCodeSelf, userCodeFriend, friendUserId, friendUserName);
+				String friendUserProfileImage = rs.getString(6);
+
+				friend = new FriendResponseDto(index, userCodeSelf, userCodeFriend, friendUserId, friendUserName, friendUserProfileImage);
 			}
 		} catch (Exception e) {
 			System.out.println(e);
@@ -73,7 +74,7 @@ public class FriendDao {
 
 	private List<FriendResponseDto> findFriendAllFromLeftColumn(FriendRequestDto friendDto) {
 		List<FriendResponseDto> friends = new ArrayList<>();
-		String sql = "SELECT friend_index, user_code_two, user_code_one, users.id, users.name "
+		String sql = "SELECT friend_index, user_code_two, user_code_one, users.id, users.name, users.profile_image "
 					+ "FROM friends "
 					+ "JOIN users on users.code = friends.user_code_one "
 					+ "WHERE user_code_two=?";
@@ -92,8 +93,9 @@ public class FriendDao {
 				int userCodeFriend = rs.getInt(3);
 				String friendUserId = rs.getString(4);
 				String friendUserName = rs.getString(5);
-				
-				friends.add(new FriendResponseDto(index, userCodeSelf, userCodeFriend, friendUserId, friendUserName));
+				String friendUserProfileImage = rs.getString(6);
+
+				friends.add(new FriendResponseDto(index, userCodeSelf, userCodeFriend, friendUserId, friendUserName, friendUserProfileImage));
 			}
 		} catch (Exception e) {
 			System.out.println(e);
@@ -106,7 +108,7 @@ public class FriendDao {
 
 	private List<FriendResponseDto> findFriendAllFromRightColumn(FriendRequestDto friendDto) {
 		List<FriendResponseDto> friends = new ArrayList<>();
-		String sql = "SELECT friend_index, user_code_one, user_code_two, users.id, users.name "
+		String sql = "SELECT friend_index, user_code_one, user_code_two, users.id, users.name, users.profile_image "
 					+ "FROM friends "
 					+ "JOIN users on users.code = friends.user_code_two "
 					+ "WHERE user_code_one=?";
@@ -125,8 +127,9 @@ public class FriendDao {
 				int userCodeFriend = rs.getInt(3);
 				String friendUserId = rs.getString(4);
 				String friendUserName = rs.getString(5);
-				
-				friends.add(new FriendResponseDto(index, userCodeSelf, userCodeFriend, friendUserId, friendUserName));
+				String friendUserProfileImage = rs.getString(6);
+
+				friends.add(new FriendResponseDto(index, userCodeSelf, userCodeFriend, friendUserId, friendUserName, friendUserProfileImage));
 			}
 		} catch (Exception e) {
 			System.out.println(e);

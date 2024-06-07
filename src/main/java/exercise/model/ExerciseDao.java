@@ -20,10 +20,12 @@ public class ExerciseDao {
 	public static ExerciseDao getInstance() {
 		return instance;
 	}
+
+	private final int ITEM_COUNT_PER_PAGE = 4;
 	
 	public List<ExerciseResponseDto> findExerciseAll(boolean isDescOrder) {
 		List<ExerciseResponseDto> exercises = new ArrayList<>();
-		String sql = "SELECT exercise_index, exer.exercise_category_index, exer_cate.name, exer.user_code, users.id, users.name, exer.name, content, exer.create_date, exer.mod_date "
+		String sql = "SELECT exercise_index, exer.exercise_category_index, exer_cate.name, exer.user_code, users.id, users.name, users.profile_image, exer.name, content, exer.create_date, exer.mod_date "
 				+ "FROM exercises AS exer "
 				+ "JOIN exercise_categories as exer_cate ON exer_cate.exercise_category_index = exer.exercise_category_index "
 				+ "JOIN users ON users.code = exer.user_code "
@@ -43,13 +45,14 @@ public class ExerciseDao {
 				int userCode = rs.getInt(4);
 				String userId = rs.getString(5);
 				String userName = rs.getString(6);
+				String userProfileImage = rs.getString(7);
 
-				String name = rs.getString(7);
-				String content = rs.getString(8);
-				Timestamp createDate = rs.getTimestamp(9);
-				Timestamp modDate = rs.getTimestamp(10);
+				String name = rs.getString(8);
+				String content = rs.getString(9);
+				Timestamp createDate = rs.getTimestamp(10);
+				Timestamp modDate = rs.getTimestamp(11);
 				
-				exercises.add(new ExerciseResponseDto(index, categoryIndex, categoryName, userCode, userId, userName, name, content, createDate, modDate));
+				exercises.add(new ExerciseResponseDto(index, categoryIndex, categoryName, userCode, userId, userName, userProfileImage, name, content, createDate, modDate));
 			}
 		} catch (Exception e) {
 			System.out.println(e);
@@ -60,20 +63,21 @@ public class ExerciseDao {
 		return exercises;
 	}
 
-	public List<ExerciseResponseDto> findExerciseAllWithLimit(boolean isDescOrder, int limit) {
+	public List<ExerciseResponseDto> findExerciseAllByPageNumber(boolean isDescOrder, int pageNumber) {
 		List<ExerciseResponseDto> exercises = new ArrayList<>();
-		String sql = "SELECT exercise_index, exer.exercise_category_index, exer_cate.name, exer.user_code, users.id, users.name, exer.name, content, exer.create_date, exer.mod_date "
+		String sql = "SELECT exercise_index, exer.exercise_category_index, exer_cate.name, exer.user_code, users.id, users.name, users.profile_image, exer.name, content, exer.create_date, exer.mod_date "
 				+ "FROM exercises AS exer "
 				+ "JOIN exercise_categories as exer_cate ON exer_cate.exercise_category_index = exer.exercise_category_index "
 				+ "JOIN users ON users.code = exer.user_code "
 				+ "ORDER BY create_date " + (isDescOrder ? "DESC " : "ASC ")
-				+ "LIMIT ?";
+				+ "LIMIT ?,?";
 
 		try {
 			conn = DBManager.getConnection();
 			pstmt = conn.prepareStatement(sql);
 
-			pstmt.setInt(1, limit);
+			pstmt.setInt(1, (pageNumber - 1) * ITEM_COUNT_PER_PAGE);
+			pstmt.setInt(2, ITEM_COUNT_PER_PAGE);
 
 			rs = pstmt.executeQuery();
 
@@ -85,13 +89,14 @@ public class ExerciseDao {
 				int userCode = rs.getInt(4);
 				String userId = rs.getString(5);
 				String userName = rs.getString(6);
+				String userProfileImage = rs.getString(7);
 
-				String name = rs.getString(7);
-				String content = rs.getString(8);
-				Timestamp createDate = rs.getTimestamp(9);
-				Timestamp modDate = rs.getTimestamp(10);
+				String name = rs.getString(8);
+				String content = rs.getString(9);
+				Timestamp createDate = rs.getTimestamp(10);
+				Timestamp modDate = rs.getTimestamp(11);
 
-				exercises.add(new ExerciseResponseDto(index, categoryIndex, categoryName, userCode, userId, userName, name, content, createDate, modDate));
+				exercises.add(new ExerciseResponseDto(index, categoryIndex, categoryName, userCode, userId, userName, userProfileImage, name, content, createDate, modDate));
 			}
 		} catch (Exception e) {
 			System.out.println(e);
@@ -104,7 +109,7 @@ public class ExerciseDao {
 
 	public List<ExerciseResponseDto> findExerciseAllByQuery(boolean isDescOrder, String query) {
 		List<ExerciseResponseDto> exercises = new ArrayList<>();
-		String sql = "SELECT exercise_index, exer.exercise_category_index, exer_cate.name, exer.user_code, users.id, users.name, exer.name, content, exer.create_date, exer.mod_date "
+		String sql = "SELECT exercise_index, exer.exercise_category_index, exer_cate.name, exer.user_code, users.id, users.name, users.profile_image, exer.name, content, exer.create_date, exer.mod_date "
 				+ "FROM exercises AS exer "
 				+ "JOIN exercise_categories as exer_cate ON exer_cate.exercise_category_index = exer.exercise_category_index "
 				+ "JOIN users ON users.code = exer.user_code "
@@ -135,13 +140,14 @@ public class ExerciseDao {
 				int userCode = rs.getInt(4);
 				String userId = rs.getString(5);
 				String userName = rs.getString(6);
+				String userProfileImage = rs.getString(7);
 
-				String name = rs.getString(7);
-				String content = rs.getString(8);
-				Timestamp createDate = rs.getTimestamp(9);
-				Timestamp modDate = rs.getTimestamp(10);
+				String name = rs.getString(8);
+				String content = rs.getString(9);
+				Timestamp createDate = rs.getTimestamp(10);
+				Timestamp modDate = rs.getTimestamp(11);
 
-				exercises.add(new ExerciseResponseDto(index, categoryIndex, categoryName, userCode, userId, userName, name, content, createDate, modDate));
+				exercises.add(new ExerciseResponseDto(index, categoryIndex, categoryName, userCode, userId, userName, userProfileImage, name, content, createDate, modDate));
 			}
 		} catch (Exception e) {
 			System.out.println(e);
@@ -152,9 +158,9 @@ public class ExerciseDao {
 		return exercises;
 	}
 
-	public List<ExerciseResponseDto> findExerciseAllByQueryWithLimit(boolean isDescOrder, String query, int limit) {
+	public List<ExerciseResponseDto> findExerciseAllByQueryByPageNumber(boolean isDescOrder, String query, int pageNumber) {
 		List<ExerciseResponseDto> exercises = new ArrayList<>();
-		String sql = "SELECT exercise_index, exer.exercise_category_index, exer_cate.name, exer.user_code, users.id, users.name, exer.name, content, exer.create_date, exer.mod_date "
+		String sql = "SELECT exercise_index, exer.exercise_category_index, exer_cate.name, exer.user_code, users.id, users.name, users.profile_image, exer.name, content, exer.create_date, exer.mod_date "
 				+ "FROM exercises AS exer "
 				+ "JOIN exercise_categories as exer_cate ON exer_cate.exercise_category_index = exer.exercise_category_index "
 				+ "JOIN users ON users.code = exer.user_code "
@@ -164,7 +170,7 @@ public class ExerciseDao {
 				+ "OR users.name LIKE ? "
 				+ "OR content LIKE ? "
 				+ "ORDER BY create_date " + (isDescOrder ? "DESC " : "ASC ")
-				+ "LIMIT ?";
+				+ "LIMIT ?, ?";
 
 		try {
 			conn = DBManager.getConnection();
@@ -175,7 +181,8 @@ public class ExerciseDao {
 			pstmt.setString(3, "%" + query + "%");
 			pstmt.setString(4, "%" + query + "%");
 			pstmt.setString(5, "%" + query + "%");
-			pstmt.setInt(6, limit);
+			pstmt.setInt(6, (pageNumber - 1) * ITEM_COUNT_PER_PAGE);
+			pstmt.setInt(7, ITEM_COUNT_PER_PAGE);
 
 			rs = pstmt.executeQuery();
 
@@ -187,13 +194,14 @@ public class ExerciseDao {
 				int userCode = rs.getInt(4);
 				String userId = rs.getString(5);
 				String userName = rs.getString(6);
+				String userProfileImage = rs.getString(7);
 
-				String name = rs.getString(7);
-				String content = rs.getString(8);
-				Timestamp createDate = rs.getTimestamp(9);
-				Timestamp modDate = rs.getTimestamp(10);
+				String name = rs.getString(8);
+				String content = rs.getString(9);
+				Timestamp createDate = rs.getTimestamp(10);
+				Timestamp modDate = rs.getTimestamp(11);
 
-				exercises.add(new ExerciseResponseDto(index, categoryIndex, categoryName, userCode, userId, userName, name, content, createDate, modDate));
+				exercises.add(new ExerciseResponseDto(index, categoryIndex, categoryName, userCode, userId, userName, userProfileImage, name, content, createDate, modDate));
 			}
 		} catch (Exception e) {
 			System.out.println(e);
@@ -206,7 +214,7 @@ public class ExerciseDao {
 
 	public ExerciseResponseDto findExerciseOneByIndex(ExerciseRequestDto exerciseDto) {
 		ExerciseResponseDto exercise = null;
-		String sql = "SELECT exercise_index, exer.exercise_category_index, exer_cate.name, exer.user_code, users.id, users.name AS \"user_name\", exer.name, content, exer.create_date, exer.mod_date "
+		String sql = "SELECT exercise_index, exer.exercise_category_index, exer_cate.name, exer.user_code, users.id, users.name AS \"user_name\", users.profile_image, exer.name, content, exer.create_date, exer.mod_date "
 				+ "FROM exercises AS exer "
 				+ "JOIN exercise_categories as exer_cate ON exer_cate.exercise_category_index = exer.exercise_category_index "
 				+ "JOIN users ON users.code = exer.user_code "
@@ -228,13 +236,14 @@ public class ExerciseDao {
 				int userCode = rs.getInt(4);
 				String userId = rs.getString(5);
 				String userName = rs.getString(6);
+				String userProfileImage = rs.getString(7);
 
-				String name = rs.getString(7);
-				String content = rs.getString(8);
-				Timestamp createDate = rs.getTimestamp(9);
-				Timestamp modDate = rs.getTimestamp(10);
+				String name = rs.getString(8);
+				String content = rs.getString(9);
+				Timestamp createDate = rs.getTimestamp(10);
+				Timestamp modDate = rs.getTimestamp(11);
 
-				exercise = new ExerciseResponseDto(index, categoryIndex, categoryName, userCode, userId, userName, name , content, createDate, modDate);
+				exercise = new ExerciseResponseDto(index, categoryIndex, categoryName, userCode, userId, userName, userProfileImage, name, content, createDate, modDate);
 			}
 		} catch (Exception e) {
 			System.out.println(e);

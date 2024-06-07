@@ -24,16 +24,14 @@ public class UserReadAllAction implements Action {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-        String limit = request.getParameter("limit");
+        String pageNumberStr = request.getParameter("pageNumber");
+        int pageNumber = ParameterValidator.isInteger(pageNumberStr) ? Integer.parseInt(pageNumberStr) : 1;
 
         UserDao userDao = UserDao.getInstance();
 
-        List<UserResponseDto> users = ParameterValidator.isInteger(limit) ?
-                userDao.findUserAllWithLimit(Integer.parseInt(limit)) :
-                userDao.findUserAll();
-//        List<UserResponseDto> users = userDao.findUserAll();
+        List<UserResponseDto> users = userDao.findUserAll(pageNumber);
 
-                JSONArray userJsonArr = new JSONArray();
+        JSONArray userJsonArr = new JSONArray();
 
         for (UserResponseDto user : users) {
             JSONObject userObj = new JSONObject();

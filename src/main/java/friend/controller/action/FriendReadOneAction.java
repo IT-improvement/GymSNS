@@ -42,6 +42,7 @@ public class FriendReadOneAction implements Action {
 		friendObj.put("userCode", friend.getUserCodeFriend());
 		friendObj.put("userId", friend.getUserId());
 		friendObj.put("userName", friend.getUserName());
+		friendObj.put("userProfileImage", friend.getUserProfileImage());
 
 		response.getWriter().write(friendObj.toString());
 	}

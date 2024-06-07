@@ -6,13 +6,15 @@ public class FriendResponseDto {
 	private	int userCodeFriend;
 	private	String userId;
 	private	String userName;
+	private String userProfileImage;
 	
-	public FriendResponseDto(int index, int userCodeSelf, int userCodeFriend, String userId, String userName) {
+	public FriendResponseDto(int index, int userCodeSelf, int userCodeFriend, String userId, String userName, String userProfileImage) {
 		this.index = index;
 		this.userCodeSelf = userCodeSelf;
 		this.userCodeFriend = userCodeFriend;
 		this.userId = userId;
 		this.userName = userName;
+		this.userProfileImage = userProfileImage;
 	}
 
 	public int getIndex() {
@@ -53,5 +55,13 @@ public class FriendResponseDto {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public String getUserProfileImage() {
+		return userProfileImage;
+	}
+
+	public void setUserProfileImage(String userProfileImage) {
+		this.userProfileImage = userProfileImage;
 	}
 }
