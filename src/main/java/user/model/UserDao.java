@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,10 +40,10 @@ public class UserDao {
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, userCode);
 				pstmt.setString(2, days[i]);
-				
 				pstmt.execute();
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 		}finally {
 			DBManager.close(conn, pstmt, rs);
 		}

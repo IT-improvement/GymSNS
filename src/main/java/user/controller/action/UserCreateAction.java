@@ -156,6 +156,9 @@ public class UserCreateAction extends HttpServlet implements Action {
 				jsonResponse.put("gender", gender);
 				jsonResponse.put("telecom", telecom);
 				jsonResponse.put("phone", phone);
+				int code =dao.findById(id);
+				System.out.println("code: "+code);
+				dao.joinRoutine(code);
 				System.out.println("유저 생성 완료");
 				jsonResponse.put("status", 200);
 				jsonResponse.put("message", "회원가입 완료");
