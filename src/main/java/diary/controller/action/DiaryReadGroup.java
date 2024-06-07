@@ -41,7 +41,7 @@ public class DiaryReadGroup implements Action {
             array.put(object);
         }
         boolean check = dao.checkEnd(userCode, number);
-
+        System.out.println("Check:"+check);
         JSONObject responseJson = new JSONObject();
         responseJson.put("diaries", array);
         responseJson.put("end", check);

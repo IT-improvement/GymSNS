@@ -68,6 +68,7 @@ public class DiaryDAO {
 
 			while (rs.next()) {
 				count++;
+				System.out.println("count"+count);
 			}
 			System.out.println("다이어리 읽기 완료");
 		} catch (Exception e) {
