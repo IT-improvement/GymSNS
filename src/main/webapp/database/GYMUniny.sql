@@ -53,7 +53,7 @@ CREATE TABLE users
     gender        ENUM('M','F') NOT NULL COMMENT '성별',
     telecom       VARCHAR(3)    NOT NULL CHECK(`telecom` IN ('skt', 'kt', 'lgt')) COMMENT '통신사',
     phone         VARCHAR(13)   NOT NULL CHECK(`phone` REGEXP '^[0-9]{3}-[0-9]{4}-[0-9]{4}$') COMMENT '핸드폰번호',
-    profile_image VARCHAR(1000) NULL     COMMENT '프로필 이미지 링크',
+    profile_image VARCHAR(1000) COMMENT '프로필 이미지 링크',
     reg_date      TIMESTAMP     NOT NULL DEFAULT(NOW()) COMMENT '가입일자',
     mod_date      TIMESTAMP     DEFAULT(NOW()) ON UPDATE NOW() COMMENT '수정일자'
 ) AUTO_INCREMENT=1001 COMMENT '유저';
