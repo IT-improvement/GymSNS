@@ -1,9 +1,6 @@
 package foodCategory.controller.action;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +12,9 @@ import foodCategory.model.FoodCategoryDao;
 import foodCategory.model.FoodCategoryRequestDto;
 import user.controller.Action;
 import util.ParameterValidator;
+import util.ApiResponseManager;
+import util.HttpRequestManager;
+import util.ImgBB;
 
 public class CreateFoodCategoryAction implements Action {
 	@Override
@@ -22,20 +22,32 @@ public class CreateFoodCategoryAction implements Action {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 
+		HttpRequestManager requestManager = HttpRequestManager.getInstance();
+		String body = requestManager.getRequestBodyFromClientRequest(request);
+		JSONObject jsonObject = new JSONObject(body);
+
 		String userCodeStr = request.getHeader("Authorization");
-//		String userCodeStr = request.getParameter("userCode");
+
+		System.out.println("userCode"+userCodeStr);
+
 		String categoryName = request.getParameter("categoryName");
-		String categoryImageUrl = request.getParameter("categoryImageUrl");
+		System.out.println("categoryName:"+ categoryName);
+
+		String imageBase64 = jsonObject.getString("image");
 
 		JSONObject resObj = new JSONObject();
 
 		try {
-			validateInput(userCodeStr, categoryName, categoryImageUrl);
+			validateInput(userCodeStr, categoryName, imageBase64);
 
 			int userCode = Integer.parseInt(userCodeStr);
 
+			// Upload the image and get the URL
+			String imageURL = ImgBB.uploadImage(imageBase64);
+			System.out.println("imageURL"+imageURL);
+
 			FoodCategoryDao dao = FoodCategoryDao.getInstance();
-			FoodCategoryRequestDto foodCategoryDto = new FoodCategoryRequestDto(userCode, categoryName, categoryImageUrl);
+			FoodCategoryRequestDto foodCategoryDto = new FoodCategoryRequestDto(userCode, categoryName, imageURL);
 
 			dao.addFoodCategory(foodCategoryDto);
 
@@ -57,12 +69,15 @@ public class CreateFoodCategoryAction implements Action {
 		}
 	}
 
-	private void validateInput(String userCodeStr, String categoryName, String categoryImageUrl) throws ValidationException {
+	private void validateInput(String userCodeStr, String categoryName, String imageBase64) throws ValidationException {
 		if (userCodeStr == null || !ParameterValidator.isInteger(userCodeStr)) {
 			throw new ValidationException("Invalid user code");
 		}
 		if (categoryName == null || categoryName.trim().isEmpty()) {
 			throw new ValidationException("Category name is required");
+		}
+		if (imageBase64 == null || imageBase64.trim().isEmpty()) {
+			throw new ValidationException("Image is required");
 		}
 	}
 
