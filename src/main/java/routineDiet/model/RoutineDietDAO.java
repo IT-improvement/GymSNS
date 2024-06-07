@@ -33,7 +33,7 @@ public class RoutineDietDAO {
                     + "FROM foods f, routines r, routine_diet_details rd\r\n" +
                     "WHERE f.food_index = rd.food_index\r\n" +
                     "AND r.routine_index = rd.routine_index\r\n" +
-                    "AND r.user_code = ?";
+                    "AND r.user_code = 123";
 
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, code);
