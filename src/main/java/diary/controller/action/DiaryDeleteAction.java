@@ -19,8 +19,9 @@ public class DiaryDeleteAction implements Action{
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
-		int userCode = (int)session.getAttribute("code");
+//		HttpSession session = request.getSession();
+//		int userCode = (int)session.getAttribute("code");
+		int userCode = 1;
 		StringBuilder sb = new StringBuilder();
         BufferedReader reader = request.getReader();
         String line;

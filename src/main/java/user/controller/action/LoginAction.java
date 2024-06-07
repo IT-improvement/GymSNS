@@ -67,8 +67,9 @@ public class LoginAction extends HttpServlet implements Action {
 				session.setAttribute("user", user);
 				session.setAttribute("code", user.getCode());
 				session.setAttribute("id", user.getId());
-
 				jsonResponse.put("code", user.getCode());
+				int usercode = (int)session.getAttribute("code");
+				System.out.println("userCode" + usercode);
 				jsonResponse.put("id", id);
 				jsonResponse.put("password", password);
 				jsonResponse.put("profileImage", user.getProfileImage());

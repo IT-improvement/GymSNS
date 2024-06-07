@@ -25,12 +25,13 @@ public class RoutineReadAction implements Action{
         response.setHeader("Access-Control-Allow-Origin", "*");
 		
 		RoutineDAO dao = RoutineDAO.getInstance();
-		HttpSession session = request.getSession();
-		int userCode = (int)session.getAttribute("code");
+//		HttpSession session = request.getSession();
+//		int userCode = (int)session.getAttribute("code");
+		int userCode = 1;
 		List<RoutineResponseDTO> listItem = dao.readRoutine(userCode);
 		
 		JSONArray array = new JSONArray();
-		
+		System.out.println("listItem"+listItem);
         for(RoutineResponseDTO routine : listItem) {
         	JSONObject object = new JSONObject();
         	object.put("name", routine.getName());

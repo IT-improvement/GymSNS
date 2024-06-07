@@ -24,7 +24,10 @@ public class DiaryReadAction implements Action {
         response.setCharacterEncoding("UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*"); // CORS 헤더 추가
         HttpSession session = request.getSession();
-		int userCode = (int)session.getAttribute("code");
+//        int userCode = (int)session.getAttribute("code");
+        int userCode = 1;
+		System.out.println("userCode" + userCode);
+		
         Timestamp date = Timestamp.valueOf(request.getParameter("date"));
         System.out.println("date: "+date);
         DiaryDAO dao = DiaryDAO.getInstance();

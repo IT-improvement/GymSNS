@@ -21,10 +21,10 @@ public class ExerciseReadByUserCode implements Action{
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		
-		int userCode = 123;
+		int userCode = 1;
 		ExerciseDao dao = ExerciseDao.getInstance();
 		List<ExerciseResponseDto> list = dao.readByUserCode(userCode);
-		
+		System.out.println("list: "+list);
 		JSONArray array = new JSONArray();
 		for(ExerciseResponseDto dto: list) {
 			JSONObject object = new JSONObject();

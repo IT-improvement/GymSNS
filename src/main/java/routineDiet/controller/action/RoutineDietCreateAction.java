@@ -16,7 +16,7 @@ public class RoutineDietCreateAction implements Action {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
 
-        int userCode = 123;
+        int userCode = 1;
         String day = request.getParameter("day");
         int foodIndex =Integer.parseInt(request.getParameter("food"));
         String mealTime = request.getParameter("meal_time");

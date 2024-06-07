@@ -33,10 +33,9 @@ public class RoutineDietDAO {
                     + "FROM foods f, routines r, routine_diet_details rd\r\n" +
                     "WHERE f.food_index = rd.food_index\r\n" +
                     "AND r.routine_index = rd.routine_index\r\n" +
-                    "AND r.user_code = 123";
+                    "AND r.user_code = 1";
 
             pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, code);
             rs = pstmt.executeQuery();
 
             while(rs.next()) {
@@ -70,8 +69,10 @@ public class RoutineDietDAO {
             pstmt.setString(2, dto.getDay());
 
             rs = pstmt.executeQuery();
-            if(rs.next())
-                temp.setRoutineIndex(rs.getInt(1));
+            if(rs.next()) {
+            	temp.setRoutineIndex(rs.getInt(1));
+            	System.out.println(rs.getInt(1));
+            }
             System.out.println("루틴인덱스 찾기 성공");
         } catch (Exception e) {
             e.printStackTrace();
@@ -84,7 +85,7 @@ public class RoutineDietDAO {
 
     public void inesrtRoutineDiet(RoutineDietRequestDTO dto) {
         RoutineDietRequestDTO requestDTO = findRoutineDietIndex(dto);
-
+        
         conn = DBManager.getConnection();
         try {
             String sql = "INSERT INTO routine_diet_details(routine_index, food_index, create_date,meal_time)"

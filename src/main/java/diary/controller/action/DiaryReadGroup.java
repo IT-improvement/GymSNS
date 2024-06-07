@@ -24,8 +24,9 @@ public class DiaryReadGroup implements Action {
         response.setCharacterEncoding("UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*"); // CORS 헤더 추가
 
-        HttpSession session = request.getSession();
-		int userCode = (int)session.getAttribute("code");
+//        HttpSession session = request.getSession();
+//		int userCode = (int)session.getAttribute("code");
+        int userCode = 1;
         int number = Integer.parseInt(request.getParameter("number"));
         DiaryDAO dao = DiaryDAO.getInstance();
         List<DiaryResponseDTO> diaryListItem = dao.readDiaryGroup5(userCode, number);

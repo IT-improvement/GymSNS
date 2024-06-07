@@ -23,7 +23,7 @@ public class DiaryReadMonthAction implements Action{
         response.setCharacterEncoding("UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*"); // CORS 헤더 추가
         
-        int userCode = 123;
+        int userCode = 1;
         Timestamp startMonth = Timestamp.valueOf(request.getParameter("startMonth"));
         Timestamp endMonth = Timestamp.valueOf(request.getParameter("endMonth"));
         DiaryDAO dao = DiaryDAO.getInstance();
