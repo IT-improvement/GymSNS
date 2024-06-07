@@ -649,5 +649,31 @@ public class UserDao {
 		
 		return isDuplicate;
 	}
+
+	public boolean isPhoneDuplicate(String phone) {
+		boolean isDuplicate = false;
+
+		try {
+			conn = DBManager.getConnection();
+
+			String sql = "SELECT phone FROM users WHERE phone=?";
+
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setString(1, phone);
+
+			rs = pstmt.executeQuery();
+
+			if(rs.next()) {
+				isDuplicate = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBManager.close(conn, pstmt, rs);
+		}
+
+		return isDuplicate;
+	}
 	
 }

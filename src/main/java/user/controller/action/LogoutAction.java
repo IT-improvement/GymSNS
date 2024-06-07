@@ -26,21 +26,6 @@ public class LogoutAction extends HttpServlet implements Action {
             jsonResponse.put("message", "로그아웃 성공");
             System.out.println("로그아웃 완료");
 
-//			HttpSession session = request.getSession();
-//
-//            if (session != null && session.getAttribute("id") != null) {
-//                session.invalidate();
-//                jsonResponse.put("status", 200);
-//                jsonResponse.put("message", "로그아웃 성공");
-//                System.out.println("로그아웃 완료");
-//
-//            }
-//            else {
-//                jsonResponse.put("status", 401);
-//                jsonResponse.put("message", "로그인되지 않은 사용자입니다.");
-//                System.out.println("로그아웃 실패: 로그인되지 않은 사용자");
-//            }
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			

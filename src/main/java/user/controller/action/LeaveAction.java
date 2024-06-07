@@ -35,16 +35,10 @@ public class LeaveAction extends HttpServlet implements Action {
 		}
 
 		UserDao userDao = UserDao.getInstance();
-
 		UserResponseDto user = (UserResponseDto) session.getAttribute("user");
 
 		JSONObject jsonRequest = new JSONObject(sb.toString());
 
-//		String id = (String) session.getAttribute("id");
-//		if (id == null) {
-//            System.out.println("로그인 되어있지 않은 사용자입니다.");
-//            return;
-//        }
 		String id = jsonRequest.getString("id");
 		String password = jsonRequest.getString("password");
 
