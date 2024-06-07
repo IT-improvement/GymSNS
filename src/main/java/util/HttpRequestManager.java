@@ -9,71 +9,73 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class HttpRequestManager {
-    private static HttpURLConnection conn = null;
-    private HttpRequestManager() { }
+	private static HttpURLConnection conn = null;
 
-    public static HttpRequestManager getInstance() {
-        return new HttpRequestManager();
-    }
+	private HttpRequestManager() {
+	}
 
-    public static void connect(String urlStr) {
-        if (urlStr == null || urlStr.isEmpty())
-            return;
+	public static HttpRequestManager getInstance() {
+		return new HttpRequestManager();
+	}
 
-        try {
-            URL url = new URL(urlStr);
-            conn = (HttpURLConnection) url.openConnection();
+	public static void connect(String urlStr) {
+		if (urlStr == null || urlStr.isEmpty())
+			return;
 
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+		try {
+			URL url = new URL(urlStr);
+			conn = (HttpURLConnection) url.openConnection();
 
-            conn.setDoOutput(true);
-            conn.setDoInput(true);
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-    }
+			conn.setRequestMethod("POST");
+			conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
-    public static void sendParams(String params) {
-        try {
-            DataOutputStream os = new DataOutputStream(conn.getOutputStream());
-            byte[] input = params.getBytes("UTF-8");
-            os.write(input, 0, input.length);
-            os.flush();
-            os.close();
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-    }
+			conn.setDoOutput(true);
+			conn.setDoInput(true);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
 
-    public static String getRequestBodyFromClientRequest(HttpServletRequest request) {
-        StringBuilder sb = new StringBuilder();
-        String line;
+	public static void sendParams(String params) {
+		try {
+			DataOutputStream os = new DataOutputStream(conn.getOutputStream());
+			byte[] input = params.getBytes("UTF-8");
+			os.write(input, 0, input.length);
+			os.flush();
+			os.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
 
-        try (BufferedReader reader = request.getReader()) {
-            while ((line = reader.readLine()) != null) {
-                sb.append(line);
-            }
-        } catch (IOException e) {
-            System.out.println(e);
-        }
+	public static String getRequestBodyFromClientRequest(HttpServletRequest request) {
+		StringBuilder sb = new StringBuilder();
+		String line;
 
-        return sb.toString();
-    }
+		try (BufferedReader reader = request.getReader()) {
+			while ((line = reader.readLine()) != null) {
+				sb.append(line);
+			}
+		} catch (IOException e) {
+			System.out.println(e);
+		}
 
-    public static String getResponseBodyFromRequest() {
-        StringBuilder responseBody = new StringBuilder();
+		return sb.toString();
+	}
 
-        try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-            String responseLine;
+	public static String getResponseBodyFromRequest() {
+		StringBuilder responseBody = new StringBuilder();
 
-            while ((responseLine = br.readLine()) != null)
-                responseBody.append(responseLine.trim());
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+			String responseLine;
 
-        return responseBody.toString();
-    }
+			while ((responseLine = br.readLine()) != null)
+				responseBody.append(responseLine.trim());
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+
+		return responseBody.toString();
+	}
 }

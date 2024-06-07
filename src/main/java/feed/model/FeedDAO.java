@@ -449,7 +449,7 @@ public class FeedDAO {
 		}
 		addCommentToFeedDetail(feed);
 		readFeedFavoriteInfo(feed);
-//		findFeedImage(feed);
+		findFeedImage(feed);
 		if(userCodeViewer != null) {
 			FeedRequestDTO feedDto = new FeedRequestDTO();
 			feedDto.setFeedIndex(feedIndex);
@@ -502,25 +502,28 @@ public class FeedDAO {
 		}
 	}
 
-//	public Feed findFeedImage(Feed feed) {
-//		try {
-//			conn = DBManager.getConnection();
-//			String sql = "SELECT feed_image_index, image_url FROM feed_images WHERE feed_index=?";
-//			pstmt = conn.prepareStatement(sql);
-//			pstmt.setInt(1, feed.getFeedIndex());
-//			pstmt.execute();
-//            rs = pstmt.getResultSet();
-//            if(rs.next()) {
-//                feed.setImageURL(rs.getString(3));
-//            }
-//
-//		} catch (Exception e) {
-//			// TODO: handle exception
-//			e.printStackTrace();
-//		}finally {
-//			DBManager.close(conn, pstmt);
-//		}
-//	}
+	public Feed findFeedImage(Feed feed) {
+		try {
+			conn = DBManager.getConnection();
+			String sql = "SELECT feed_image_index, image_url FROM feed_images WHERE feed_index=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, feed.getFeedIndex());
+			pstmt.execute();
+            rs = pstmt.getResultSet();
+            if(rs.next()) {
+				feed.setFeedIndex(rs.getInt(1));
+                feed.setImageURL(rs.getString(2));
+            }
+			System.out.println(feed.getImageURL());
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}finally {
+			DBManager.close(conn, pstmt);
+		}
+		return feed;
+	}
 
 	public List<Feed> addImageToFeed(List<Feed> feeds) {
 		String sql = "SELECT feed_image_index, feed_index, image_url "
